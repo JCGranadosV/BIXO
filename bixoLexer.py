@@ -25,7 +25,7 @@ tokens = [
     'DOT',
     'SEMICOLON',
     'COLON',
-    'QUOTE'
+    'QUOTE',
     'STRING',
     'IF',
     'ELSE',
