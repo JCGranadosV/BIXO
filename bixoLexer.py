@@ -5,6 +5,7 @@ tokens = [
     'INT',
     'FLOAT',
     'CHAR',
+    'VAR',
     'PLUS',
     'MINUS',
     'MULT',
@@ -32,6 +33,8 @@ tokens = [
     'WHILE',
     'FOR',
     'PRINT',
+    'READ',
+    'ASSIGN',
     #LIBRERIAS DE ML:
     'PANDAS',
     #'TENSORFLOW',
@@ -65,11 +68,14 @@ t_SEMICOLON = r'\;'
 t_COLON = r'\:'
 t_QUOTE = r'\"'
 t_STRING = r'\".*?\"'
+t_VAR = r'var'
 t_IF = r'if'
 t_ELSE = r'else'
 t_WHILE = r'while'
 t_FOR = r'for'
 t_PRINT = r'print'
+t_READ = r'read'
+t_ASSIGN = r'assign'
 #LIBRERIAS DE ML:
 t_PANDAS = r'pandas'
 #t_TENSORFLOW = r'tensorflow'
