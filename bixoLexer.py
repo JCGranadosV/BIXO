@@ -94,9 +94,12 @@ def t_INT(t):
     t.value = int(t.value)
     return t
 
+#Agregar el def t_STRING(t)
+
 #Necesario declarar char con comillas = 'a'
 def t_CHAR(t):
     r'\'.\''
+    #agregar t.value
     return t
 
 def t_ID(t):
