@@ -20,11 +20,11 @@ def p_decvar(p):
 #Revisar declaración de cons-i
 def p_decvarp(p):
     '''decvarp : SEMICOLON decvarp
-               | LBRACKET CONS-I RBRACKET decvarpp'''
+               | LBRACKET CONSI RBRACKET decvarpp'''
                             
 def p_decvarpp(p):
     '''decvarpp : SEMICOLON
-                | LBRACKET CONS-I RBRACKET'''
+                | LBRACKET CONSI RBRACKET'''
  
 def p_type(p):
     '''type : INT
@@ -33,7 +33,7 @@ def p_type(p):
             |  STRING'''
             
 def p_function(p):
-    '''function : FUNC functionp LPARENT param RPARENT body'''
+    '''function : FUNC functionp LPAREN param RPAREN body'''
     
 def p_functionp(p):
     '''functionp : type function
@@ -45,7 +45,7 @@ def p_param(p):
 
 def p_paramp(p):
     ''' paramp : ID
-               | ID RPARENT param'''
+               | ID RPAREN param'''
                
 def p_exp(p):
     '''exp : texp 
@@ -76,11 +76,11 @@ def p_t(p):
          | f DIV t'''
          
 def p_f(p):
-    '''f : LPARENT exp RPARENT
-         | CONS-I
-         | CONS-F
-         | CONS-CH
-         | CONS-STR
+    '''f : LPAREN exp RPAREN
+         | CONSI
+         | CONSF
+         | CONSCH
+         | CONSSTR
          | var
          | call'''
 
@@ -122,7 +122,7 @@ def p_callp(p):
              | exp'''
              
 def p_if(p):
-    '''if : IF LPARENT exp RPARENT statement ifp'''
+    '''if : IF LPAREN exp RPAREN statement ifp'''
 #checar si se puede vacio o epsilon    
 def p_ifp(p):
     ''' ifp : 
@@ -130,14 +130,14 @@ def p_ifp(p):
 
 #checar como hacer el loop
 def p_while(p):
-    ''' while : WHILE LPARENT exp RPARENT statement whilep'''
+    ''' while : WHILE LPAREN exp RPAREN statement whilep'''
     
 def p_whilep(p):
     ''' whilep : SEMICOLON
                | statement whilep'''
 #checar como hacer el loop    
 def p_for(p):
-    '''for : FOR LPARENT var SEMICOLON exp SEMICOLON exp RPARENT LBRACKET statement forp'''
+    '''for : FOR LPAREN var SEMICOLON exp SEMICOLON exp RPAREN LBRACKET statement forp'''
     
 def p_forp(p):
     ''' forp : RBRACKET
@@ -156,51 +156,51 @@ def p_funcesp(p):
                 | getweights'''  
 
 def p_array(p):
-    ''' array : ID EQUAL array LPARENT var arrayp'''
+    ''' array : ID EQUAL array LPAREN var arrayp'''
     
 def p_arrayp(p):
-    ''' arrayp : RPARENT
-               | COMMA var RPARENT'''
+    ''' arrayp : RPAREN
+               | COMMA var RPAREN'''
 
 def p_vector(p):
     ''' id : EQUAL array'''
     
 def p_matrix(p):
-    ''' matrix : ID EQUAL matrix LPARENT array matrixp'''
+    ''' matrix : ID EQUAL matrix LPAREN array matrixp'''
     
 def p_matrixp(p):
-    ''' matrixp : RPARENT
-                | COMMA array RPARENT'''
+    ''' matrixp : RPAREN
+                | COMMA array RPAREN'''
                 
 def p_mean(p):
-    '''mean : MEAN LPARENT array RPARENT'''
+    '''mean : MEAN LPAREN array RPAREN'''
     
 def p_layers(p):
-    '''layers : ID EQUAL LAYERS LPARENT UNITS EQUAL CONS-I RPARENT'''
+    '''layers : ID EQUAL LAYERS LPAREN UNITS EQUAL CONSI RPAREN'''
     
 def p_sequential(p):
-    ''' sequential : ID EQUAL SEQUENTIAL LPARENT LBRACKET layers sequentialp'''
+    ''' sequential : ID EQUAL SEQUENTIAL LPAREN LBRACKET layers sequentialp'''
     
 def p_sequentialp(p):
-    ''' sequentialp : RBRACKET RPARENT
+    ''' sequentialp : RBRACKET RPAREN
                     | COMMA layers sequentialp'''
                     
 def p_compile(p):
-    ''' compile : sequential DOT COMPILE LPARENT RPARENT'''
+    ''' compile : sequential DOT COMPILE LPAREN RPAREN'''
     
 def p_fit(p):
-    ''' fit : ID EQUAL sequential DOT FIT LPARENT array COMMA array COMMA EPOCHS EQUAL CONS-I COMMA VERBOSE EQUAL fitp'''
+    ''' fit : ID EQUAL sequential DOT FIT LPAREN array COMMA array COMMA EPOCHS EQUAL CONSI COMMA VERBOSE EQUAL fitp'''
     
 def p_fitp(p):
-    ''' fitp : TRUE RPARENT
-             | FALSE RPARENT'''
+    ''' fitp : TRUE RPAREN
+             | FALSE RPAREN'''
 
 def p_predict(p):
-    ''' predict : ID EQUAL sequential DOT PREDICT LPARENT LBRACKET predictp'''
+    ''' predict : ID EQUAL sequential DOT PREDICT LPAREN LBRACKET predictp'''
 #Checar si se puede poner el - "cons-i"    
 def p_predictp(p):
-    ''' predictp : CONS-I RBRACKET RPARENT
-                 | CONS-F RBRACKET RPARENT'''
+    ''' predictp : CONSI RBRACKET RPAREN
+                 | CONSF RBRACKET RPAREN'''
 
 def p_getweights(p):
-    ''' getweights : layers DOT GETWEIGHTS LPARENT RPARENT'''
+    ''' getweights : layers DOT GETWEIGHTS LPAREN RPAREN'''

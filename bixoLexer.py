@@ -36,13 +36,38 @@ tokens = [
     'READ',
     'ASSIGN',
     #LIBRERIAS DE ML:
-    'PANDAS',
     #'TENSORFLOW',
+    'LAYERS',
+    'SEQUENTIAL',
+    'COMPILE',
+    'FIT',
+    'PREDICT',
+    'GETWEIGHTS',
+    #NUMPY
     'NUMPY',
     'ARRAY',
     'MATRIX',
     'MEAN'
 ]
+
+reserved = {
+    'var' : 'VAR',
+    'type' : 'TYPE',
+    'function' : 'FUNCTION',
+    'read' : 'READ',
+    'call' : 'CALL',
+    'if': 'IF',
+    'else': 'ELSE',
+    'while': 'WHILE',
+    'int': 'INT',
+    'float': 'FLOAT',
+    'bool': 'BOOL',
+    'string': 'STRING',
+    'true': 'TRUE',
+    'false': 'FALSE',
+    'listen' : 'READ_INPUT',
+    'print' : 'PRINT'
+}
 
 #REGEX TOKENS
 
@@ -77,29 +102,27 @@ t_PRINT = r'print'
 t_READ = r'read'
 t_ASSIGN = r'assign'
 #LIBRERIAS DE ML:
-t_PANDAS = r'pandas'
 #t_TENSORFLOW = r'tensorflow'
+t_LAYERS = r'layers'
+t_SEQUENTIAL = r'sequential'
+t_COMPILE = r'compile'
+t_FIT = r'fit'
+t_PREDICT = r'predict'
+t_GETWEIGHTS = r'getweights'
+#NUMPY
 t_NUMPY = r'numpy'
 t_ARRAY = r'array'
 t_MATRIX = r'matrix'
 t_MEAN = r'mean'
 
-def t_FLOAT(t):
+def t_CONSF(t):
     r'\d+\.\d+'
     t.value = float(t.value)
     return t
 
-def t_INT(t):
+def t_CONSI(t):
     r'\d+'
     t.value = int(t.value)
-    return t
-
-#Agregar el def t_STRING(t)
-
-#Necesario declarar char con comillas = 'a'
-def t_CHAR(t):
-    r'\'.\''
-    #agregar t.value
     return t
 
 def t_ID(t):
