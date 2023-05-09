@@ -12,7 +12,7 @@ class QuadGenerator:
         return f'[{self.op}][{self.arg1}][{self.arg2}][{self.res}]'
 
 
-tabla_variables = {
+var_table = {
     "global": {
         "variables": {
             "int": {},
@@ -20,7 +20,7 @@ tabla_variables = {
             #"char": {},
             #"bool": {},
         },
-        "contadores": {
+        "counters": {
             "int": 0,
             "float": 0,
             #"char": 0,
@@ -34,7 +34,7 @@ tabla_variables = {
             #"char": {},
             #"bool": {},
         },
-        "contadores": {
+        "counters": {
             "int": 0,
             "float": 0,
             #"char": 0,
@@ -96,10 +96,25 @@ precedence = (
 
 #REGLAS ANALIZADOR SINTÁCTICO
     
+
+
+  ### REVISAR DECLARACION DE MATRIZ#####  
 def p_decvar(p):
     '''decvar : VAR type ID decvarp '''
 
-#Revisar declaración de cons-i
+    var_type = p[2]
+    var_name = p[3]
+
+    var_mem = None
+    if var_type == "int":
+        var_mem = var_table["local"]["counters"]["int"] + localInt
+        var_table["local"]["counters"]["int"] += 1
+    elif var_type == "float":
+        var_mem = var_table["local"]["counters"]["float"] + localFloat
+        var_table["local"]["counters"]["float"] += 1
+    
+    var_table["local"]["variables"][var_type][var_name] = var_mem
+
 def p_decvarp(p):
     '''decvarp : SEMICOLON decvarp
                | LBRACKET CONS-I RBRACKET decvarpp'''
@@ -113,9 +128,10 @@ def p_type(p):
             |  FLOAT
             |  CHAR
             |  STRING'''
+    p[0] = p[1]
             
 def p_function(p):
-    '''function : FUNC functionp LPARENT param RPARENT body'''
+    '''function : FUNC functionp ID LPARENT param RPARENT body'''
     
 def p_functionp(p):
     '''functionp : type function
@@ -127,7 +143,7 @@ def p_param(p):
 
 def p_paramp(p):
     ''' paramp : ID
-               | ID RPARENT param'''
+               | ID COMMA param'''
                
 def p_exp(p):
     '''exp : texp 
@@ -151,7 +167,7 @@ def p_mexp(p):
     '''mexp : t
             | t PLUS mexp
             | t MINUS mexp'''
-            
+
 def p_t(p):
     '''t : f 
          | f MULT t
@@ -190,7 +206,7 @@ def p_printp(p):
               | sign COMMA printp
               | exp RPAREN
               | sign RPAREN'''
-    
+
 def p_var(p):
     '''var : ID 
            | ID LBRACKET exp RBRACKET
