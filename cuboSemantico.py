@@ -1,3 +1,6 @@
+
+ #corregir strings y bool
+
 semantic_cube = {
     'int': {
         '+': {
@@ -141,3 +144,6 @@ if operacion in semantic_cube[tipo1]:
         print(f"El resultado de {tipo1} {operacion} {tipo2} es de tipo: {tipo_resultado}")
     else:
         print(f"Error: No se puede realizar la operación")
+
+
+        

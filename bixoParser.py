@@ -1,6 +1,88 @@
 import ply.yacc as yacc
 from bixoLexer import tokens
 
+class QuadGenerator:
+    def __init__(self, op, arg1, arg2, res):
+        self.op = op
+        self.arg1 = arg1
+        self.arg2 = arg2
+        self.res = res
+
+    def __str__(self):
+        return f'[{self.op}][{self.arg1}][{self.arg2}][{self.res}]'
+
+
+tabla_variables = {
+    "global": {
+        "variables": {
+            "int": {},
+            "float": {},
+            #"char": {},
+            #"bool": {},
+        },
+        "contadores": {
+            "int": 0,
+            "float": 0,
+            #"char": 0,
+            #"bool": 0,
+        }
+    },
+    "local": {
+        "variables": {
+            "int": {},
+            "float": {},
+            #"char": {},
+            #"bool": {},
+        },
+        "contadores": {
+            "int": 0,
+            "float": 0,
+            #"char": 0,
+            #"bool": 0,
+        }
+    }
+}
+
+#almacena los tipos de variables
+sTypes = [] 
+#pila saltos
+sJumps = []
+#Pila cuadruplos
+SQuads = []
+qCounter=0
+#pila operandos
+sOperands = []
+#pila operadores
+SOperators = []
+
+
+procedures_directory = {}
+
+def add_procedure(name, params, vars):
+    procedures_directory[name] = {
+        "params": params,
+        "vars": vars
+    }
+
+def get_procedure(name):
+    return procedures_directory.get(name, None)
+
+
+########################--Rangos de memoria--############################
+
+globalInt = 4000
+globalFloat = 8000 
+localInt = 12000
+localFloat = 16000
+tempInt = 20000
+tempFloat = 24000
+tempPointer = 28000
+consInt = 32000
+consFloat = 36000
+consString = 40000
+
+
+
 precedence = (
     #Checar que precences faltan (left o right)
     ('left','LT','LTE','GT','GTE'),
@@ -20,11 +102,11 @@ def p_decvar(p):
 #Revisar declaración de cons-i
 def p_decvarp(p):
     '''decvarp : SEMICOLON decvarp
-               | LBRACKET CONSI RBRACKET decvarpp'''
+               | LBRACKET CONS-I RBRACKET decvarpp'''
                             
 def p_decvarpp(p):
     '''decvarpp : SEMICOLON
-                | LBRACKET CONSI RBRACKET'''
+                | LBRACKET CONS-I RBRACKET'''
  
 def p_type(p):
     '''type : INT
@@ -33,7 +115,7 @@ def p_type(p):
             |  STRING'''
             
 def p_function(p):
-    '''function : FUNC functionp LPAREN param RPAREN body'''
+    '''function : FUNC functionp LPARENT param RPARENT body'''
     
 def p_functionp(p):
     '''functionp : type function
@@ -45,7 +127,7 @@ def p_param(p):
 
 def p_paramp(p):
     ''' paramp : ID
-               | ID RPAREN param'''
+               | ID RPARENT param'''
                
 def p_exp(p):
     '''exp : texp 
@@ -76,11 +158,11 @@ def p_t(p):
          | f DIV t'''
          
 def p_f(p):
-    '''f : LPAREN exp RPAREN
-         | CONSI
-         | CONSF
-         | CONSCH
-         | CONSSTR
+    '''f : LPARENT exp RPARENT
+         | CONS-I
+         | CONS-F
+         | CONS-CH
+         | CONS-STR
          | var
          | call'''
 
@@ -122,7 +204,7 @@ def p_callp(p):
              | exp'''
              
 def p_if(p):
-    '''if : IF LPAREN exp RPAREN statement ifp'''
+    '''if : IF LPARENT exp RPARENT statement ifp'''
 #checar si se puede vacio o epsilon    
 def p_ifp(p):
     ''' ifp : 
@@ -130,14 +212,14 @@ def p_ifp(p):
 
 #checar como hacer el loop
 def p_while(p):
-    ''' while : WHILE LPAREN exp RPAREN statement whilep'''
+    ''' while : WHILE LPARENT exp RPARENT statement whilep'''
     
 def p_whilep(p):
     ''' whilep : SEMICOLON
                | statement whilep'''
 #checar como hacer el loop    
 def p_for(p):
-    '''for : FOR LPAREN var SEMICOLON exp SEMICOLON exp RPAREN LBRACKET statement forp'''
+    '''for : FOR LPARENT var SEMICOLON exp SEMICOLON exp RPARENT LBRACKET statement forp'''
     
 def p_forp(p):
     ''' forp : RBRACKET
@@ -156,51 +238,56 @@ def p_funcesp(p):
                 | getweights'''  
 
 def p_array(p):
-    ''' array : ID EQUAL array LPAREN var arrayp'''
+    ''' array : ID EQUAL array LPARENT var arrayp'''
     
 def p_arrayp(p):
-    ''' arrayp : RPAREN
-               | COMMA var RPAREN'''
+    ''' arrayp : RPARENT
+               | COMMA var RPARENT'''
 
 def p_vector(p):
     ''' id : EQUAL array'''
     
 def p_matrix(p):
-    ''' matrix : ID EQUAL matrix LPAREN array matrixp'''
+    ''' matrix : ID EQUAL matrix LPARENT array matrixp'''
     
 def p_matrixp(p):
-    ''' matrixp : RPAREN
-                | COMMA array RPAREN'''
+    ''' matrixp : RPARENT
+                | COMMA array RPARENT'''
                 
 def p_mean(p):
-    '''mean : MEAN LPAREN array RPAREN'''
+    '''mean : MEAN LPARENT array RPARENT'''
     
 def p_layers(p):
-    '''layers : ID EQUAL LAYERS LPAREN UNITS EQUAL CONSI RPAREN'''
+    '''layers : ID EQUAL LAYERS LPARENT UNITS EQUAL CONS-I RPARENT'''
     
 def p_sequential(p):
-    ''' sequential : ID EQUAL SEQUENTIAL LPAREN LBRACKET layers sequentialp'''
+    ''' sequential : ID EQUAL SEQUENTIAL LPARENT LBRACKET layers sequentialp'''
     
 def p_sequentialp(p):
-    ''' sequentialp : RBRACKET RPAREN
+    ''' sequentialp : RBRACKET RPARENT
                     | COMMA layers sequentialp'''
                     
 def p_compile(p):
-    ''' compile : sequential DOT COMPILE LPAREN RPAREN'''
+    ''' compile : sequential DOT COMPILE LPARENT RPARENT'''
     
 def p_fit(p):
-    ''' fit : ID EQUAL sequential DOT FIT LPAREN array COMMA array COMMA EPOCHS EQUAL CONSI COMMA VERBOSE EQUAL fitp'''
+    ''' fit : ID EQUAL sequential DOT FIT LPARENT array COMMA array COMMA EPOCHS EQUAL CONS-I COMMA VERBOSE EQUAL fitp'''
     
 def p_fitp(p):
-    ''' fitp : TRUE RPAREN
-             | FALSE RPAREN'''
+    ''' fitp : TRUE RPARENT
+             | FALSE RPARENT'''
 
 def p_predict(p):
-    ''' predict : ID EQUAL sequential DOT PREDICT LPAREN LBRACKET predictp'''
+    ''' predict : ID EQUAL sequential DOT PREDICT LPARENT LBRACKET predictp'''
 #Checar si se puede poner el - "cons-i"    
 def p_predictp(p):
-    ''' predictp : CONSI RBRACKET RPAREN
-                 | CONSF RBRACKET RPAREN'''
+    ''' predictp : CONS-I RBRACKET RPARENT
+                 | CONS-F RBRACKET RPARENT'''
 
 def p_getweights(p):
-    ''' getweights : layers DOT GETWEIGHTS LPAREN RPAREN'''
+    ''' getweights : layers DOT GETWEIGHTS LPARENT RPARENT'''
+
+
+
+
+
