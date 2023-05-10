@@ -30,11 +30,14 @@ tokens = [
     'STRING',
     'IF',
     'ELSE',
+    'AND',
+    'OR',
     'WHILE',
     'FOR',
     'PRINT',
     'READ',
     'ASSIGN',
+    'FUNCTION',
     #LIBRERIAS DE ML:
     #'TENSORFLOW',
     'LAYERS',
@@ -81,6 +84,8 @@ t_LT = r'\<'
 t_LTE = r'<='
 t_EQUAL = r'\='
 t_DIFF = r'\<>'
+t_AND = r'\&'
+t_OR = r'\|'
 t_LPAREN = r'\('
 t_RPAREN = r'\)'
 t_LBRACE = r'\{'
@@ -101,6 +106,7 @@ t_FOR = r'for'
 t_PRINT = r'print'
 t_READ = r'read'
 t_ASSIGN = r'assign'
+t_FUNCTION = r'function'
 #LIBRERIAS DE ML:
 #t_TENSORFLOW = r'tensorflow'
 t_LAYERS = r'layers'
@@ -115,12 +121,12 @@ t_ARRAY = r'array'
 t_MATRIX = r'matrix'
 t_MEAN = r'mean'
 
-def t_CONSF(t):
+def t_FLOAT(t):
     r'\d+\.\d+'
     t.value = float(t.value)
     return t
 
-def t_CONSI(t):
+def t_INT(t):
     r'\d+'
     t.value = int(t.value)
     return t
@@ -138,3 +144,4 @@ t_ignore = ' \t\n'
 t_ignore_COMMENT = r'\#.*'
 
 lexer = lex.lex()
+10 + 2

@@ -1,5 +1,7 @@
 import ply.yacc as yacc
+import bixoLexer
 from bixoLexer import tokens
+
 
 class QuadGenerator:
     def __init__(self, op, arg1, arg2, res):
@@ -54,12 +56,15 @@ qCounter=0
 sOperands = []
 #pila operadores
 SOperators = []
+#almacena el scope actual
+scope="global"
 
 
 procedures_directory = {}
 
 def add_procedure(name, params, vars):
     procedures_directory[name] = {
+        #"start" : start,
         "params": params,
         "vars": vars
     }
@@ -106,22 +111,36 @@ def p_decvar(p):
     var_name = p[3]
 
     var_mem = None
-    if var_type == "int":
+
+#Para declarar variables locales
+    if scope == "local":
+     if var_type == "int":
         var_mem = var_table["local"]["counters"]["int"] + localInt
         var_table["local"]["counters"]["int"] += 1
-    elif var_type == "float":
+     elif var_type == "float":
         var_mem = var_table["local"]["counters"]["float"] + localFloat
         var_table["local"]["counters"]["float"] += 1
+    var_table["local"]["variables"][var_type][var_name] = var_mem
     
+
+
+#Para declarar variables globales
+    if scope == "global":
+     if var_type == "int":
+        var_mem = var_table["local"]["counters"]["int"] + localInt
+        var_table["local"]["counters"]["int"] += 1
+     elif var_type == "float":
+        var_mem = var_table["local"]["counters"]["float"] + localFloat
+        var_table["local"]["counters"]["float"] += 1
     var_table["local"]["variables"][var_type][var_name] = var_mem
 
 def p_decvarp(p):
     '''decvarp : SEMICOLON decvarp
-               | LBRACKET CONS-I RBRACKET decvarpp'''
+               | LBRACKET INT RBRACKET decvarpp'''
                             
 def p_decvarpp(p):
     '''decvarpp : SEMICOLON
-                | LBRACKET CONS-I RBRACKET'''
+                | LBRACKET INT RBRACKET'''
  
 def p_type(p):
     '''type : INT
@@ -131,7 +150,7 @@ def p_type(p):
     p[0] = p[1]
             
 def p_function(p):
-    '''function : FUNC functionp ID LPARENT param RPARENT body'''
+    '''function : FUNCTION functionp ID LPAREN param RPAREN body'''
     
 def p_functionp(p):
     '''functionp : type function
@@ -147,11 +166,11 @@ def p_paramp(p):
                
 def p_exp(p):
     '''exp : texp 
-           | texp || exp'''
+           | texp OR exp'''
 
 def p_texp(p):
     '''texp : gexp 
-            | gexp & texp'''
+            | gexp AND texp'''
 
 def p_gexp(p):
     '''gexp : mexp 
@@ -167,6 +186,11 @@ def p_mexp(p):
     '''mexp : t
             | t PLUS mexp
             | t MINUS mexp'''
+    
+    if p[2]=="PLUS":
+        p[0] = p[1] + p[3]
+    elif p[2]=="MINUS":
+        p[0] = p[1] - p[3]
 
 def p_t(p):
     '''t : f 
@@ -174,7 +198,7 @@ def p_t(p):
          | f DIV t'''
          
 def p_f(p):
-    '''f : LPARENT exp RPARENT
+    '''f : LPAREN exp RPAREN
          | CONS-I
          | CONS-F
          | CONS-CH
@@ -220,7 +244,7 @@ def p_callp(p):
              | exp'''
              
 def p_if(p):
-    '''if : IF LPARENT exp RPARENT statement ifp'''
+    '''if : IF LPAREN exp RPAREN statement ifp'''
 #checar si se puede vacio o epsilon    
 def p_ifp(p):
     ''' ifp : 
@@ -228,14 +252,14 @@ def p_ifp(p):
 
 #checar como hacer el loop
 def p_while(p):
-    ''' while : WHILE LPARENT exp RPARENT statement whilep'''
+    ''' while : WHILE LPAREN exp RPAREN statement whilep'''
     
 def p_whilep(p):
     ''' whilep : SEMICOLON
                | statement whilep'''
 #checar como hacer el loop    
 def p_for(p):
-    '''for : FOR LPARENT var SEMICOLON exp SEMICOLON exp RPARENT LBRACKET statement forp'''
+    '''for : FOR LPAREN var SEMICOLON exp SEMICOLON exp RPAREN LBRACKET statement forp'''
     
 def p_forp(p):
     ''' forp : RBRACKET
@@ -254,56 +278,64 @@ def p_funcesp(p):
                 | getweights'''  
 
 def p_array(p):
-    ''' array : ID EQUAL array LPARENT var arrayp'''
+    ''' array : ID EQUAL array LPAREN var arrayp'''
     
 def p_arrayp(p):
-    ''' arrayp : RPARENT
-               | COMMA var RPARENT'''
+    ''' arrayp : RPAREN
+               | COMMA var RPAREN'''
 
 def p_vector(p):
     ''' id : EQUAL array'''
     
 def p_matrix(p):
-    ''' matrix : ID EQUAL matrix LPARENT array matrixp'''
+    ''' matrix : ID EQUAL matrix LPAREN array matrixp'''
     
 def p_matrixp(p):
-    ''' matrixp : RPARENT
-                | COMMA array RPARENT'''
+    ''' matrixp : RPAREN
+                | COMMA array RPAREN'''
                 
 def p_mean(p):
-    '''mean : MEAN LPARENT array RPARENT'''
+    '''mean : MEAN LPAREN array RPAREN'''
     
 def p_layers(p):
-    '''layers : ID EQUAL LAYERS LPARENT UNITS EQUAL CONS-I RPARENT'''
+    '''layers : ID EQUAL LAYERS LPAREN UNITS EQUAL CONS-I RPAREN'''
     
 def p_sequential(p):
-    ''' sequential : ID EQUAL SEQUENTIAL LPARENT LBRACKET layers sequentialp'''
+    ''' sequential : ID EQUAL SEQUENTIAL LPAREN LBRACKET layers sequentialp'''
     
 def p_sequentialp(p):
-    ''' sequentialp : RBRACKET RPARENT
+    ''' sequentialp : RBRACKET RPAREN
                     | COMMA layers sequentialp'''
                     
 def p_compile(p):
-    ''' compile : sequential DOT COMPILE LPARENT RPARENT'''
+    ''' compile : sequential DOT COMPILE LPAREN RPAREN'''
     
 def p_fit(p):
-    ''' fit : ID EQUAL sequential DOT FIT LPARENT array COMMA array COMMA EPOCHS EQUAL CONS-I COMMA VERBOSE EQUAL fitp'''
+    ''' fit : ID EQUAL sequential DOT FIT LPAREN array COMMA array COMMA EPOCHS EQUAL CONS-I COMMA VERBOSE EQUAL fitp'''
     
 def p_fitp(p):
-    ''' fitp : TRUE RPARENT
-             | FALSE RPARENT'''
+    ''' fitp : TRUE RPAREN
+             | FALSE RPAREN'''
 
 def p_predict(p):
-    ''' predict : ID EQUAL sequential DOT PREDICT LPARENT LBRACKET predictp'''
+    ''' predict : ID EQUAL sequential DOT PREDICT LPAREN LBRACKET predictp'''
 #Checar si se puede poner el - "cons-i"    
 def p_predictp(p):
-    ''' predictp : CONS-I RBRACKET RPARENT
-                 | CONS-F RBRACKET RPARENT'''
+    ''' predictp : CONS-I RBRACKET RPAREN
+                 | CONS-F RBRACKET RPAREN'''
 
 def p_getweights(p):
-    ''' getweights : layers DOT GETWEIGHTS LPARENT RPARENT'''
+    ''' getweights : layers DOT GETWEIGHTS LPAREN RPAREN'''
 
 
 
+parser = yacc.yacc()
+
+with open('prueba.txt', 'r') as archivo:
+    lineas = archivo.readlines()
 
 
+# Procesar cada línea con el parser
+for i, linea in enumerate(lineas):
+    resultado = parser.parse(linea, lexer=bixoLexer.lexer)
+    print(f"Línea {i+1}: {linea.strip()} = {resultado}")
