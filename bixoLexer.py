@@ -39,6 +39,7 @@ tokens = [
     'ASSIGN',
     'FUNCTION',
     #LIBRERIAS DE ML:
+    'FUNCESP',
     #'TENSORFLOW',
     'LAYERS',
     'SEQUENTIAL',
@@ -107,6 +108,7 @@ t_PRINT = r'print'
 t_READ = r'read'
 t_ASSIGN = r'assign'
 t_FUNCTION = r'function'
+t_FUNCESP = r'funcesp'
 #LIBRERIAS DE ML:
 #t_TENSORFLOW = r'tensorflow'
 t_LAYERS = r'layers'
@@ -144,4 +146,3 @@ t_ignore = ' \t\n'
 t_ignore_COMMENT = r'\#.*'
 
 lexer = lex.lex()
-10 + 2

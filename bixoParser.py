@@ -199,10 +199,8 @@ def p_t(p):
          
 def p_f(p):
     '''f : LPAREN exp RPAREN
-         | CONS-I
-         | CONS-F
-         | CONS-CH
-         | CONS-STR
+         | INT
+         | FLOAT
          | var
          | call'''
 
@@ -214,7 +212,7 @@ def p_statement(p):
                  |  if
                  |  while
                  |  for
-                 |  func_esp'''
+                 |  funcesp'''
     
 def p_assign(p):
     '''assign : var EQUAL exp'''
