@@ -150,11 +150,10 @@ def p_type(p):
     p[0] = p[1]
             
 def p_function(p):
-    '''function : FUNCTION functionp ID LPAREN param RPAREN body'''
+    '''function : FUNCTION type ID LPAREN param RPAREN body'''
     
-def p_functionp(p):
-    '''functionp : type function
-                 | VOID function'''
+def p_voidfunction(p):
+    '''voidfunction : FUNCTION VOID ID LPAREN param RPAREN body'''
 #checar si se puede vacio o epsilon
 def p_param(p):
     '''param : 

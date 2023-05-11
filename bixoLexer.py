@@ -38,6 +38,7 @@ tokens = [
     'READ',
     'ASSIGN',
     'FUNCTION',
+    'VOID',
     #LIBRERIAS DE ML:
     'FUNCESP',
     #'TENSORFLOW',
@@ -70,7 +71,8 @@ reserved = {
     'true': 'TRUE',
     'false': 'FALSE',
     'listen' : 'READ_INPUT',
-    'print' : 'PRINT'
+    'print' : 'PRINT',
+    'void' : 'VOID'
 }
 
 #REGEX TOKENS
@@ -109,6 +111,7 @@ t_READ = r'read'
 t_ASSIGN = r'assign'
 t_FUNCTION = r'function'
 t_FUNCESP = r'funcesp'
+t_VOID = r'void'
 #LIBRERIAS DE ML:
 #t_TENSORFLOW = r'tensorflow'
 t_LAYERS = r'layers'
