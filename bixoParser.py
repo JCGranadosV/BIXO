@@ -60,17 +60,22 @@ SOperators = []
 scope="global"
 
 
-procedures_directory = {}
+functions_table = {}
 
-def add_procedure(name, params, vars):
-    procedures_directory[name] = {
-        #"start" : start,
-        "params": params,
-        "vars": vars
+def add_function(name, return_type, start_address, varInt, varFloat, tempInt, tempFloat, vars_table):
+    functions_table[name] = {
+        "return_type": return_type,
+        "start_address": start_address,
+        "resources": {
+            "varInt": varInt,
+            "varFloat": varFloat,
+            "tempInt": tempInt,
+            "tempFloat": tempFloat
+        },
+        "vars_table": vars_table
     }
 
-def get_procedure(name):
-    return procedures_directory.get(name, None)
+
 
 
 ########################--Rangos de memoria--############################
