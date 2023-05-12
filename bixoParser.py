@@ -257,7 +257,7 @@ def p_ifp(p):
 #checar como hacer el loop
 def p_while(p):
     ''' while : WHILE LPAREN exp RPAREN statement whilep'''
-    
+
 def p_whilep(p):
     ''' whilep : SEMICOLON
                | statement whilep'''
@@ -331,7 +331,10 @@ def p_predictp(p):
 def p_getweights(p):
     ''' getweights : layers DOT GETWEIGHTS LPAREN RPAREN'''
 
-
+# Empty production
+def p_empty(p):
+    'empty :'
+    pass
 
 parser = yacc.yacc()
 
