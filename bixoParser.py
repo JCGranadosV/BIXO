@@ -75,7 +75,8 @@ def add_function(name, return_type, start_address, varInt, varFloat, tempInt, te
         "vars_table": vars_table
     }
 
-
+#para acceder a tabla de funciones de alguna funcion
+# vars_table = functions_table[function_name]["vars_table"]
 
 
 ########################--Rangos de memoria--############################
