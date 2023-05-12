@@ -277,11 +277,10 @@ def p_forp(p):
     
 def p_funcesp(p):
     ''' funcesp : array
-                | vector
                 | matrix
                 | mean
                 | layers
-                | secuential
+                | sequential
                 | compile
                 | fit
                 | predict
@@ -293,9 +292,6 @@ def p_array(p):
 def p_arrayp(p):
     ''' arrayp : RPAREN
                | COMMA var RPAREN'''
-
-def p_vector(p):
-    ''' id : EQUAL array'''
     
 def p_matrix(p):
     ''' matrix : ID EQUAL MATRIX LPAREN array matrixp'''

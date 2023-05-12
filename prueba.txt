@@ -1,1 +1,1 @@
-var int x = 
+var int pelos = 3
