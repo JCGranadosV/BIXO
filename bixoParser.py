@@ -93,7 +93,7 @@ precedence = (
     ('left','LT','LTE','GT','GTE'),
     ('left', 'PLUS', 'MINUS'),
     ('left', 'MULT', 'DIV'),
-    ('left', 'GREATER', 'SMALLER', 'EQUAL', 'DIFF'),
+    ('left', 'EQUAL', 'DIFF'),
     ('left','LPAREN','RPAREN'),
     ('left','LBRACE','RBRACE'),
     ('left','LBRACKET','RBRACKET'),
@@ -144,9 +144,9 @@ def p_decvarpp(p):
  
 def p_type(p):
     '''type : INT
-            |  FLOAT
-            |  CHAR
-            |  STRING'''
+            | FLOAT
+            | CHAR
+            | STRING'''
     p[0] = p[1]
             
 def p_function(p):
@@ -154,6 +154,15 @@ def p_function(p):
     
 def p_voidfunction(p):
     '''voidfunction : FUNCTION VOID ID LPAREN param RPAREN body'''
+    
+def p_body(p):
+    '''body : LBRACE pbody RBRACE'''
+    
+def p_pbody(p):
+    '''pbody : decvar statement pbody
+             | statement pbody
+             | decvar
+             | '''
 #checar si se puede vacio o epsilon
 def p_param(p):
     '''param : 
@@ -218,15 +227,13 @@ def p_assign(p):
 
 def p_read(p):
     '''read : READ var'''
-
+#checar si tenemos que agregar sting o no xq la eliminamos
 def p_print(p):
     '''print : PRINT LPAREN printp'''
 
 def p_printp(p):
-    '''printp : exp COMMA printp
-              | sign COMMA printp
-              | exp RPAREN
-              | sign RPAREN'''
+    '''printp : exp RPAREN
+              | exp COMMA printp'''
 
 def p_var(p):
     '''var : ID 
@@ -275,7 +282,7 @@ def p_funcesp(p):
                 | getweights'''  
 
 def p_array(p):
-    ''' array : ID EQUAL array LPAREN var arrayp'''
+    ''' array : ID EQUAL ARRAY LPAREN var arrayp'''
     
 def p_arrayp(p):
     ''' arrayp : RPAREN
@@ -285,7 +292,7 @@ def p_vector(p):
     ''' id : EQUAL array'''
     
 def p_matrix(p):
-    ''' matrix : ID EQUAL matrix LPAREN array matrixp'''
+    ''' matrix : ID EQUAL MATRIX LPAREN array matrixp'''
     
 def p_matrixp(p):
     ''' matrixp : RPAREN
@@ -295,7 +302,7 @@ def p_mean(p):
     '''mean : MEAN LPAREN array RPAREN'''
     
 def p_layers(p):
-    '''layers : ID EQUAL LAYERS LPAREN UNITS EQUAL CONS-I RPAREN'''
+    '''layers : ID EQUAL LAYERS LPAREN UNITS EQUAL INT RPAREN'''
     
 def p_sequential(p):
     ''' sequential : ID EQUAL SEQUENTIAL LPAREN LBRACKET layers sequentialp'''
@@ -308,7 +315,7 @@ def p_compile(p):
     ''' compile : sequential DOT COMPILE LPAREN RPAREN'''
     
 def p_fit(p):
-    ''' fit : ID EQUAL sequential DOT FIT LPAREN array COMMA array COMMA EPOCHS EQUAL CONS-I COMMA VERBOSE EQUAL fitp'''
+    ''' fit : ID EQUAL sequential DOT FIT LPAREN array COMMA array COMMA EPOCHS EQUAL INT COMMA VERBOSE EQUAL fitp'''
     
 def p_fitp(p):
     ''' fitp : TRUE RPAREN
@@ -316,10 +323,10 @@ def p_fitp(p):
 
 def p_predict(p):
     ''' predict : ID EQUAL sequential DOT PREDICT LPAREN LBRACKET predictp'''
-#Checar si se puede poner el - "cons-i"    
+#Checar si se puede poner el - "INT"    
 def p_predictp(p):
-    ''' predictp : CONS-I RBRACKET RPAREN
-                 | CONS-F RBRACKET RPAREN'''
+    ''' predictp : INT RBRACKET RPAREN
+                 | FLOAT RBRACKET RPAREN'''
 
 def p_getweights(p):
     ''' getweights : layers DOT GETWEIGHTS LPAREN RPAREN'''
