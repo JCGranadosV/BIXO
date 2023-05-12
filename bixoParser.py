@@ -254,14 +254,14 @@ def p_ifp(p):
     ''' ifp : 
             | ELSE statement'''
 
-#checar como hacer el loop
+#checar si la gen de codigo es correcta
 def p_while(p):
     ''' while : WHILE LPAREN exp RPAREN statement whilep'''
 
 def p_whilep(p):
     ''' whilep : SEMICOLON
                | statement whilep'''
-#checar como hacer el loop    
+  
 def p_for(p):
     '''for : FOR LPAREN var SEMICOLON exp SEMICOLON exp RPAREN LBRACKET statement forp'''
     
