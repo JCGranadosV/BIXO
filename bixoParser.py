@@ -325,7 +325,7 @@ def p_fitp(p):
 
 def p_predict(p):
     ''' predict : ID EQUAL sequential DOT PREDICT LPAREN LBRACKET predictp'''
-#Checar si se puede poner el - "INT"    
+    
 def p_predictp(p):
     ''' predictp : INT RBRACKET RPAREN
                  | FLOAT RBRACKET RPAREN'''
