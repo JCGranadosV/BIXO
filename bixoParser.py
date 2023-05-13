@@ -60,17 +60,23 @@ SOperators = []
 scope="global"
 
 
-procedures_directory = {}
+functions_table = {}
 
-def add_procedure(name, params, vars):
-    procedures_directory[name] = {
-        #"start" : start,
-        "params": params,
-        "vars": vars
+def add_function(name, return_type, start_address, varInt, varFloat, tempInt, tempFloat, vars_table):
+    functions_table[name] = {
+        "return_type": return_type,
+        "start_address": start_address,
+        "resources": {
+            "varInt": varInt,
+            "varFloat": varFloat,
+            "tempInt": tempInt,
+            "tempFloat": tempFloat
+        },
+        "vars_table": vars_table
     }
 
-def get_procedure(name):
-    return procedures_directory.get(name, None)
+#para acceder a tabla de funciones de alguna funcion
+# vars_table = functions_table[function_name]["vars_table"]
 
 
 ########################--Rangos de memoria--############################
@@ -304,11 +310,10 @@ def p_forp(p):
     
 def p_funcesp(p):
     ''' funcesp : array
-                | vector
                 | matrix
                 | mean
                 | layers
-                | secuential
+                | sequential
                 | compile
                 | fit
                 | predict
@@ -320,9 +325,6 @@ def p_array(p):
 def p_arrayp(p):
     ''' arrayp : RPAREN
                | COMMA var RPAREN'''
-
-def p_vector(p):
-    ''' id : EQUAL array'''
     
 def p_matrix(p):
     ''' matrix : ID EQUAL MATRIX LPAREN array matrixp'''
@@ -356,7 +358,7 @@ def p_fitp(p):
 
 def p_predict(p):
     ''' predict : ID EQUAL sequential DOT PREDICT LPAREN LBRACKET predictp'''
-#Checar si se puede poner el - "INT"    
+    
 def p_predictp(p):
     ''' predictp : INT RBRACKET RPAREN
                  | FLOAT RBRACKET RPAREN'''

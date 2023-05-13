@@ -6,6 +6,8 @@ tokens = [
     'FLOAT',
     'CHAR',
     'VAR',
+    'TRUE',
+    'FALSE',
     'PLUS',
     'MINUS',
     'MULT',
@@ -43,9 +45,12 @@ tokens = [
     'FUNCESP',
     #'TENSORFLOW',
     'LAYERS',
+    'UNITS',
     'SEQUENTIAL',
     'COMPILE',
     'FIT',
+    'EPOCHS',
+    'VERBOSE',
     'PREDICT',
     'GETWEIGHTS',
     #NUMPY
@@ -70,9 +75,10 @@ reserved = {
     'string': 'STRING',
     'true': 'TRUE',
     'false': 'FALSE',
-    'listen' : 'READ_INPUT',
     'print' : 'PRINT',
-    'void' : 'VOID'
+    'void' : 'VOID',
+    'epochs' : 'EPOCHS',
+    'verbose' : 'VERBOSE'
 }
 
 #REGEX TOKENS
@@ -102,6 +108,8 @@ t_COLON = r'\:'
 t_QUOTE = r'\"'
 t_STRING = r'\".*?\"'
 t_VAR = r'var'
+t_TRUE = r'true'
+t_FALSE = r'false'
 t_IF = r'if'
 t_ELSE = r'else'
 t_WHILE = r'while'
@@ -115,9 +123,12 @@ t_VOID = r'void'
 #LIBRERIAS DE ML:
 #t_TENSORFLOW = r'tensorflow'
 t_LAYERS = r'layers'
+t_UNITS = r'units'
 t_SEQUENTIAL = r'sequential'
 t_COMPILE = r'compile'
 t_FIT = r'fit'
+t_EPOCHS = r'epochs'
+t_VERBOSE = r'verbose'
 t_PREDICT = r'predict'
 t_GETWEIGHTS = r'getweights'
 #NUMPY
@@ -125,6 +136,7 @@ t_NUMPY = r'numpy'
 t_ARRAY = r'array'
 t_MATRIX = r'matrix'
 t_MEAN = r'mean'
+
 
 def t_FLOAT(t):
     r'\d+\.\d+'
