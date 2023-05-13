@@ -259,23 +259,24 @@ def p_if(p):
 def p_ifp(p):
     ''' ifp : 
             | ELSE statement'''
-    global SOperators, sOperands, sTypes, SQuads, qCounter
-    if len(SOperators) != 0:
-        if sTypes [-1] == 'int':
-            sTypes.pop()
-            SQuads.append(QuadGenerator("gotoF", sOperands.pop(), None, None))
-            sJumps.append(qCounter)
-            qCounter += 1
             
-    jumps = sJumps.pop()
-    SQuads[jumps].temp = qCounter
+    #global SOperators, sOperands, sTypes, SQuads, qCounter
+    #if len(SOperators) != 0:
+     #   if sTypes [-1] == 'int':
+      #      sTypes.pop()
+       #     SQuads.append(QuadGenerator("gotoF", sOperands.pop(), None, None))
+        #    sJumps.append(qCounter)
+         #   qCounter += 1
+            
+    #jumps = sJumps.pop()
+    #SQuads[jumps].temp = qCounter
     
-    global qCounter
-    SQuads.append(QuadGenerator("goto", None, None, None))
-    jumps = sJumps.pop()
-    sJumps.append(qCounter)
-    qCounter += 1
-    SQuads[jumps].temp = qCounter
+    #global qCounter
+    #SQuads.append(QuadGenerator("goto", None, None, None))
+    #jumps = sJumps.pop()
+    #sJumps.append(qCounter)
+    #qCounter += 1
+    #SQuads[jumps].temp = qCounter
 
 ###############################Quands while#############
 def p_while(p):
@@ -285,20 +286,20 @@ def p_whilep(p):
     ''' whilep : SEMICOLON
                | statement whilep'''
 
-    global SOperators, sOperands, sTypes, SQuads, qCounter
-    if len(SOperators) != 0:
-        if sTypes [-1] == 'int':
-            sTypes.pop()
-            SQuads.append(QuadGenerator("gotoF", sOperands.pop(), None, None))
-            sJumps.append(qCounter)
-            qCounter += 1
+#global SOperators, sOperands, sTypes, SQuads, qCounter
+ #   if len(SOperators) != 0:
+  #      if sTypes [-1] == 'int':
+   #         sTypes.pop()
+    #        SQuads.append(QuadGenerator("gotoF", sOperands.pop(), None, None))
+     #       sJumps.append(qCounter)
+      #      qCounter += 1
             
-    global qCounter
-    qJumpsF = sJumps.pop()
-    qJumpsT = sJumps.pop()
-    SQuads.append(QuadGenerator("goto", None, None, qJumpsT))
-    qCounter += 1
-    SQuads[qJumpsF].temp = qCounter
+    #global qCounter
+    #qJumpsF = sJumps.pop()
+    #qJumpsT = sJumps.pop()
+    #SQuads.append(QuadGenerator("goto", None, None, qJumpsT))
+    #qCounter += 1
+    #SQuads[qJumpsF].temp = qCounter 
     ##################################################################   
   
 def p_for(p):
