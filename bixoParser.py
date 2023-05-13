@@ -162,10 +162,10 @@ def p_voidfunction(p):
     '''voidfunction : FUNCTION VOID ID LPAREN param RPAREN body'''
     
 def p_body(p):
-    '''body : LBRACE pbody RBRACE'''
+    '''body : LBRACE bodyp RBRACE'''
     
-def p_pbody(p):
-    '''pbody : decvar statement pbody
+def p_bodyp(p):
+    '''bodyp : decvar statement pbody
              | statement pbody
              | decvar
              | '''
@@ -252,21 +252,55 @@ def p_call(p):
 def p_callp(p):
     '''callp : exp SEMICOLON callp
              | exp'''
-             
+    ##################Quads if######################         
 def p_if(p):
     '''if : IF LPAREN exp RPAREN statement ifp'''
-#checar si se puede vacio o epsilon    
+ 
 def p_ifp(p):
     ''' ifp : 
             | ELSE statement'''
+            
+    #global SOperators, sOperands, sTypes, SQuads, qCounter
+    #if len(SOperators) != 0:
+     #   if sTypes [-1] == 'int':
+      #      sTypes.pop()
+       #     SQuads.append(QuadGenerator("gotoF", sOperands.pop(), None, None))
+        #    sJumps.append(qCounter)
+         #   qCounter += 1
+            
+    #jumps = sJumps.pop()
+    #SQuads[jumps].temp = qCounter
+    
+    #global qCounter
+    #SQuads.append(QuadGenerator("goto", None, None, None))
+    #jumps = sJumps.pop()
+    #sJumps.append(qCounter)
+    #qCounter += 1
+    #SQuads[jumps].temp = qCounter
 
-#checar si la gen de codigo es correcta
+###############################Quands while#############
 def p_while(p):
     ''' while : WHILE LPAREN exp RPAREN statement whilep'''
 
 def p_whilep(p):
     ''' whilep : SEMICOLON
                | statement whilep'''
+
+#global SOperators, sOperands, sTypes, SQuads, qCounter
+ #   if len(SOperators) != 0:
+  #      if sTypes [-1] == 'int':
+   #         sTypes.pop()
+    #        SQuads.append(QuadGenerator("gotoF", sOperands.pop(), None, None))
+     #       sJumps.append(qCounter)
+      #      qCounter += 1
+            
+    #global qCounter
+    #qJumpsF = sJumps.pop()
+    #qJumpsT = sJumps.pop()
+    #SQuads.append(QuadGenerator("goto", None, None, qJumpsT))
+    #qCounter += 1
+    #SQuads[qJumpsF].temp = qCounter 
+    ##################################################################   
   
 def p_for(p):
     '''for : FOR LPAREN var SEMICOLON exp SEMICOLON exp RPAREN LBRACKET statement forp'''
