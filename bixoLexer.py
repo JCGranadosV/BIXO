@@ -1,6 +1,7 @@
 import ply.lex as lex
 
-tokens = [
+tokens = (
+    'PROGRAM',
     'ID',
     'INT',
     'FLOAT',
@@ -41,7 +42,6 @@ tokens = [
     'ASSIGN',
     'FUNCTION',
     'VOID',
-    'PROGRAM',
     #LIBRERIAS DE ML:
     'FUNCESP',
     #'TENSORFLOW',
@@ -59,7 +59,7 @@ tokens = [
     'ARRAY',
     'MATRIX',
     'MEAN'
-]
+)
 
 reserved = {
     'program' : 'PROGRAM',
@@ -122,7 +122,6 @@ t_ASSIGN = r'assign'
 t_FUNCTION = r'function'
 t_FUNCESP = r'funcesp'
 t_VOID = r'void'
-t_PROGRAM = r'program'
 #LIBRERIAS DE ML:
 #t_TENSORFLOW = r'tensorflow'
 t_LAYERS = r'layers'
@@ -140,6 +139,10 @@ t_ARRAY = r'array'
 t_MATRIX = r'matrix'
 t_MEAN = r'mean'
 
+def t_PROGRAM(t):
+    r'program'
+    #print(f"Encontrado token PROGRAM: {t.value}")
+    return t
 
 def t_FLOAT(t):
     r'\d+\.\d+'

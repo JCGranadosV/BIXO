@@ -1,3 +1,4 @@
+import sys
 import ply.yacc as yacc
 import bixoLexer
 from bixoLexer import tokens
@@ -44,6 +45,8 @@ var_table = {
         }
     }
 }
+
+tokens=bixoLexer.tokens
 
 #almacena los tipos de variables
 sTypes = [] 
@@ -104,6 +107,8 @@ precedence = (
     ('left','LBRACKET','RBRACKET'),
 )
 
+
+
 #REGLAS ANALIZADOR SINTÁCTICO
     
 
@@ -112,9 +117,9 @@ precedence = (
 
 
 def p_program(p):
-    '''program : PROGRAM ID SEMICOLON mexp'''
+    '''program : PROGRAM ID SEMICOLON'''
     print("Nombre del programa:", p[2])
-    p[0]=p[4]
+    #p[0]=p[4]
 
 
 def p_decvar(p):
@@ -383,14 +388,21 @@ def p_empty(p):
     'empty :'
     pass
 
+def p_error(p):
+    print("Error de Sintaxis",p)
+    print("error en la linea "+ str(p.lineno))
+
+
+start='program'
 parser = yacc.yacc()
 
 
 # Procesar cada línea con el parser
 
 
-with open('prueba.txt', 'r') as archivo:
-    lineas = archivo.readlines()
-    codigo_fuente = ''.join(lineas)
-    resultado = parser.parse(codigo_fuente, lexer=bixoLexer.lexer)
-    print(resultado)
+fileName = "prueba.txt"   
+inputFile = open(fileName, 'r')
+inputCode = inputFile.read()
+inputFile.close()
+
+parser.parse(inputCode, lexer=bixoLexer.lexer)
