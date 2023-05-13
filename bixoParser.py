@@ -141,7 +141,7 @@ def p_decvar(p):
     var_table["local"]["variables"][var_type][var_name] = var_mem
 
 def p_decvarp(p):
-    '''decvarp : SEMICOLON decvarp
+    '''decvarp : SEMICOLON
                | LBRACKET INT RBRACKET decvarpp'''
                             
 def p_decvarpp(p):
