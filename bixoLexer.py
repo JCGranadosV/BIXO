@@ -41,6 +41,7 @@ tokens = [
     'ASSIGN',
     'FUNCTION',
     'VOID',
+    'PROGRAM',
     #LIBRERIAS DE ML:
     'FUNCESP',
     #'TENSORFLOW',
@@ -61,6 +62,7 @@ tokens = [
 ]
 
 reserved = {
+    'program' : 'PROGRAM',
     'var' : 'VAR',
     'type' : 'TYPE',
     'function' : 'FUNCTION',
@@ -78,7 +80,7 @@ reserved = {
     'print' : 'PRINT',
     'void' : 'VOID',
     'epochs' : 'EPOCHS',
-    'verbose' : 'VERBOSE'
+    'verbose' : 'VERBOSE',
 }
 
 #REGEX TOKENS
@@ -120,6 +122,7 @@ t_ASSIGN = r'assign'
 t_FUNCTION = r'function'
 t_FUNCESP = r'funcesp'
 t_VOID = r'void'
+t_PROGRAM = r'program'
 #LIBRERIAS DE ML:
 #t_TENSORFLOW = r'tensorflow'
 t_LAYERS = r'layers'
@@ -155,7 +158,8 @@ def t_ID(t):
 def t_error(t):
 	print ("caracter ilegal '%s'" % t.value[0])
 	t.lexer.skip(1)
-        
+
+
 # Ignorar los espacios en blanco y los comentarios
 t_ignore = ' \t\n'
 t_ignore_COMMENT = r'\#.*'

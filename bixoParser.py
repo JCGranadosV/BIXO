@@ -59,7 +59,6 @@ SOperators = []
 #almacena el scope actual
 scope="global"
 
-
 functions_table = {}
 
 def add_function(name, return_type, start_address, varInt, varFloat, tempInt, tempFloat, vars_table):
@@ -110,6 +109,14 @@ precedence = (
 
 
   ### REVISAR DECLARACION DE MATRIZ#####  
+
+
+def p_program(p):
+    '''program : PROGRAM ID SEMICOLON mexp'''
+    print("Nombre del programa:", p[2])
+    p[0]=p[4]
+
+
 def p_decvar(p):
     '''decvar : VAR type ID decvarp '''
 
@@ -117,28 +124,29 @@ def p_decvar(p):
     var_name = p[3]
 
     var_mem = None
-
 #Para declarar variables locales
     if scope == "local":
-     if var_type == "int":
-        var_mem = var_table["local"]["counters"]["int"] + localInt
-        var_table["local"]["counters"]["int"] += 1
-     elif var_type == "float":
-        var_mem = var_table["local"]["counters"]["float"] + localFloat
-        var_table["local"]["counters"]["float"] += 1
+        if var_type == "int":
+            var_mem = var_table["local"]["counters"]["int"] + localInt
+            var_table["local"]["counters"]["int"] += 1
+        elif var_type == "float":
+            var_mem = var_table["local"]["counters"]["float"] + localFloat
+            var_table["local"]["counters"]["float"] += 1
     var_table["local"]["variables"][var_type][var_name] = var_mem
     
 
-
 #Para declarar variables globales
     if scope == "global":
-     if var_type == "int":
-        var_mem = var_table["local"]["counters"]["int"] + localInt
-        var_table["local"]["counters"]["int"] += 1
-     elif var_type == "float":
-        var_mem = var_table["local"]["counters"]["float"] + localFloat
-        var_table["local"]["counters"]["float"] += 1
-    var_table["local"]["variables"][var_type][var_name] = var_mem
+        if var_type == "int":
+            var_mem = var_table["global"]["counters"]["int"] + globalInt
+            var_table["global"]["counters"]["int"] += 1
+        elif var_type == "float":
+            var_mem = var_table["global"]["counters"]["float"] + globalFloat
+            var_table["global"]["counters"]["float"] += 1
+        var_table["global"]["variables"][var_type][var_name] = var_mem
+
+    print ("varmem: ",var_mem)
+    print ("varmem: ",var_table)
 
 def p_decvarp(p):
     '''decvarp : SEMICOLON
@@ -165,8 +173,8 @@ def p_body(p):
     '''body : LBRACE bodyp RBRACE'''
     
 def p_bodyp(p):
-    '''bodyp : decvar statement pbody
-             | statement pbody
+    '''bodyp : decvar statements bodyp
+             | statements bodyp
              | decvar
              | '''
 #checar si se puede vacio o epsilon
@@ -218,8 +226,8 @@ def p_f(p):
          | var
          | call'''
 
-def p_statement(p):
-    '''statement : assign
+def p_statements(p):
+    '''statements : assign
                  |  call
                  |  read
                  |  print
@@ -246,6 +254,9 @@ def p_var(p):
            | ID LBRACKET exp RBRACKET
            | ID LBRACKET exp RBRACKET LBRACKET exp RBRACKET'''
     
+    if len(p)==2:
+        p[0]=p[1]
+    
 def p_call(p):
     '''call : ID LPAREN callp RPAREN'''
 
@@ -254,11 +265,11 @@ def p_callp(p):
              | exp'''
     ##################Quads if######################         
 def p_if(p):
-    '''if : IF LPAREN exp RPAREN statement ifp'''
+    '''if : IF LPAREN exp RPAREN statements ifp'''
  
 def p_ifp(p):
     ''' ifp : 
-            | ELSE statement'''
+            | ELSE statements'''
             
     #global SOperators, sOperands, sTypes, SQuads, qCounter
     #if len(SOperators) != 0:
@@ -280,11 +291,11 @@ def p_ifp(p):
 
 ###############################Quands while#############
 def p_while(p):
-    ''' while : WHILE LPAREN exp RPAREN statement whilep'''
+    ''' while : WHILE LPAREN exp RPAREN statements whilep'''
 
 def p_whilep(p):
     ''' whilep : SEMICOLON
-               | statement whilep'''
+               | statements whilep'''
 
 #global SOperators, sOperands, sTypes, SQuads, qCounter
  #   if len(SOperators) != 0:
@@ -303,11 +314,11 @@ def p_whilep(p):
     ##################################################################   
   
 def p_for(p):
-    '''for : FOR LPAREN var SEMICOLON exp SEMICOLON exp RPAREN LBRACKET statement forp'''
+    '''for : FOR LPAREN var SEMICOLON exp SEMICOLON exp RPAREN LBRACKET statements forp'''
     
 def p_forp(p):
     ''' forp : RBRACKET
-             | statement forp'''
+             | statements forp'''
     
 def p_funcesp(p):
     ''' funcesp : array
@@ -374,11 +385,12 @@ def p_empty(p):
 
 parser = yacc.yacc()
 
-with open('prueba.txt', 'r') as archivo:
-    lineas = archivo.readlines()
-
 
 # Procesar cada línea con el parser
-for i, linea in enumerate(lineas):
-    resultado = parser.parse(linea, lexer=bixoLexer.lexer)
-    print(f"Línea {i+1}: {linea.strip()} = {resultado}")
+
+
+with open('prueba.txt', 'r') as archivo:
+    lineas = archivo.readlines()
+    codigo_fuente = ''.join(lineas)
+    resultado = parser.parse(codigo_fuente, lexer=bixoLexer.lexer)
+    print(resultado)

@@ -1,1 +1,2 @@
-var int pelos = 3
+program prueba;
+4+5

@@ -12,373 +12,1156 @@ Unused terminals:
 
 Grammar
 
-Rule 0     S' -> decvar
-Rule 1     decvar -> VAR type ID decvarp
-Rule 2     decvarp -> SEMICOLON decvarp
-Rule 3     decvarp -> LBRACKET INT RBRACKET decvarpp
-Rule 4     decvarpp -> SEMICOLON
-Rule 5     decvarpp -> LBRACKET INT RBRACKET
-Rule 6     type -> INT
-Rule 7     type -> FLOAT
-Rule 8     type -> CHAR
-Rule 9     type -> STRING
-Rule 10    function -> FUNCTION type ID LPAREN param RPAREN body
-Rule 11    voidfunction -> FUNCTION VOID ID LPAREN param RPAREN body
-Rule 12    body -> LBRACE pbody RBRACE
-Rule 13    pbody -> decvar statement pbody
-Rule 14    pbody -> statement pbody
-Rule 15    pbody -> decvar
-Rule 16    pbody -> <empty>
-Rule 17    param -> <empty>
-Rule 18    param -> type paramp
-Rule 19    paramp -> ID
-Rule 20    paramp -> ID COMMA param
-Rule 21    exp -> texp
-Rule 22    exp -> texp OR exp
-Rule 23    texp -> gexp
-Rule 24    texp -> gexp AND texp
-Rule 25    gexp -> mexp
-Rule 26    gexp -> mexp gexpp mexp
-Rule 27    gexpp -> LT
-Rule 28    gexpp -> GT
-Rule 29    gexpp -> EQUAL
-Rule 30    gexpp -> DIFF
-Rule 31    mexp -> t
-Rule 32    mexp -> t PLUS mexp
-Rule 33    mexp -> t MINUS mexp
-Rule 34    t -> f
-Rule 35    t -> f MULT t
-Rule 36    t -> f DIV t
-Rule 37    f -> LPAREN exp RPAREN
-Rule 38    f -> INT
-Rule 39    f -> FLOAT
-Rule 40    f -> var
-Rule 41    f -> call
-Rule 42    statement -> assign
-Rule 43    statement -> call
-Rule 44    statement -> read
-Rule 45    statement -> print
-Rule 46    statement -> if
-Rule 47    statement -> while
-Rule 48    statement -> for
-Rule 49    statement -> funcesp
-Rule 50    assign -> var EQUAL exp
-Rule 51    read -> READ var
-Rule 52    print -> PRINT LPAREN printp
-Rule 53    printp -> exp RPAREN
-Rule 54    printp -> exp COMMA printp
-Rule 55    var -> ID
-Rule 56    var -> ID LBRACKET exp RBRACKET
-Rule 57    var -> ID LBRACKET exp RBRACKET LBRACKET exp RBRACKET
-Rule 58    call -> ID LPAREN callp RPAREN
-Rule 59    callp -> exp SEMICOLON callp
-Rule 60    callp -> exp
-Rule 61    if -> IF LPAREN exp RPAREN statement ifp
-Rule 62    ifp -> <empty>
-Rule 63    ifp -> ELSE statement
-Rule 64    while -> WHILE LPAREN exp RPAREN statement whilep
-Rule 65    whilep -> SEMICOLON
-Rule 66    whilep -> statement whilep
-Rule 67    for -> FOR LPAREN var SEMICOLON exp SEMICOLON exp RPAREN LBRACKET statement forp
-Rule 68    forp -> RBRACKET
-Rule 69    forp -> statement forp
-Rule 70    funcesp -> array
-Rule 71    funcesp -> matrix
-Rule 72    funcesp -> mean
-Rule 73    funcesp -> layers
-Rule 74    funcesp -> sequential
-Rule 75    funcesp -> compile
-Rule 76    funcesp -> fit
-Rule 77    funcesp -> predict
-Rule 78    funcesp -> getweights
-Rule 79    array -> ID EQUAL ARRAY LPAREN var arrayp
-Rule 80    arrayp -> RPAREN
-Rule 81    arrayp -> COMMA var RPAREN
-Rule 82    matrix -> ID EQUAL MATRIX LPAREN array matrixp
-Rule 83    matrixp -> RPAREN
-Rule 84    matrixp -> COMMA array RPAREN
-Rule 85    mean -> MEAN LPAREN array RPAREN
-Rule 86    layers -> ID EQUAL LAYERS LPAREN UNITS EQUAL INT RPAREN
-Rule 87    sequential -> ID EQUAL SEQUENTIAL LPAREN LBRACKET layers sequentialp
-Rule 88    sequentialp -> RBRACKET RPAREN
-Rule 89    sequentialp -> COMMA layers sequentialp
-Rule 90    compile -> sequential DOT COMPILE LPAREN RPAREN
-Rule 91    fit -> ID EQUAL sequential DOT FIT LPAREN array COMMA array COMMA EPOCHS EQUAL INT COMMA VERBOSE EQUAL fitp
-Rule 92    fitp -> TRUE RPAREN
-Rule 93    fitp -> FALSE RPAREN
-Rule 94    predict -> ID EQUAL sequential DOT PREDICT LPAREN LBRACKET predictp
-Rule 95    predictp -> INT RBRACKET RPAREN
-Rule 96    predictp -> FLOAT RBRACKET RPAREN
-Rule 97    getweights -> layers DOT GETWEIGHTS LPAREN RPAREN
-Rule 98    empty -> <empty>
+Rule 0     S' -> program
+Rule 1     program -> PROGRAM ID SEMICOLON mexp
+Rule 2     decvar -> VAR type ID decvarp
+Rule 3     decvarp -> SEMICOLON
+Rule 4     decvarp -> LBRACKET INT RBRACKET decvarpp
+Rule 5     decvarpp -> SEMICOLON
+Rule 6     decvarpp -> LBRACKET INT RBRACKET
+Rule 7     type -> INT
+Rule 8     type -> FLOAT
+Rule 9     type -> CHAR
+Rule 10    type -> STRING
+Rule 11    function -> FUNCTION type ID LPAREN param RPAREN body
+Rule 12    voidfunction -> FUNCTION VOID ID LPAREN param RPAREN body
+Rule 13    body -> LBRACE bodyp RBRACE
+Rule 14    bodyp -> decvar statements bodyp
+Rule 15    bodyp -> statements bodyp
+Rule 16    bodyp -> decvar
+Rule 17    bodyp -> <empty>
+Rule 18    param -> <empty>
+Rule 19    param -> type paramp
+Rule 20    paramp -> ID
+Rule 21    paramp -> ID COMMA param
+Rule 22    exp -> texp
+Rule 23    exp -> texp OR exp
+Rule 24    texp -> gexp
+Rule 25    texp -> gexp AND texp
+Rule 26    gexp -> mexp
+Rule 27    gexp -> mexp gexpp mexp
+Rule 28    gexpp -> LT
+Rule 29    gexpp -> GT
+Rule 30    gexpp -> EQUAL
+Rule 31    gexpp -> DIFF
+Rule 32    mexp -> t
+Rule 33    mexp -> t PLUS mexp
+Rule 34    mexp -> t MINUS mexp
+Rule 35    t -> f
+Rule 36    t -> f MULT t
+Rule 37    t -> f DIV t
+Rule 38    f -> LPAREN exp RPAREN
+Rule 39    f -> INT
+Rule 40    f -> FLOAT
+Rule 41    f -> var
+Rule 42    f -> call
+Rule 43    statements -> assign
+Rule 44    statements -> call
+Rule 45    statements -> read
+Rule 46    statements -> print
+Rule 47    statements -> if
+Rule 48    statements -> while
+Rule 49    statements -> for
+Rule 50    statements -> funcesp
+Rule 51    assign -> var EQUAL exp
+Rule 52    read -> READ var
+Rule 53    print -> PRINT LPAREN printp
+Rule 54    printp -> exp RPAREN
+Rule 55    printp -> exp COMMA printp
+Rule 56    var -> ID
+Rule 57    var -> ID LBRACKET exp RBRACKET
+Rule 58    var -> ID LBRACKET exp RBRACKET LBRACKET exp RBRACKET
+Rule 59    call -> ID LPAREN callp RPAREN
+Rule 60    callp -> exp SEMICOLON callp
+Rule 61    callp -> exp
+Rule 62    if -> IF LPAREN exp RPAREN statements ifp
+Rule 63    ifp -> <empty>
+Rule 64    ifp -> ELSE statements
+Rule 65    while -> WHILE LPAREN exp RPAREN statements whilep
+Rule 66    whilep -> SEMICOLON
+Rule 67    whilep -> statements whilep
+Rule 68    for -> FOR LPAREN var SEMICOLON exp SEMICOLON exp RPAREN LBRACKET statements forp
+Rule 69    forp -> RBRACKET
+Rule 70    forp -> statements forp
+Rule 71    funcesp -> array
+Rule 72    funcesp -> matrix
+Rule 73    funcesp -> mean
+Rule 74    funcesp -> layers
+Rule 75    funcesp -> sequential
+Rule 76    funcesp -> compile
+Rule 77    funcesp -> fit
+Rule 78    funcesp -> predict
+Rule 79    funcesp -> getweights
+Rule 80    array -> ID EQUAL ARRAY LPAREN var arrayp
+Rule 81    arrayp -> RPAREN
+Rule 82    arrayp -> COMMA var RPAREN
+Rule 83    matrix -> ID EQUAL MATRIX LPAREN array matrixp
+Rule 84    matrixp -> RPAREN
+Rule 85    matrixp -> COMMA array RPAREN
+Rule 86    mean -> MEAN LPAREN array RPAREN
+Rule 87    layers -> ID EQUAL LAYERS LPAREN UNITS EQUAL INT RPAREN
+Rule 88    sequential -> ID EQUAL SEQUENTIAL LPAREN LBRACKET layers sequentialp
+Rule 89    sequentialp -> RBRACKET RPAREN
+Rule 90    sequentialp -> COMMA layers sequentialp
+Rule 91    compile -> sequential DOT COMPILE LPAREN RPAREN
+Rule 92    fit -> ID EQUAL sequential DOT FIT LPAREN array COMMA array COMMA EPOCHS EQUAL INT COMMA VERBOSE EQUAL fitp
+Rule 93    fitp -> TRUE RPAREN
+Rule 94    fitp -> FALSE RPAREN
+Rule 95    predict -> ID EQUAL sequential DOT PREDICT LPAREN LBRACKET predictp
+Rule 96    predictp -> INT RBRACKET RPAREN
+Rule 97    predictp -> FLOAT RBRACKET RPAREN
+Rule 98    getweights -> layers DOT GETWEIGHTS LPAREN RPAREN
+Rule 99    empty -> <empty>
 
 Terminals, with rules where they appear
 
-AND                  : 24
-ARRAY                : 79
+AND                  : 25
+ARRAY                : 80
 ASSIGN               : 
-CHAR                 : 8
+CHAR                 : 9
 COLON                : 
-COMMA                : 20 54 81 84 89 91 91 91
-COMPILE              : 90
-DIFF                 : 30
-DIV                  : 36
-DOT                  : 90 91 94 97
-ELSE                 : 63
-EPOCHS               : 91
-EQUAL                : 29 50 79 82 86 86 87 91 91 91 94
-FALSE                : 93
-FIT                  : 91
-FLOAT                : 7 39 96
-FOR                  : 67
+COMMA                : 21 55 82 85 90 92 92 92
+COMPILE              : 91
+DIFF                 : 31
+DIV                  : 37
+DOT                  : 91 92 95 98
+ELSE                 : 64
+EPOCHS               : 92
+EQUAL                : 30 51 80 83 87 87 88 92 92 92 95
+FALSE                : 94
+FIT                  : 92
+FLOAT                : 8 40 97
+FOR                  : 68
 FUNCESP              : 
-FUNCTION             : 10 11
-GETWEIGHTS           : 97
-GT                   : 28
+FUNCTION             : 11 12
+GETWEIGHTS           : 98
+GT                   : 29
 GTE                  : 
-ID                   : 1 10 11 19 20 55 56 57 58 79 82 86 87 91 94
-IF                   : 61
-INT                  : 3 5 6 38 86 91 95
-LAYERS               : 86
-LBRACE               : 12
-LBRACKET             : 3 5 56 57 57 67 87 94
-LPAREN               : 10 11 37 52 58 61 64 67 79 82 85 86 87 90 91 94 97
-LT                   : 27
+ID                   : 1 2 11 12 20 21 56 57 58 59 80 83 87 88 92 95
+IF                   : 62
+INT                  : 4 6 7 39 87 92 96
+LAYERS               : 87
+LBRACE               : 13
+LBRACKET             : 4 6 57 58 58 68 88 95
+LPAREN               : 11 12 38 53 59 62 65 68 80 83 86 87 88 91 92 95 98
+LT                   : 28
 LTE                  : 
-MATRIX               : 82
-MEAN                 : 85
-MINUS                : 33
-MULT                 : 35
+MATRIX               : 83
+MEAN                 : 86
+MINUS                : 34
+MULT                 : 36
 NUMPY                : 
-OR                   : 22
-PLUS                 : 32
-PREDICT              : 94
-PRINT                : 52
+OR                   : 23
+PLUS                 : 33
+PREDICT              : 95
+PRINT                : 53
+PROGRAM              : 1
 QUOTE                : 
-RBRACE               : 12
-RBRACKET             : 3 5 56 57 57 68 88 95 96
-READ                 : 51
-RPAREN               : 10 11 37 53 58 61 64 67 80 81 83 84 85 86 88 90 92 93 95 96 97
-SEMICOLON            : 2 4 59 65 67 67
-SEQUENTIAL           : 87
-STRING               : 9
-TRUE                 : 92
-UNITS                : 86
-VAR                  : 1
-VERBOSE              : 91
-VOID                 : 11
-WHILE                : 64
+RBRACE               : 13
+RBRACKET             : 4 6 57 58 58 69 89 96 97
+READ                 : 52
+RPAREN               : 11 12 38 54 59 62 65 68 81 82 84 85 86 87 89 91 93 94 96 97 98
+SEMICOLON            : 1 3 5 60 66 68 68
+SEQUENTIAL           : 88
+STRING               : 10
+TRUE                 : 93
+UNITS                : 87
+VAR                  : 2
+VERBOSE              : 92
+VOID                 : 12
+WHILE                : 65
 error                : 
 
 Nonterminals, with rules where they appear
 
-array                : 70 82 84 85 91 91
-arrayp               : 79
-assign               : 42
-body                 : 10 11
-call                 : 41 43
-callp                : 58 59
-compile              : 75
-decvar               : 13 15 0
-decvarp              : 1 2
-decvarpp             : 3
+array                : 71 83 85 86 92 92
+arrayp               : 80
+assign               : 43
+body                 : 11 12
+bodyp                : 13 14 15
+call                 : 42 44
+callp                : 59 60
+compile              : 76
+decvar               : 14 16
+decvarp              : 2
+decvarpp             : 4
 empty                : 
-exp                  : 22 37 50 53 54 56 57 57 59 60 61 64 67 67
-f                    : 34 35 36
-fit                  : 76
-fitp                 : 91
-for                  : 48
-forp                 : 67 69
-funcesp              : 49
+exp                  : 23 38 51 54 55 57 58 58 60 61 62 65 68 68
+f                    : 35 36 37
+fit                  : 77
+fitp                 : 92
+for                  : 49
+forp                 : 68 70
+funcesp              : 50
 function             : 
-getweights           : 78
-gexp                 : 23 24
-gexpp                : 26
-if                   : 46
-ifp                  : 61
-layers               : 73 87 89 97
-matrix               : 71
-matrixp              : 82
-mean                 : 72
-mexp                 : 25 26 26 32 33
-param                : 10 11 20
-paramp               : 18
-pbody                : 12 13 14
-predict              : 77
-predictp             : 94
-print                : 45
-printp               : 52 54
-read                 : 44
-sequential           : 74 90 91 94
-sequentialp          : 87 89
-statement            : 13 14 61 63 64 66 67 69
-t                    : 31 32 33 35 36
-texp                 : 21 22 24
-type                 : 1 10 18
-var                  : 40 50 51 67 79 81
+getweights           : 79
+gexp                 : 24 25
+gexpp                : 27
+if                   : 47
+ifp                  : 62
+layers               : 74 88 90 98
+matrix               : 72
+matrixp              : 83
+mean                 : 73
+mexp                 : 1 26 27 27 33 34
+param                : 11 12 21
+paramp               : 19
+predict              : 78
+predictp             : 95
+print                : 46
+printp               : 53 55
+program              : 0
+read                 : 45
+sequential           : 75 91 92 95
+sequentialp          : 88 90
+statements           : 14 15 62 64 65 67 68 70
+t                    : 32 33 34 36 37
+texp                 : 22 23 25
+type                 : 2 11 19
+var                  : 41 51 52 68 80 82
 voidfunction         : 
-while                : 47
-whilep               : 64 66
+while                : 48
+whilep               : 65 67
 
 Parsing method: LALR
 
 state 0
 
-    (0) S' -> . decvar
-    (1) decvar -> . VAR type ID decvarp
+    (0) S' -> . program
+    (1) program -> . PROGRAM ID SEMICOLON mexp
 
-    VAR             shift and go to state 2
+    PROGRAM         shift and go to state 2
 
-    decvar                         shift and go to state 1
+    program                        shift and go to state 1
 
 state 1
 
-    (0) S' -> decvar .
+    (0) S' -> program .
 
 
 
 state 2
 
-    (1) decvar -> VAR . type ID decvarp
-    (6) type -> . INT
-    (7) type -> . FLOAT
-    (8) type -> . CHAR
-    (9) type -> . STRING
+    (1) program -> PROGRAM . ID SEMICOLON mexp
 
-    INT             shift and go to state 4
-    FLOAT           shift and go to state 5
-    CHAR            shift and go to state 6
-    STRING          shift and go to state 7
+    ID              shift and go to state 3
 
-    type                           shift and go to state 3
 
 state 3
 
-    (1) decvar -> VAR type . ID decvarp
+    (1) program -> PROGRAM ID . SEMICOLON mexp
 
-    ID              shift and go to state 8
+    SEMICOLON       shift and go to state 4
 
 
 state 4
 
-    (6) type -> INT .
+    (1) program -> PROGRAM ID SEMICOLON . mexp
+    (32) mexp -> . t
+    (33) mexp -> . t PLUS mexp
+    (34) mexp -> . t MINUS mexp
+    (35) t -> . f
+    (36) t -> . f MULT t
+    (37) t -> . f DIV t
+    (38) f -> . LPAREN exp RPAREN
+    (39) f -> . INT
+    (40) f -> . FLOAT
+    (41) f -> . var
+    (42) f -> . call
+    (56) var -> . ID
+    (57) var -> . ID LBRACKET exp RBRACKET
+    (58) var -> . ID LBRACKET exp RBRACKET LBRACKET exp RBRACKET
+    (59) call -> . ID LPAREN callp RPAREN
 
-    ID              reduce using rule 6 (type -> INT .)
+    LPAREN          shift and go to state 9
+    INT             shift and go to state 10
+    FLOAT           shift and go to state 11
+    ID              shift and go to state 5
 
+    mexp                           shift and go to state 6
+    t                              shift and go to state 7
+    f                              shift and go to state 8
+    var                            shift and go to state 12
+    call                           shift and go to state 13
 
 state 5
 
-    (7) type -> FLOAT .
+    (56) var -> ID .
+    (57) var -> ID . LBRACKET exp RBRACKET
+    (58) var -> ID . LBRACKET exp RBRACKET LBRACKET exp RBRACKET
+    (59) call -> ID . LPAREN callp RPAREN
 
-    ID              reduce using rule 7 (type -> FLOAT .)
+    MULT            reduce using rule 56 (var -> ID .)
+    DIV             reduce using rule 56 (var -> ID .)
+    PLUS            reduce using rule 56 (var -> ID .)
+    MINUS           reduce using rule 56 (var -> ID .)
+    $end            reduce using rule 56 (var -> ID .)
+    LT              reduce using rule 56 (var -> ID .)
+    GT              reduce using rule 56 (var -> ID .)
+    EQUAL           reduce using rule 56 (var -> ID .)
+    DIFF            reduce using rule 56 (var -> ID .)
+    AND             reduce using rule 56 (var -> ID .)
+    OR              reduce using rule 56 (var -> ID .)
+    RPAREN          reduce using rule 56 (var -> ID .)
+    RBRACKET        reduce using rule 56 (var -> ID .)
+    SEMICOLON       reduce using rule 56 (var -> ID .)
+    LBRACKET        shift and go to state 14
+    LPAREN          shift and go to state 15
 
 
 state 6
 
-    (8) type -> CHAR .
+    (1) program -> PROGRAM ID SEMICOLON mexp .
 
-    ID              reduce using rule 8 (type -> CHAR .)
+    $end            reduce using rule 1 (program -> PROGRAM ID SEMICOLON mexp .)
 
 
 state 7
 
-    (9) type -> STRING .
+    (32) mexp -> t .
+    (33) mexp -> t . PLUS mexp
+    (34) mexp -> t . MINUS mexp
 
-    ID              reduce using rule 9 (type -> STRING .)
+    $end            reduce using rule 32 (mexp -> t .)
+    LT              reduce using rule 32 (mexp -> t .)
+    GT              reduce using rule 32 (mexp -> t .)
+    EQUAL           reduce using rule 32 (mexp -> t .)
+    DIFF            reduce using rule 32 (mexp -> t .)
+    AND             reduce using rule 32 (mexp -> t .)
+    OR              reduce using rule 32 (mexp -> t .)
+    RPAREN          reduce using rule 32 (mexp -> t .)
+    RBRACKET        reduce using rule 32 (mexp -> t .)
+    SEMICOLON       reduce using rule 32 (mexp -> t .)
+    PLUS            shift and go to state 16
+    MINUS           shift and go to state 17
 
 
 state 8
 
-    (1) decvar -> VAR type ID . decvarp
-    (2) decvarp -> . SEMICOLON decvarp
-    (3) decvarp -> . LBRACKET INT RBRACKET decvarpp
+    (35) t -> f .
+    (36) t -> f . MULT t
+    (37) t -> f . DIV t
 
-    SEMICOLON       shift and go to state 10
-    LBRACKET        shift and go to state 11
+    PLUS            reduce using rule 35 (t -> f .)
+    MINUS           reduce using rule 35 (t -> f .)
+    $end            reduce using rule 35 (t -> f .)
+    LT              reduce using rule 35 (t -> f .)
+    GT              reduce using rule 35 (t -> f .)
+    EQUAL           reduce using rule 35 (t -> f .)
+    DIFF            reduce using rule 35 (t -> f .)
+    AND             reduce using rule 35 (t -> f .)
+    OR              reduce using rule 35 (t -> f .)
+    RPAREN          reduce using rule 35 (t -> f .)
+    RBRACKET        reduce using rule 35 (t -> f .)
+    SEMICOLON       reduce using rule 35 (t -> f .)
+    MULT            shift and go to state 18
+    DIV             shift and go to state 19
 
-    decvarp                        shift and go to state 9
 
 state 9
 
-    (1) decvar -> VAR type ID decvarp .
+    (38) f -> LPAREN . exp RPAREN
+    (22) exp -> . texp
+    (23) exp -> . texp OR exp
+    (24) texp -> . gexp
+    (25) texp -> . gexp AND texp
+    (26) gexp -> . mexp
+    (27) gexp -> . mexp gexpp mexp
+    (32) mexp -> . t
+    (33) mexp -> . t PLUS mexp
+    (34) mexp -> . t MINUS mexp
+    (35) t -> . f
+    (36) t -> . f MULT t
+    (37) t -> . f DIV t
+    (38) f -> . LPAREN exp RPAREN
+    (39) f -> . INT
+    (40) f -> . FLOAT
+    (41) f -> . var
+    (42) f -> . call
+    (56) var -> . ID
+    (57) var -> . ID LBRACKET exp RBRACKET
+    (58) var -> . ID LBRACKET exp RBRACKET LBRACKET exp RBRACKET
+    (59) call -> . ID LPAREN callp RPAREN
 
-    $end            reduce using rule 1 (decvar -> VAR type ID decvarp .)
+    LPAREN          shift and go to state 9
+    INT             shift and go to state 10
+    FLOAT           shift and go to state 11
+    ID              shift and go to state 5
 
+    exp                            shift and go to state 20
+    texp                           shift and go to state 21
+    gexp                           shift and go to state 22
+    mexp                           shift and go to state 23
+    t                              shift and go to state 7
+    f                              shift and go to state 8
+    var                            shift and go to state 12
+    call                           shift and go to state 13
 
 state 10
 
-    (2) decvarp -> SEMICOLON . decvarp
-    (2) decvarp -> . SEMICOLON decvarp
-    (3) decvarp -> . LBRACKET INT RBRACKET decvarpp
+    (39) f -> INT .
 
-    SEMICOLON       shift and go to state 10
-    LBRACKET        shift and go to state 11
+    MULT            reduce using rule 39 (f -> INT .)
+    DIV             reduce using rule 39 (f -> INT .)
+    PLUS            reduce using rule 39 (f -> INT .)
+    MINUS           reduce using rule 39 (f -> INT .)
+    $end            reduce using rule 39 (f -> INT .)
+    LT              reduce using rule 39 (f -> INT .)
+    GT              reduce using rule 39 (f -> INT .)
+    EQUAL           reduce using rule 39 (f -> INT .)
+    DIFF            reduce using rule 39 (f -> INT .)
+    AND             reduce using rule 39 (f -> INT .)
+    OR              reduce using rule 39 (f -> INT .)
+    RPAREN          reduce using rule 39 (f -> INT .)
+    RBRACKET        reduce using rule 39 (f -> INT .)
+    SEMICOLON       reduce using rule 39 (f -> INT .)
 
-    decvarp                        shift and go to state 12
 
 state 11
 
-    (3) decvarp -> LBRACKET . INT RBRACKET decvarpp
+    (40) f -> FLOAT .
 
-    INT             shift and go to state 13
+    MULT            reduce using rule 40 (f -> FLOAT .)
+    DIV             reduce using rule 40 (f -> FLOAT .)
+    PLUS            reduce using rule 40 (f -> FLOAT .)
+    MINUS           reduce using rule 40 (f -> FLOAT .)
+    $end            reduce using rule 40 (f -> FLOAT .)
+    LT              reduce using rule 40 (f -> FLOAT .)
+    GT              reduce using rule 40 (f -> FLOAT .)
+    EQUAL           reduce using rule 40 (f -> FLOAT .)
+    DIFF            reduce using rule 40 (f -> FLOAT .)
+    AND             reduce using rule 40 (f -> FLOAT .)
+    OR              reduce using rule 40 (f -> FLOAT .)
+    RPAREN          reduce using rule 40 (f -> FLOAT .)
+    RBRACKET        reduce using rule 40 (f -> FLOAT .)
+    SEMICOLON       reduce using rule 40 (f -> FLOAT .)
 
 
 state 12
 
-    (2) decvarp -> SEMICOLON decvarp .
+    (41) f -> var .
 
-    $end            reduce using rule 2 (decvarp -> SEMICOLON decvarp .)
+    MULT            reduce using rule 41 (f -> var .)
+    DIV             reduce using rule 41 (f -> var .)
+    PLUS            reduce using rule 41 (f -> var .)
+    MINUS           reduce using rule 41 (f -> var .)
+    $end            reduce using rule 41 (f -> var .)
+    LT              reduce using rule 41 (f -> var .)
+    GT              reduce using rule 41 (f -> var .)
+    EQUAL           reduce using rule 41 (f -> var .)
+    DIFF            reduce using rule 41 (f -> var .)
+    AND             reduce using rule 41 (f -> var .)
+    OR              reduce using rule 41 (f -> var .)
+    RPAREN          reduce using rule 41 (f -> var .)
+    RBRACKET        reduce using rule 41 (f -> var .)
+    SEMICOLON       reduce using rule 41 (f -> var .)
 
 
 state 13
 
-    (3) decvarp -> LBRACKET INT . RBRACKET decvarpp
+    (42) f -> call .
 
-    RBRACKET        shift and go to state 14
+    MULT            reduce using rule 42 (f -> call .)
+    DIV             reduce using rule 42 (f -> call .)
+    PLUS            reduce using rule 42 (f -> call .)
+    MINUS           reduce using rule 42 (f -> call .)
+    $end            reduce using rule 42 (f -> call .)
+    LT              reduce using rule 42 (f -> call .)
+    GT              reduce using rule 42 (f -> call .)
+    EQUAL           reduce using rule 42 (f -> call .)
+    DIFF            reduce using rule 42 (f -> call .)
+    AND             reduce using rule 42 (f -> call .)
+    OR              reduce using rule 42 (f -> call .)
+    RPAREN          reduce using rule 42 (f -> call .)
+    RBRACKET        reduce using rule 42 (f -> call .)
+    SEMICOLON       reduce using rule 42 (f -> call .)
 
 
 state 14
 
-    (3) decvarp -> LBRACKET INT RBRACKET . decvarpp
-    (4) decvarpp -> . SEMICOLON
-    (5) decvarpp -> . LBRACKET INT RBRACKET
+    (57) var -> ID LBRACKET . exp RBRACKET
+    (58) var -> ID LBRACKET . exp RBRACKET LBRACKET exp RBRACKET
+    (22) exp -> . texp
+    (23) exp -> . texp OR exp
+    (24) texp -> . gexp
+    (25) texp -> . gexp AND texp
+    (26) gexp -> . mexp
+    (27) gexp -> . mexp gexpp mexp
+    (32) mexp -> . t
+    (33) mexp -> . t PLUS mexp
+    (34) mexp -> . t MINUS mexp
+    (35) t -> . f
+    (36) t -> . f MULT t
+    (37) t -> . f DIV t
+    (38) f -> . LPAREN exp RPAREN
+    (39) f -> . INT
+    (40) f -> . FLOAT
+    (41) f -> . var
+    (42) f -> . call
+    (56) var -> . ID
+    (57) var -> . ID LBRACKET exp RBRACKET
+    (58) var -> . ID LBRACKET exp RBRACKET LBRACKET exp RBRACKET
+    (59) call -> . ID LPAREN callp RPAREN
 
-    SEMICOLON       shift and go to state 17
-    LBRACKET        shift and go to state 15
+    LPAREN          shift and go to state 9
+    INT             shift and go to state 10
+    FLOAT           shift and go to state 11
+    ID              shift and go to state 5
 
-    decvarpp                       shift and go to state 16
+    exp                            shift and go to state 24
+    texp                           shift and go to state 21
+    gexp                           shift and go to state 22
+    mexp                           shift and go to state 23
+    t                              shift and go to state 7
+    f                              shift and go to state 8
+    var                            shift and go to state 12
+    call                           shift and go to state 13
 
 state 15
 
-    (5) decvarpp -> LBRACKET . INT RBRACKET
+    (59) call -> ID LPAREN . callp RPAREN
+    (60) callp -> . exp SEMICOLON callp
+    (61) callp -> . exp
+    (22) exp -> . texp
+    (23) exp -> . texp OR exp
+    (24) texp -> . gexp
+    (25) texp -> . gexp AND texp
+    (26) gexp -> . mexp
+    (27) gexp -> . mexp gexpp mexp
+    (32) mexp -> . t
+    (33) mexp -> . t PLUS mexp
+    (34) mexp -> . t MINUS mexp
+    (35) t -> . f
+    (36) t -> . f MULT t
+    (37) t -> . f DIV t
+    (38) f -> . LPAREN exp RPAREN
+    (39) f -> . INT
+    (40) f -> . FLOAT
+    (41) f -> . var
+    (42) f -> . call
+    (56) var -> . ID
+    (57) var -> . ID LBRACKET exp RBRACKET
+    (58) var -> . ID LBRACKET exp RBRACKET LBRACKET exp RBRACKET
+    (59) call -> . ID LPAREN callp RPAREN
 
-    INT             shift and go to state 18
+    LPAREN          shift and go to state 9
+    INT             shift and go to state 10
+    FLOAT           shift and go to state 11
+    ID              shift and go to state 5
 
+    callp                          shift and go to state 25
+    exp                            shift and go to state 26
+    texp                           shift and go to state 21
+    gexp                           shift and go to state 22
+    mexp                           shift and go to state 23
+    t                              shift and go to state 7
+    f                              shift and go to state 8
+    var                            shift and go to state 12
+    call                           shift and go to state 13
 
 state 16
 
-    (3) decvarp -> LBRACKET INT RBRACKET decvarpp .
+    (33) mexp -> t PLUS . mexp
+    (32) mexp -> . t
+    (33) mexp -> . t PLUS mexp
+    (34) mexp -> . t MINUS mexp
+    (35) t -> . f
+    (36) t -> . f MULT t
+    (37) t -> . f DIV t
+    (38) f -> . LPAREN exp RPAREN
+    (39) f -> . INT
+    (40) f -> . FLOAT
+    (41) f -> . var
+    (42) f -> . call
+    (56) var -> . ID
+    (57) var -> . ID LBRACKET exp RBRACKET
+    (58) var -> . ID LBRACKET exp RBRACKET LBRACKET exp RBRACKET
+    (59) call -> . ID LPAREN callp RPAREN
 
-    $end            reduce using rule 3 (decvarp -> LBRACKET INT RBRACKET decvarpp .)
+    LPAREN          shift and go to state 9
+    INT             shift and go to state 10
+    FLOAT           shift and go to state 11
+    ID              shift and go to state 5
 
+    t                              shift and go to state 7
+    mexp                           shift and go to state 27
+    f                              shift and go to state 8
+    var                            shift and go to state 12
+    call                           shift and go to state 13
 
 state 17
 
-    (4) decvarpp -> SEMICOLON .
+    (34) mexp -> t MINUS . mexp
+    (32) mexp -> . t
+    (33) mexp -> . t PLUS mexp
+    (34) mexp -> . t MINUS mexp
+    (35) t -> . f
+    (36) t -> . f MULT t
+    (37) t -> . f DIV t
+    (38) f -> . LPAREN exp RPAREN
+    (39) f -> . INT
+    (40) f -> . FLOAT
+    (41) f -> . var
+    (42) f -> . call
+    (56) var -> . ID
+    (57) var -> . ID LBRACKET exp RBRACKET
+    (58) var -> . ID LBRACKET exp RBRACKET LBRACKET exp RBRACKET
+    (59) call -> . ID LPAREN callp RPAREN
 
-    $end            reduce using rule 4 (decvarpp -> SEMICOLON .)
+    LPAREN          shift and go to state 9
+    INT             shift and go to state 10
+    FLOAT           shift and go to state 11
+    ID              shift and go to state 5
 
+    t                              shift and go to state 7
+    mexp                           shift and go to state 28
+    f                              shift and go to state 8
+    var                            shift and go to state 12
+    call                           shift and go to state 13
 
 state 18
 
-    (5) decvarpp -> LBRACKET INT . RBRACKET
+    (36) t -> f MULT . t
+    (35) t -> . f
+    (36) t -> . f MULT t
+    (37) t -> . f DIV t
+    (38) f -> . LPAREN exp RPAREN
+    (39) f -> . INT
+    (40) f -> . FLOAT
+    (41) f -> . var
+    (42) f -> . call
+    (56) var -> . ID
+    (57) var -> . ID LBRACKET exp RBRACKET
+    (58) var -> . ID LBRACKET exp RBRACKET LBRACKET exp RBRACKET
+    (59) call -> . ID LPAREN callp RPAREN
 
-    RBRACKET        shift and go to state 19
+    LPAREN          shift and go to state 9
+    INT             shift and go to state 10
+    FLOAT           shift and go to state 11
+    ID              shift and go to state 5
 
+    f                              shift and go to state 8
+    t                              shift and go to state 29
+    var                            shift and go to state 12
+    call                           shift and go to state 13
 
 state 19
 
-    (5) decvarpp -> LBRACKET INT RBRACKET .
+    (37) t -> f DIV . t
+    (35) t -> . f
+    (36) t -> . f MULT t
+    (37) t -> . f DIV t
+    (38) f -> . LPAREN exp RPAREN
+    (39) f -> . INT
+    (40) f -> . FLOAT
+    (41) f -> . var
+    (42) f -> . call
+    (56) var -> . ID
+    (57) var -> . ID LBRACKET exp RBRACKET
+    (58) var -> . ID LBRACKET exp RBRACKET LBRACKET exp RBRACKET
+    (59) call -> . ID LPAREN callp RPAREN
 
-    $end            reduce using rule 5 (decvarpp -> LBRACKET INT RBRACKET .)
+    LPAREN          shift and go to state 9
+    INT             shift and go to state 10
+    FLOAT           shift and go to state 11
+    ID              shift and go to state 5
+
+    f                              shift and go to state 8
+    t                              shift and go to state 30
+    var                            shift and go to state 12
+    call                           shift and go to state 13
+
+state 20
+
+    (38) f -> LPAREN exp . RPAREN
+
+    RPAREN          shift and go to state 31
+
+
+state 21
+
+    (22) exp -> texp .
+    (23) exp -> texp . OR exp
+
+    RPAREN          reduce using rule 22 (exp -> texp .)
+    RBRACKET        reduce using rule 22 (exp -> texp .)
+    SEMICOLON       reduce using rule 22 (exp -> texp .)
+    OR              shift and go to state 32
+
+
+state 22
+
+    (24) texp -> gexp .
+    (25) texp -> gexp . AND texp
+
+    OR              reduce using rule 24 (texp -> gexp .)
+    RPAREN          reduce using rule 24 (texp -> gexp .)
+    RBRACKET        reduce using rule 24 (texp -> gexp .)
+    SEMICOLON       reduce using rule 24 (texp -> gexp .)
+    AND             shift and go to state 33
+
+
+state 23
+
+    (26) gexp -> mexp .
+    (27) gexp -> mexp . gexpp mexp
+    (28) gexpp -> . LT
+    (29) gexpp -> . GT
+    (30) gexpp -> . EQUAL
+    (31) gexpp -> . DIFF
+
+    AND             reduce using rule 26 (gexp -> mexp .)
+    OR              reduce using rule 26 (gexp -> mexp .)
+    RPAREN          reduce using rule 26 (gexp -> mexp .)
+    RBRACKET        reduce using rule 26 (gexp -> mexp .)
+    SEMICOLON       reduce using rule 26 (gexp -> mexp .)
+    LT              shift and go to state 35
+    GT              shift and go to state 36
+    EQUAL           shift and go to state 37
+    DIFF            shift and go to state 38
+
+    gexpp                          shift and go to state 34
+
+state 24
+
+    (57) var -> ID LBRACKET exp . RBRACKET
+    (58) var -> ID LBRACKET exp . RBRACKET LBRACKET exp RBRACKET
+
+    RBRACKET        shift and go to state 39
+
+
+state 25
+
+    (59) call -> ID LPAREN callp . RPAREN
+
+    RPAREN          shift and go to state 40
+
+
+state 26
+
+    (60) callp -> exp . SEMICOLON callp
+    (61) callp -> exp .
+
+    SEMICOLON       shift and go to state 41
+    RPAREN          reduce using rule 61 (callp -> exp .)
+
+
+state 27
+
+    (33) mexp -> t PLUS mexp .
+
+    $end            reduce using rule 33 (mexp -> t PLUS mexp .)
+    LT              reduce using rule 33 (mexp -> t PLUS mexp .)
+    GT              reduce using rule 33 (mexp -> t PLUS mexp .)
+    EQUAL           reduce using rule 33 (mexp -> t PLUS mexp .)
+    DIFF            reduce using rule 33 (mexp -> t PLUS mexp .)
+    AND             reduce using rule 33 (mexp -> t PLUS mexp .)
+    OR              reduce using rule 33 (mexp -> t PLUS mexp .)
+    RPAREN          reduce using rule 33 (mexp -> t PLUS mexp .)
+    RBRACKET        reduce using rule 33 (mexp -> t PLUS mexp .)
+    SEMICOLON       reduce using rule 33 (mexp -> t PLUS mexp .)
+
+
+state 28
+
+    (34) mexp -> t MINUS mexp .
+
+    $end            reduce using rule 34 (mexp -> t MINUS mexp .)
+    LT              reduce using rule 34 (mexp -> t MINUS mexp .)
+    GT              reduce using rule 34 (mexp -> t MINUS mexp .)
+    EQUAL           reduce using rule 34 (mexp -> t MINUS mexp .)
+    DIFF            reduce using rule 34 (mexp -> t MINUS mexp .)
+    AND             reduce using rule 34 (mexp -> t MINUS mexp .)
+    OR              reduce using rule 34 (mexp -> t MINUS mexp .)
+    RPAREN          reduce using rule 34 (mexp -> t MINUS mexp .)
+    RBRACKET        reduce using rule 34 (mexp -> t MINUS mexp .)
+    SEMICOLON       reduce using rule 34 (mexp -> t MINUS mexp .)
+
+
+state 29
+
+    (36) t -> f MULT t .
+
+    PLUS            reduce using rule 36 (t -> f MULT t .)
+    MINUS           reduce using rule 36 (t -> f MULT t .)
+    $end            reduce using rule 36 (t -> f MULT t .)
+    LT              reduce using rule 36 (t -> f MULT t .)
+    GT              reduce using rule 36 (t -> f MULT t .)
+    EQUAL           reduce using rule 36 (t -> f MULT t .)
+    DIFF            reduce using rule 36 (t -> f MULT t .)
+    AND             reduce using rule 36 (t -> f MULT t .)
+    OR              reduce using rule 36 (t -> f MULT t .)
+    RPAREN          reduce using rule 36 (t -> f MULT t .)
+    RBRACKET        reduce using rule 36 (t -> f MULT t .)
+    SEMICOLON       reduce using rule 36 (t -> f MULT t .)
+
+
+state 30
+
+    (37) t -> f DIV t .
+
+    PLUS            reduce using rule 37 (t -> f DIV t .)
+    MINUS           reduce using rule 37 (t -> f DIV t .)
+    $end            reduce using rule 37 (t -> f DIV t .)
+    LT              reduce using rule 37 (t -> f DIV t .)
+    GT              reduce using rule 37 (t -> f DIV t .)
+    EQUAL           reduce using rule 37 (t -> f DIV t .)
+    DIFF            reduce using rule 37 (t -> f DIV t .)
+    AND             reduce using rule 37 (t -> f DIV t .)
+    OR              reduce using rule 37 (t -> f DIV t .)
+    RPAREN          reduce using rule 37 (t -> f DIV t .)
+    RBRACKET        reduce using rule 37 (t -> f DIV t .)
+    SEMICOLON       reduce using rule 37 (t -> f DIV t .)
+
+
+state 31
+
+    (38) f -> LPAREN exp RPAREN .
+
+    MULT            reduce using rule 38 (f -> LPAREN exp RPAREN .)
+    DIV             reduce using rule 38 (f -> LPAREN exp RPAREN .)
+    PLUS            reduce using rule 38 (f -> LPAREN exp RPAREN .)
+    MINUS           reduce using rule 38 (f -> LPAREN exp RPAREN .)
+    $end            reduce using rule 38 (f -> LPAREN exp RPAREN .)
+    LT              reduce using rule 38 (f -> LPAREN exp RPAREN .)
+    GT              reduce using rule 38 (f -> LPAREN exp RPAREN .)
+    EQUAL           reduce using rule 38 (f -> LPAREN exp RPAREN .)
+    DIFF            reduce using rule 38 (f -> LPAREN exp RPAREN .)
+    AND             reduce using rule 38 (f -> LPAREN exp RPAREN .)
+    OR              reduce using rule 38 (f -> LPAREN exp RPAREN .)
+    RPAREN          reduce using rule 38 (f -> LPAREN exp RPAREN .)
+    RBRACKET        reduce using rule 38 (f -> LPAREN exp RPAREN .)
+    SEMICOLON       reduce using rule 38 (f -> LPAREN exp RPAREN .)
+
+
+state 32
+
+    (23) exp -> texp OR . exp
+    (22) exp -> . texp
+    (23) exp -> . texp OR exp
+    (24) texp -> . gexp
+    (25) texp -> . gexp AND texp
+    (26) gexp -> . mexp
+    (27) gexp -> . mexp gexpp mexp
+    (32) mexp -> . t
+    (33) mexp -> . t PLUS mexp
+    (34) mexp -> . t MINUS mexp
+    (35) t -> . f
+    (36) t -> . f MULT t
+    (37) t -> . f DIV t
+    (38) f -> . LPAREN exp RPAREN
+    (39) f -> . INT
+    (40) f -> . FLOAT
+    (41) f -> . var
+    (42) f -> . call
+    (56) var -> . ID
+    (57) var -> . ID LBRACKET exp RBRACKET
+    (58) var -> . ID LBRACKET exp RBRACKET LBRACKET exp RBRACKET
+    (59) call -> . ID LPAREN callp RPAREN
+
+    LPAREN          shift and go to state 9
+    INT             shift and go to state 10
+    FLOAT           shift and go to state 11
+    ID              shift and go to state 5
+
+    texp                           shift and go to state 21
+    exp                            shift and go to state 42
+    gexp                           shift and go to state 22
+    mexp                           shift and go to state 23
+    t                              shift and go to state 7
+    f                              shift and go to state 8
+    var                            shift and go to state 12
+    call                           shift and go to state 13
+
+state 33
+
+    (25) texp -> gexp AND . texp
+    (24) texp -> . gexp
+    (25) texp -> . gexp AND texp
+    (26) gexp -> . mexp
+    (27) gexp -> . mexp gexpp mexp
+    (32) mexp -> . t
+    (33) mexp -> . t PLUS mexp
+    (34) mexp -> . t MINUS mexp
+    (35) t -> . f
+    (36) t -> . f MULT t
+    (37) t -> . f DIV t
+    (38) f -> . LPAREN exp RPAREN
+    (39) f -> . INT
+    (40) f -> . FLOAT
+    (41) f -> . var
+    (42) f -> . call
+    (56) var -> . ID
+    (57) var -> . ID LBRACKET exp RBRACKET
+    (58) var -> . ID LBRACKET exp RBRACKET LBRACKET exp RBRACKET
+    (59) call -> . ID LPAREN callp RPAREN
+
+    LPAREN          shift and go to state 9
+    INT             shift and go to state 10
+    FLOAT           shift and go to state 11
+    ID              shift and go to state 5
+
+    gexp                           shift and go to state 22
+    texp                           shift and go to state 43
+    mexp                           shift and go to state 23
+    t                              shift and go to state 7
+    f                              shift and go to state 8
+    var                            shift and go to state 12
+    call                           shift and go to state 13
+
+state 34
+
+    (27) gexp -> mexp gexpp . mexp
+    (32) mexp -> . t
+    (33) mexp -> . t PLUS mexp
+    (34) mexp -> . t MINUS mexp
+    (35) t -> . f
+    (36) t -> . f MULT t
+    (37) t -> . f DIV t
+    (38) f -> . LPAREN exp RPAREN
+    (39) f -> . INT
+    (40) f -> . FLOAT
+    (41) f -> . var
+    (42) f -> . call
+    (56) var -> . ID
+    (57) var -> . ID LBRACKET exp RBRACKET
+    (58) var -> . ID LBRACKET exp RBRACKET LBRACKET exp RBRACKET
+    (59) call -> . ID LPAREN callp RPAREN
+
+    LPAREN          shift and go to state 9
+    INT             shift and go to state 10
+    FLOAT           shift and go to state 11
+    ID              shift and go to state 5
+
+    mexp                           shift and go to state 44
+    t                              shift and go to state 7
+    f                              shift and go to state 8
+    var                            shift and go to state 12
+    call                           shift and go to state 13
+
+state 35
+
+    (28) gexpp -> LT .
+
+    LPAREN          reduce using rule 28 (gexpp -> LT .)
+    INT             reduce using rule 28 (gexpp -> LT .)
+    FLOAT           reduce using rule 28 (gexpp -> LT .)
+    ID              reduce using rule 28 (gexpp -> LT .)
+
+
+state 36
+
+    (29) gexpp -> GT .
+
+    LPAREN          reduce using rule 29 (gexpp -> GT .)
+    INT             reduce using rule 29 (gexpp -> GT .)
+    FLOAT           reduce using rule 29 (gexpp -> GT .)
+    ID              reduce using rule 29 (gexpp -> GT .)
+
+
+state 37
+
+    (30) gexpp -> EQUAL .
+
+    LPAREN          reduce using rule 30 (gexpp -> EQUAL .)
+    INT             reduce using rule 30 (gexpp -> EQUAL .)
+    FLOAT           reduce using rule 30 (gexpp -> EQUAL .)
+    ID              reduce using rule 30 (gexpp -> EQUAL .)
+
+
+state 38
+
+    (31) gexpp -> DIFF .
+
+    LPAREN          reduce using rule 31 (gexpp -> DIFF .)
+    INT             reduce using rule 31 (gexpp -> DIFF .)
+    FLOAT           reduce using rule 31 (gexpp -> DIFF .)
+    ID              reduce using rule 31 (gexpp -> DIFF .)
+
+
+state 39
+
+    (57) var -> ID LBRACKET exp RBRACKET .
+    (58) var -> ID LBRACKET exp RBRACKET . LBRACKET exp RBRACKET
+
+    MULT            reduce using rule 57 (var -> ID LBRACKET exp RBRACKET .)
+    DIV             reduce using rule 57 (var -> ID LBRACKET exp RBRACKET .)
+    PLUS            reduce using rule 57 (var -> ID LBRACKET exp RBRACKET .)
+    MINUS           reduce using rule 57 (var -> ID LBRACKET exp RBRACKET .)
+    $end            reduce using rule 57 (var -> ID LBRACKET exp RBRACKET .)
+    LT              reduce using rule 57 (var -> ID LBRACKET exp RBRACKET .)
+    GT              reduce using rule 57 (var -> ID LBRACKET exp RBRACKET .)
+    EQUAL           reduce using rule 57 (var -> ID LBRACKET exp RBRACKET .)
+    DIFF            reduce using rule 57 (var -> ID LBRACKET exp RBRACKET .)
+    AND             reduce using rule 57 (var -> ID LBRACKET exp RBRACKET .)
+    OR              reduce using rule 57 (var -> ID LBRACKET exp RBRACKET .)
+    RPAREN          reduce using rule 57 (var -> ID LBRACKET exp RBRACKET .)
+    RBRACKET        reduce using rule 57 (var -> ID LBRACKET exp RBRACKET .)
+    SEMICOLON       reduce using rule 57 (var -> ID LBRACKET exp RBRACKET .)
+    LBRACKET        shift and go to state 45
+
+
+state 40
+
+    (59) call -> ID LPAREN callp RPAREN .
+
+    MULT            reduce using rule 59 (call -> ID LPAREN callp RPAREN .)
+    DIV             reduce using rule 59 (call -> ID LPAREN callp RPAREN .)
+    PLUS            reduce using rule 59 (call -> ID LPAREN callp RPAREN .)
+    MINUS           reduce using rule 59 (call -> ID LPAREN callp RPAREN .)
+    $end            reduce using rule 59 (call -> ID LPAREN callp RPAREN .)
+    LT              reduce using rule 59 (call -> ID LPAREN callp RPAREN .)
+    GT              reduce using rule 59 (call -> ID LPAREN callp RPAREN .)
+    EQUAL           reduce using rule 59 (call -> ID LPAREN callp RPAREN .)
+    DIFF            reduce using rule 59 (call -> ID LPAREN callp RPAREN .)
+    AND             reduce using rule 59 (call -> ID LPAREN callp RPAREN .)
+    OR              reduce using rule 59 (call -> ID LPAREN callp RPAREN .)
+    RPAREN          reduce using rule 59 (call -> ID LPAREN callp RPAREN .)
+    RBRACKET        reduce using rule 59 (call -> ID LPAREN callp RPAREN .)
+    SEMICOLON       reduce using rule 59 (call -> ID LPAREN callp RPAREN .)
+
+
+state 41
+
+    (60) callp -> exp SEMICOLON . callp
+    (60) callp -> . exp SEMICOLON callp
+    (61) callp -> . exp
+    (22) exp -> . texp
+    (23) exp -> . texp OR exp
+    (24) texp -> . gexp
+    (25) texp -> . gexp AND texp
+    (26) gexp -> . mexp
+    (27) gexp -> . mexp gexpp mexp
+    (32) mexp -> . t
+    (33) mexp -> . t PLUS mexp
+    (34) mexp -> . t MINUS mexp
+    (35) t -> . f
+    (36) t -> . f MULT t
+    (37) t -> . f DIV t
+    (38) f -> . LPAREN exp RPAREN
+    (39) f -> . INT
+    (40) f -> . FLOAT
+    (41) f -> . var
+    (42) f -> . call
+    (56) var -> . ID
+    (57) var -> . ID LBRACKET exp RBRACKET
+    (58) var -> . ID LBRACKET exp RBRACKET LBRACKET exp RBRACKET
+    (59) call -> . ID LPAREN callp RPAREN
+
+    LPAREN          shift and go to state 9
+    INT             shift and go to state 10
+    FLOAT           shift and go to state 11
+    ID              shift and go to state 5
+
+    exp                            shift and go to state 26
+    callp                          shift and go to state 46
+    texp                           shift and go to state 21
+    gexp                           shift and go to state 22
+    mexp                           shift and go to state 23
+    t                              shift and go to state 7
+    f                              shift and go to state 8
+    var                            shift and go to state 12
+    call                           shift and go to state 13
+
+state 42
+
+    (23) exp -> texp OR exp .
+
+    RPAREN          reduce using rule 23 (exp -> texp OR exp .)
+    RBRACKET        reduce using rule 23 (exp -> texp OR exp .)
+    SEMICOLON       reduce using rule 23 (exp -> texp OR exp .)
+
+
+state 43
+
+    (25) texp -> gexp AND texp .
+
+    OR              reduce using rule 25 (texp -> gexp AND texp .)
+    RPAREN          reduce using rule 25 (texp -> gexp AND texp .)
+    RBRACKET        reduce using rule 25 (texp -> gexp AND texp .)
+    SEMICOLON       reduce using rule 25 (texp -> gexp AND texp .)
+
+
+state 44
+
+    (27) gexp -> mexp gexpp mexp .
+
+    AND             reduce using rule 27 (gexp -> mexp gexpp mexp .)
+    OR              reduce using rule 27 (gexp -> mexp gexpp mexp .)
+    RPAREN          reduce using rule 27 (gexp -> mexp gexpp mexp .)
+    RBRACKET        reduce using rule 27 (gexp -> mexp gexpp mexp .)
+    SEMICOLON       reduce using rule 27 (gexp -> mexp gexpp mexp .)
+
+
+state 45
+
+    (58) var -> ID LBRACKET exp RBRACKET LBRACKET . exp RBRACKET
+    (22) exp -> . texp
+    (23) exp -> . texp OR exp
+    (24) texp -> . gexp
+    (25) texp -> . gexp AND texp
+    (26) gexp -> . mexp
+    (27) gexp -> . mexp gexpp mexp
+    (32) mexp -> . t
+    (33) mexp -> . t PLUS mexp
+    (34) mexp -> . t MINUS mexp
+    (35) t -> . f
+    (36) t -> . f MULT t
+    (37) t -> . f DIV t
+    (38) f -> . LPAREN exp RPAREN
+    (39) f -> . INT
+    (40) f -> . FLOAT
+    (41) f -> . var
+    (42) f -> . call
+    (56) var -> . ID
+    (57) var -> . ID LBRACKET exp RBRACKET
+    (58) var -> . ID LBRACKET exp RBRACKET LBRACKET exp RBRACKET
+    (59) call -> . ID LPAREN callp RPAREN
+
+    LPAREN          shift and go to state 9
+    INT             shift and go to state 10
+    FLOAT           shift and go to state 11
+    ID              shift and go to state 5
+
+    exp                            shift and go to state 47
+    texp                           shift and go to state 21
+    gexp                           shift and go to state 22
+    mexp                           shift and go to state 23
+    t                              shift and go to state 7
+    f                              shift and go to state 8
+    var                            shift and go to state 12
+    call                           shift and go to state 13
+
+state 46
+
+    (60) callp -> exp SEMICOLON callp .
+
+    RPAREN          reduce using rule 60 (callp -> exp SEMICOLON callp .)
+
+
+state 47
+
+    (58) var -> ID LBRACKET exp RBRACKET LBRACKET exp . RBRACKET
+
+    RBRACKET        shift and go to state 48
+
+
+state 48
+
+    (58) var -> ID LBRACKET exp RBRACKET LBRACKET exp RBRACKET .
+
+    MULT            reduce using rule 58 (var -> ID LBRACKET exp RBRACKET LBRACKET exp RBRACKET .)
+    DIV             reduce using rule 58 (var -> ID LBRACKET exp RBRACKET LBRACKET exp RBRACKET .)
+    PLUS            reduce using rule 58 (var -> ID LBRACKET exp RBRACKET LBRACKET exp RBRACKET .)
+    MINUS           reduce using rule 58 (var -> ID LBRACKET exp RBRACKET LBRACKET exp RBRACKET .)
+    $end            reduce using rule 58 (var -> ID LBRACKET exp RBRACKET LBRACKET exp RBRACKET .)
+    LT              reduce using rule 58 (var -> ID LBRACKET exp RBRACKET LBRACKET exp RBRACKET .)
+    GT              reduce using rule 58 (var -> ID LBRACKET exp RBRACKET LBRACKET exp RBRACKET .)
+    EQUAL           reduce using rule 58 (var -> ID LBRACKET exp RBRACKET LBRACKET exp RBRACKET .)
+    DIFF            reduce using rule 58 (var -> ID LBRACKET exp RBRACKET LBRACKET exp RBRACKET .)
+    AND             reduce using rule 58 (var -> ID LBRACKET exp RBRACKET LBRACKET exp RBRACKET .)
+    OR              reduce using rule 58 (var -> ID LBRACKET exp RBRACKET LBRACKET exp RBRACKET .)
+    RPAREN          reduce using rule 58 (var -> ID LBRACKET exp RBRACKET LBRACKET exp RBRACKET .)
+    RBRACKET        reduce using rule 58 (var -> ID LBRACKET exp RBRACKET LBRACKET exp RBRACKET .)
+    SEMICOLON       reduce using rule 58 (var -> ID LBRACKET exp RBRACKET LBRACKET exp RBRACKET .)
 
