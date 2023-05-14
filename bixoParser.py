@@ -130,6 +130,8 @@ def p_decvar(p):
 
         var_type = p[2]
         var_name = p[3]
+        print("type: ", var_type)
+        print("name: ",var_name)
 
         if scope == "local":
             if var_type == "int":
@@ -158,18 +160,10 @@ def p_decvar(p):
 def p_decvarp(p):
     '''decvarp : ID COMMA decvarp
                | ID'''
-    if p.len()==2:
+    if len(p)==2:
         p[0]=p[1]
     else:
         p[0]=p[3]
-
-#def p_decvarp(p):
-#    '''decvarp : SEMICOLON
-#               | LBRACKET INT RBRACKET decvarpp'''
-                            
-#def p_decvarpp(p):
-#    '''decvarpp : SEMICOLON
-#                | LBRACKET INT RBRACKET'''
 
 def p_type(p):
     '''type : INT
