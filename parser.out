@@ -3,12 +3,16 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 Unused terminals:
 
     ASSIGN
+    CHAR
     COLON
+    CTF
+    CTI
     FUNCESP
     GTE
     LTE
     NUMPY
     QUOTE
+    STRING
 
 Grammar
 
@@ -20,208 +24,208 @@ Rule 4     decvarp -> ID COMMA decvarp
 Rule 5     decvarp -> ID
 Rule 6     type -> INT
 Rule 7     type -> FLOAT
-Rule 8     type -> CHAR
-Rule 9     type -> STRING
-Rule 10    function -> FUNCTION type ID LPAREN param RPAREN body
-Rule 11    voidfunction -> FUNCTION VOID ID LPAREN param RPAREN body
-Rule 12    body -> LBRACE bodyp RBRACE
-Rule 13    bodyp -> decvar statements bodyp
-Rule 14    bodyp -> statements bodyp
-Rule 15    bodyp -> decvar
-Rule 16    bodyp -> <empty>
-Rule 17    param -> <empty>
-Rule 18    param -> type paramp
-Rule 19    paramp -> ID
-Rule 20    paramp -> ID COMMA param
-Rule 21    exp -> texp
-Rule 22    exp -> texp OR exp
-Rule 23    texp -> gexp
-Rule 24    texp -> gexp AND texp
-Rule 25    gexp -> mexp
-Rule 26    gexp -> mexp gexpp mexp
-Rule 27    gexpp -> LT
-Rule 28    gexpp -> GT
-Rule 29    gexpp -> EQUAL
-Rule 30    gexpp -> DIFF
-Rule 31    mexp -> t
-Rule 32    mexp -> t PLUS mexp
-Rule 33    mexp -> t MINUS mexp
-Rule 34    t -> f
-Rule 35    t -> f MULT t
-Rule 36    t -> f DIV t
-Rule 37    f -> LPAREN exp RPAREN
-Rule 38    f -> INT
-Rule 39    f -> FLOAT
-Rule 40    f -> var
-Rule 41    f -> call
-Rule 42    statements -> assign
-Rule 43    statements -> function
-Rule 44    statements -> voidfunction
-Rule 45    statements -> call
-Rule 46    statements -> read
-Rule 47    statements -> print
-Rule 48    statements -> if
-Rule 49    statements -> while
-Rule 50    statements -> for
-Rule 51    statements -> funcesp
-Rule 52    assign -> var EQUAL exp
-Rule 53    read -> READ var
-Rule 54    print -> PRINT LPAREN printp
-Rule 55    printp -> exp RPAREN
-Rule 56    printp -> exp COMMA printp
-Rule 57    var -> ID
-Rule 58    var -> ID LBRACKET exp RBRACKET
-Rule 59    var -> ID LBRACKET exp RBRACKET LBRACKET exp RBRACKET
-Rule 60    call -> ID LPAREN callp RPAREN
-Rule 61    callp -> exp SEMICOLON callp
-Rule 62    callp -> exp
-Rule 63    if -> IF LPAREN exp RPAREN statements ifp
-Rule 64    ifp -> <empty>
-Rule 65    ifp -> ELSE statements
-Rule 66    while -> WHILE LPAREN exp RPAREN statements whilep
-Rule 67    whilep -> SEMICOLON
-Rule 68    whilep -> statements whilep
-Rule 69    for -> FOR LPAREN var SEMICOLON exp SEMICOLON exp RPAREN LBRACKET statements forp
-Rule 70    forp -> RBRACKET
-Rule 71    forp -> statements forp
-Rule 72    funcesp -> array
-Rule 73    funcesp -> matrix
-Rule 74    funcesp -> mean
-Rule 75    funcesp -> layers
-Rule 76    funcesp -> sequential
-Rule 77    funcesp -> compile
-Rule 78    funcesp -> fit
-Rule 79    funcesp -> predict
-Rule 80    funcesp -> getweights
-Rule 81    array -> ID EQUAL ARRAY LPAREN var arrayp
-Rule 82    arrayp -> RPAREN
-Rule 83    arrayp -> COMMA var RPAREN
-Rule 84    matrix -> ID EQUAL MATRIX LPAREN array matrixp
-Rule 85    matrixp -> RPAREN
-Rule 86    matrixp -> COMMA array RPAREN
-Rule 87    mean -> MEAN LPAREN array RPAREN
-Rule 88    layers -> ID EQUAL LAYERS LPAREN UNITS EQUAL INT RPAREN
-Rule 89    sequential -> ID EQUAL SEQUENTIAL LPAREN LBRACKET layers sequentialp
-Rule 90    sequentialp -> RBRACKET RPAREN
-Rule 91    sequentialp -> COMMA layers sequentialp
-Rule 92    compile -> sequential DOT COMPILE LPAREN RPAREN
-Rule 93    fit -> ID EQUAL sequential DOT FIT LPAREN array COMMA array COMMA EPOCHS EQUAL INT COMMA VERBOSE EQUAL fitp
-Rule 94    fitp -> TRUE RPAREN
-Rule 95    fitp -> FALSE RPAREN
-Rule 96    predict -> ID EQUAL sequential DOT PREDICT LPAREN LBRACKET predictp
-Rule 97    predictp -> INT RBRACKET RPAREN
-Rule 98    predictp -> FLOAT RBRACKET RPAREN
-Rule 99    getweights -> layers DOT GETWEIGHTS LPAREN RPAREN
-Rule 100   empty -> <empty>
+Rule 8     function -> FUNCTION type ID LPAREN param RPAREN body
+Rule 9     voidfunction -> FUNCTION VOID ID LPAREN param RPAREN body
+Rule 10    body -> LBRACE bodyp RBRACE
+Rule 11    bodyp -> decvar statements bodyp
+Rule 12    bodyp -> statements bodyp
+Rule 13    bodyp -> decvar
+Rule 14    bodyp -> <empty>
+Rule 15    param -> <empty>
+Rule 16    param -> type paramp
+Rule 17    paramp -> ID
+Rule 18    paramp -> ID COMMA param
+Rule 19    exp -> texp
+Rule 20    exp -> texp OR exp
+Rule 21    texp -> gexp
+Rule 22    texp -> gexp AND texp
+Rule 23    gexp -> mexp
+Rule 24    gexp -> mexp gexpp mexp
+Rule 25    gexpp -> LT
+Rule 26    gexpp -> GT
+Rule 27    gexpp -> EQUAL
+Rule 28    gexpp -> DIFF
+Rule 29    mexp -> t
+Rule 30    mexp -> t PLUS mexp
+Rule 31    mexp -> t MINUS mexp
+Rule 32    t -> f
+Rule 33    t -> f MULT t
+Rule 34    t -> f DIV t
+Rule 35    f -> LPAREN exp RPAREN
+Rule 36    f -> INT
+Rule 37    f -> FLOAT
+Rule 38    f -> var
+Rule 39    f -> call
+Rule 40    statements -> assign
+Rule 41    statements -> function
+Rule 42    statements -> voidfunction
+Rule 43    statements -> call
+Rule 44    statements -> read
+Rule 45    statements -> print
+Rule 46    statements -> if
+Rule 47    statements -> while
+Rule 48    statements -> for
+Rule 49    statements -> funcesp
+Rule 50    assign -> var EQUAL exp
+Rule 51    read -> READ var
+Rule 52    print -> PRINT LPAREN printp
+Rule 53    printp -> exp RPAREN
+Rule 54    printp -> exp COMMA printp
+Rule 55    var -> ID
+Rule 56    var -> ID LBRACKET exp RBRACKET
+Rule 57    var -> ID LBRACKET exp RBRACKET LBRACKET exp RBRACKET
+Rule 58    call -> ID LPAREN callp RPAREN
+Rule 59    callp -> exp SEMICOLON callp
+Rule 60    callp -> exp
+Rule 61    if -> IF LPAREN exp RPAREN statements ifp
+Rule 62    ifp -> <empty>
+Rule 63    ifp -> ELSE statements
+Rule 64    while -> WHILE LPAREN exp RPAREN statements whilep
+Rule 65    whilep -> SEMICOLON
+Rule 66    whilep -> statements whilep
+Rule 67    for -> FOR LPAREN var SEMICOLON exp SEMICOLON exp RPAREN LBRACKET statements forp
+Rule 68    forp -> RBRACKET
+Rule 69    forp -> statements forp
+Rule 70    funcesp -> array
+Rule 71    funcesp -> matrix
+Rule 72    funcesp -> mean
+Rule 73    funcesp -> layers
+Rule 74    funcesp -> sequential
+Rule 75    funcesp -> compile
+Rule 76    funcesp -> fit
+Rule 77    funcesp -> predict
+Rule 78    funcesp -> getweights
+Rule 79    array -> ID EQUAL ARRAY LPAREN var arrayp
+Rule 80    arrayp -> RPAREN
+Rule 81    arrayp -> COMMA var RPAREN
+Rule 82    matrix -> ID EQUAL MATRIX LPAREN array matrixp
+Rule 83    matrixp -> RPAREN
+Rule 84    matrixp -> COMMA array RPAREN
+Rule 85    mean -> MEAN LPAREN array RPAREN
+Rule 86    layers -> ID EQUAL LAYERS LPAREN UNITS EQUAL INT RPAREN
+Rule 87    sequential -> ID EQUAL SEQUENTIAL LPAREN LBRACKET layers sequentialp
+Rule 88    sequentialp -> RBRACKET RPAREN
+Rule 89    sequentialp -> COMMA layers sequentialp
+Rule 90    compile -> sequential DOT COMPILE LPAREN RPAREN
+Rule 91    fit -> ID EQUAL sequential DOT FIT LPAREN array COMMA array COMMA EPOCHS EQUAL INT COMMA VERBOSE EQUAL fitp
+Rule 92    fitp -> TRUE RPAREN
+Rule 93    fitp -> FALSE RPAREN
+Rule 94    predict -> ID EQUAL sequential DOT PREDICT LPAREN LBRACKET predictp
+Rule 95    predictp -> INT RBRACKET RPAREN
+Rule 96    predictp -> FLOAT RBRACKET RPAREN
+Rule 97    getweights -> layers DOT GETWEIGHTS LPAREN RPAREN
+Rule 98    empty -> <empty>
 
 Terminals, with rules where they appear
 
-AND                  : 24
-ARRAY                : 81
+AND                  : 22
+ARRAY                : 79
 ASSIGN               : 
-CHAR                 : 8
+CHAR                 : 
 COLON                : 
-COMMA                : 4 20 56 83 86 91 93 93 93
-COMPILE              : 92
-DIFF                 : 30
-DIV                  : 36
-DOT                  : 92 93 96 99
-ELSE                 : 65
-EPOCHS               : 93
-EQUAL                : 29 52 81 84 88 88 89 93 93 93 96
-FALSE                : 95
-FIT                  : 93
-FLOAT                : 7 39 98
-FOR                  : 69
+COMMA                : 4 18 54 81 84 89 91 91 91
+COMPILE              : 90
+CTF                  : 
+CTI                  : 
+DIFF                 : 28
+DIV                  : 34
+DOT                  : 90 91 94 97
+ELSE                 : 63
+EPOCHS               : 91
+EQUAL                : 27 50 79 82 86 86 87 91 91 91 94
+FALSE                : 93
+FIT                  : 91
+FLOAT                : 7 37 96
+FOR                  : 67
 FUNCESP              : 
-FUNCTION             : 10 11
-GETWEIGHTS           : 99
-GT                   : 28
+FUNCTION             : 8 9
+GETWEIGHTS           : 97
+GT                   : 26
 GTE                  : 
-ID                   : 1 2 4 5 10 11 19 20 57 58 59 60 81 84 88 89 93 96
-IF                   : 63
-INT                  : 6 38 88 93 97
-LAYERS               : 88
-LBRACE               : 12
-LBRACKET             : 58 59 59 69 89 96
-LPAREN               : 10 11 37 54 60 63 66 69 81 84 87 88 89 92 93 96 99
-LT                   : 27
+ID                   : 1 2 4 5 8 9 17 18 55 56 57 58 79 82 86 87 91 94
+IF                   : 61
+INT                  : 6 36 86 91 95
+LAYERS               : 86
+LBRACE               : 10
+LBRACKET             : 56 57 57 67 87 94
+LPAREN               : 8 9 35 52 58 61 64 67 79 82 85 86 87 90 91 94 97
+LT                   : 25
 LTE                  : 
-MATRIX               : 84
-MEAN                 : 87
-MINUS                : 33
-MULT                 : 35
+MATRIX               : 82
+MEAN                 : 85
+MINUS                : 31
+MULT                 : 33
 NUMPY                : 
-OR                   : 22
-PLUS                 : 32
-PREDICT              : 96
-PRINT                : 54
+OR                   : 20
+PLUS                 : 30
+PREDICT              : 94
+PRINT                : 52
 PROGRAM              : 1
 QUOTE                : 
-RBRACE               : 12
-RBRACKET             : 58 59 59 70 90 97 98
-READ                 : 53
-RPAREN               : 10 11 37 55 60 63 66 69 82 83 85 86 87 88 90 92 94 95 97 98 99
-SEMICOLON            : 1 2 3 61 67 69 69
-SEQUENTIAL           : 89
-STRING               : 9
-TRUE                 : 94
-UNITS                : 88
+RBRACE               : 10
+RBRACKET             : 56 57 57 68 88 95 96
+READ                 : 51
+RPAREN               : 8 9 35 53 58 61 64 67 80 81 83 84 85 86 88 90 92 93 95 96 97
+SEMICOLON            : 1 2 3 59 65 67 67
+SEQUENTIAL           : 87
+STRING               : 
+TRUE                 : 92
+UNITS                : 86
 VAR                  : 2 3
-VERBOSE              : 93
-VOID                 : 11
-WHILE                : 66
+VERBOSE              : 91
+VOID                 : 9
+WHILE                : 64
 error                : 
 
 Nonterminals, with rules where they appear
 
-array                : 72 84 86 87 93 93
-arrayp               : 81
-assign               : 42
-body                 : 10 11
-bodyp                : 12 13 14
-call                 : 41 45
-callp                : 60 61
-compile              : 77
-decvar               : 1 13 15
+array                : 70 82 84 85 91 91
+arrayp               : 79
+assign               : 40
+body                 : 8 9
+bodyp                : 10 11 12
+call                 : 39 43
+callp                : 58 59
+compile              : 75
+decvar               : 1 11 13
 decvarp              : 3 4
 empty                : 
-exp                  : 22 37 52 55 56 58 59 59 61 62 63 66 69 69
-f                    : 34 35 36
-fit                  : 78
-fitp                 : 93
-for                  : 50
-forp                 : 69 71
-funcesp              : 51
-function             : 43
-getweights           : 80
-gexp                 : 23 24
-gexpp                : 26
-if                   : 48
-ifp                  : 63
-layers               : 75 89 91 99
-matrix               : 73
-matrixp              : 84
-mean                 : 74
-mexp                 : 25 26 26 32 33
-param                : 10 11 20
-paramp               : 18
-predict              : 79
-predictp             : 96
-print                : 47
-printp               : 54 56
+exp                  : 20 35 50 53 54 56 57 57 59 60 61 64 67 67
+f                    : 32 33 34
+fit                  : 76
+fitp                 : 91
+for                  : 48
+forp                 : 67 69
+funcesp              : 49
+function             : 41
+getweights           : 78
+gexp                 : 21 22
+gexpp                : 24
+if                   : 46
+ifp                  : 61
+layers               : 73 87 89 97
+matrix               : 71
+matrixp              : 82
+mean                 : 72
+mexp                 : 23 24 24 30 31
+param                : 8 9 18
+paramp               : 16
+predict              : 77
+predictp             : 94
+print                : 45
+printp               : 52 54
 program              : 0
-read                 : 46
-sequential           : 76 92 93 96
-sequentialp          : 89 91
-statements           : 13 14 63 65 66 68 69 71
-t                    : 31 32 33 35 36
-texp                 : 21 22 24
-type                 : 2 3 10 18
-var                  : 40 52 53 69 81 83
-voidfunction         : 44
-while                : 49
-whilep               : 66 68
+read                 : 44
+sequential           : 74 90 91 94
+sequentialp          : 87 89
+statements           : 11 12 61 63 64 66 67 69
+t                    : 29 30 31 33 34
+texp                 : 19 20 22
+type                 : 2 3 8 16
+var                  : 38 50 51 67 79 81
+voidfunction         : 42
+while                : 47
+whilep               : 64 66
 
 Parsing method: LALR
 
@@ -277,13 +281,9 @@ state 6
     (3) decvar -> VAR . type decvarp SEMICOLON
     (6) type -> . INT
     (7) type -> . FLOAT
-    (8) type -> . CHAR
-    (9) type -> . STRING
 
     INT             shift and go to state 8
     FLOAT           shift and go to state 9
-    CHAR            shift and go to state 10
-    STRING          shift and go to state 11
 
     type                           shift and go to state 7
 
@@ -294,9 +294,9 @@ state 7
     (4) decvarp -> . ID COMMA decvarp
     (5) decvarp -> . ID
 
-    ID              shift and go to state 12
+    ID              shift and go to state 10
 
-    decvarp                        shift and go to state 13
+    decvarp                        shift and go to state 11
 
 state 8
 
@@ -314,72 +314,58 @@ state 9
 
 state 10
 
-    (8) type -> CHAR .
-
-    ID              reduce using rule 8 (type -> CHAR .)
-
-
-state 11
-
-    (9) type -> STRING .
-
-    ID              reduce using rule 9 (type -> STRING .)
-
-
-state 12
-
     (2) decvar -> VAR type ID . SEMICOLON
     (4) decvarp -> ID . COMMA decvarp
     (5) decvarp -> ID .
 
   ! shift/reduce conflict for SEMICOLON resolved as shift
-    SEMICOLON       shift and go to state 14
-    COMMA           shift and go to state 15
+    SEMICOLON       shift and go to state 12
+    COMMA           shift and go to state 13
 
   ! SEMICOLON       [ reduce using rule 5 (decvarp -> ID .) ]
 
 
-state 13
+state 11
 
     (3) decvar -> VAR type decvarp . SEMICOLON
 
-    SEMICOLON       shift and go to state 16
+    SEMICOLON       shift and go to state 14
 
 
-state 14
+state 12
 
     (2) decvar -> VAR type ID SEMICOLON .
 
     $end            reduce using rule 2 (decvar -> VAR type ID SEMICOLON .)
 
 
-state 15
+state 13
 
     (4) decvarp -> ID COMMA . decvarp
     (4) decvarp -> . ID COMMA decvarp
     (5) decvarp -> . ID
 
-    ID              shift and go to state 17
+    ID              shift and go to state 15
 
-    decvarp                        shift and go to state 18
+    decvarp                        shift and go to state 16
 
-state 16
+state 14
 
     (3) decvar -> VAR type decvarp SEMICOLON .
 
     $end            reduce using rule 3 (decvar -> VAR type decvarp SEMICOLON .)
 
 
-state 17
+state 15
 
     (4) decvarp -> ID . COMMA decvarp
     (5) decvarp -> ID .
 
-    COMMA           shift and go to state 15
+    COMMA           shift and go to state 13
     SEMICOLON       reduce using rule 5 (decvarp -> ID .)
 
 
-state 18
+state 16
 
     (4) decvarp -> ID COMMA decvarp .
 
@@ -388,4 +374,4 @@ state 18
 WARNING: 
 WARNING: Conflicts:
 WARNING: 
-WARNING: shift/reduce conflict for SEMICOLON in state 12 resolved as shift
+WARNING: shift/reduce conflict for SEMICOLON in state 10 resolved as shift

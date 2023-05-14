@@ -6,6 +6,8 @@ tokens = (
     'INT',
     'FLOAT',
     'CHAR',
+    'CTI',
+    'CTF',
     'VAR',
     'TRUE',
     'FALSE',
@@ -148,12 +150,20 @@ def t_VAR(t):
     r'var'
     return t
 
+def t_INT(t):
+    r'int'
+    return t
+
 def t_FLOAT(t):
+    r'int'
+    return t
+
+def t_CTF(t):
     r'\d+\.\d+'
     t.value = float(t.value)
     return t
 
-def t_INT(t):
+def t_CTI(t):
     r'\d+'
     t.value = int(t.value)
     return t

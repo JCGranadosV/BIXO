@@ -126,7 +126,7 @@ def p_decvar(p):
     '''decvar : VAR type ID SEMICOLON
               | VAR type decvarp SEMICOLON'''
     
-    if p.len()==5:
+    if len(p)==5:
 
         var_type = p[2]
         var_name = p[3]
@@ -173,9 +173,7 @@ def p_decvarp(p):
 
 def p_type(p):
     '''type : INT
-            | FLOAT
-            | CHAR
-            | STRING'''
+            | FLOAT'''
     p[0] = p[1]
             
 def p_function(p):
