@@ -141,7 +141,6 @@ def p_decvar(p):
                 var_mem = var_table["local"]["counters"]["float"] + localFloat
                 var_table["local"]["counters"]["float"] += 1
             var_table["local"]["variables"][var_type][var_name]=var_mem
-            print(var_table["local"]["variables"][var_type][var_name])
 
         if scope == "global":
             if var_type == "int":
@@ -151,7 +150,6 @@ def p_decvar(p):
                 var_mem = var_table["global"]["counters"]["float"] + globalFloat
                 var_table["global"]["counters"]["float"] += 1
             var_table["global"]["variables"][var_type][var_name]=var_mem
-            print(var_table["global"]["variables"][var_type][var_name])
         
         print ("varmem: ",var_mem)
         print ("var_table: ",var_table)
