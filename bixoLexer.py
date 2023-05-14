@@ -109,7 +109,7 @@ t_SEMICOLON = r'\;'
 t_COLON = r'\:'
 t_QUOTE = r'\"'
 t_STRING = r'\".*?\"'
-t_VAR = r'var'
+#t_VAR = r'var'
 t_TRUE = r'true'
 t_FALSE = r'false'
 t_IF = r'if'
@@ -139,9 +139,13 @@ t_ARRAY = r'array'
 t_MATRIX = r'matrix'
 t_MEAN = r'mean'
 
+
 def t_PROGRAM(t):
     r'program'
-    #print(f"Encontrado token PROGRAM: {t.value}")
+    return t
+
+def t_VAR(t):
+    r'var'
     return t
 
 def t_FLOAT(t):

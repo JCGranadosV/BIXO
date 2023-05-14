@@ -1,1 +1,2 @@
-program prueba;
+program id;
+var int pel;

@@ -117,50 +117,60 @@ precedence = (
 
 
 def p_program(p):
-    '''program : PROGRAM ID SEMICOLON'''
+    '''program : PROGRAM ID SEMICOLON decvar'''
     print("Nombre del programa:", p[2])
     #p[0]=p[4]
 
 
 def p_decvar(p):
-    '''decvar : VAR type ID decvarp '''
-
-    var_type = p[2]
-    var_name = p[3]
-
-    var_mem = None
-#Para declarar variables locales
-    if scope == "local":
-        if var_type == "int":
-            var_mem = var_table["local"]["counters"]["int"] + localInt
-            var_table["local"]["counters"]["int"] += 1
-        elif var_type == "float":
-            var_mem = var_table["local"]["counters"]["float"] + localFloat
-            var_table["local"]["counters"]["float"] += 1
-    var_table["local"]["variables"][var_type][var_name] = var_mem
+    '''decvar : VAR type ID SEMICOLON
+              | VAR type decvarp SEMICOLON'''
     
+    if p.len()==5:
 
-#Para declarar variables globales
-    if scope == "global":
-        if var_type == "int":
-            var_mem = var_table["global"]["counters"]["int"] + globalInt
-            var_table["global"]["counters"]["int"] += 1
-        elif var_type == "float":
-            var_mem = var_table["global"]["counters"]["float"] + globalFloat
-            var_table["global"]["counters"]["float"] += 1
-        var_table["global"]["variables"][var_type][var_name] = var_mem
+        var_type = p[2]
+        var_name = p[3]
 
-    print ("varmem: ",var_mem)
-    print ("varmem: ",var_table)
+        if scope == "local":
+            if var_type == "int":
+                var_mem = var_table["local"]["counters"]["int"] + localInt
+                var_table["local"]["counters"]["int"] +=1
+            elif var_type =="float":
+                var_mem = var_table["local"]["counters"]["float"] + localFloat
+                var_table["local"]["counters"]["float"] += 1
+            var_table["local"]["variables"][var_type][var_name]=var_mem
+            print(var_table["local"]["variables"][var_type][var_name])
+
+        if scope == "global":
+            if var_type == "int":
+                var_mem = var_table["global"]["counters"]["int"] + globalInt
+                var_table["global"]["counters"]["int"] +=1
+            elif var_type =="float":
+                var_mem = var_table["global"]["counters"]["float"] + globalFloat
+                var_table["global"]["counters"]["float"] += 1
+            var_table["global"]["variables"][var_type][var_name]=var_mem
+            print(var_table["global"]["variables"][var_type][var_name])
+        
+        print ("varmem: ",var_mem)
+        print ("var_table: ",var_table)
+
 
 def p_decvarp(p):
-    '''decvarp : SEMICOLON
-               | LBRACKET INT RBRACKET decvarpp'''
+    '''decvarp : ID COMMA decvarp
+               | ID'''
+    if p.len()==2:
+        p[0]=p[1]
+    else:
+        p[0]=p[3]
+
+#def p_decvarp(p):
+#    '''decvarp : SEMICOLON
+#               | LBRACKET INT RBRACKET decvarpp'''
                             
-def p_decvarpp(p):
-    '''decvarpp : SEMICOLON
-                | LBRACKET INT RBRACKET'''
- 
+#def p_decvarpp(p):
+#    '''decvarpp : SEMICOLON
+#                | LBRACKET INT RBRACKET'''
+
 def p_type(p):
     '''type : INT
             | FLOAT
@@ -214,15 +224,17 @@ def p_mexp(p):
             | t PLUS mexp
             | t MINUS mexp'''
     
-    if p[2]=="PLUS":
+    if p[2]=="+":
         p[0] = p[1] + p[3]
-    elif p[2]=="MINUS":
+    elif p[2]=="-":
         p[0] = p[1] - p[3]
 
 def p_t(p):
     '''t : f 
          | f MULT t
          | f DIV t'''
+    if p.len()==2:
+        p[0]=p[1]
          
 def p_f(p):
     '''f : LPAREN exp RPAREN
@@ -230,9 +242,14 @@ def p_f(p):
          | FLOAT
          | var
          | call'''
+    if p.len()==2:
+        p[0]=p[1]
+    
 
 def p_statements(p):
     '''statements : assign
+                 |  function
+                 |  voidfunction
                  |  call
                  |  read
                  |  print
@@ -240,6 +257,7 @@ def p_statements(p):
                  |  while
                  |  for
                  |  funcesp'''
+    p[0] = p[1]
     
 def p_assign(p):
     '''assign : var EQUAL exp'''
@@ -325,6 +343,8 @@ def p_forp(p):
     ''' forp : RBRACKET
              | statements forp'''
     
+
+ ##########################----------AQUI INICIAN FUNCIONES ESPECIALES--------------------------------------------------------------------------   
 def p_funcesp(p):
     ''' funcesp : array
                 | matrix
@@ -390,10 +410,10 @@ def p_empty(p):
 
 def p_error(p):
     print("Error de Sintaxis",p)
-    print("error en la linea "+ str(p.lineno))
+    #print("error en la linea "+ str(p.lineno))
 
 
-start='program'
+#start='program'
 parser = yacc.yacc()
 
 
