@@ -6,7 +6,6 @@ Unused terminals:
     CHAR
     COLON
     CTF
-    CTI
     FUNCESP
     GTE
     LTE
@@ -76,155 +75,161 @@ Rule 56    var -> ID LBRACKET exp RBRACKET LBRACKET exp RBRACKET
 Rule 57    call -> ID LPAREN callp RPAREN
 Rule 58    callp -> exp SEMICOLON callp
 Rule 59    callp -> exp
-Rule 60    if -> IF LPAREN exp RPAREN statements ifp
+Rule 60    if -> IF LPAREN CTI GT CTI RPAREN quadsIf ifp jumpsIf
 Rule 61    ifp -> <empty>
-Rule 62    ifp -> ELSE statements
-Rule 63    while -> WHILE LPAREN exp RPAREN statements whilep
-Rule 64    whilep -> SEMICOLON
-Rule 65    whilep -> statements whilep
-Rule 66    for -> FOR LPAREN var SEMICOLON exp SEMICOLON exp RPAREN LBRACKET statements forp
-Rule 67    forp -> RBRACKET
-Rule 68    forp -> statements forp
-Rule 69    funcesp -> array
-Rule 70    funcesp -> matrix
-Rule 71    funcesp -> mean
-Rule 72    funcesp -> layers
-Rule 73    funcesp -> sequential
-Rule 74    funcesp -> compile
-Rule 75    funcesp -> fit
-Rule 76    funcesp -> predict
-Rule 77    funcesp -> getweights
-Rule 78    array -> ID EQUAL ARRAY LPAREN var arrayp
-Rule 79    arrayp -> RPAREN
-Rule 80    arrayp -> COMMA var RPAREN
-Rule 81    matrix -> ID EQUAL MATRIX LPAREN array matrixp
-Rule 82    matrixp -> RPAREN
-Rule 83    matrixp -> COMMA array RPAREN
-Rule 84    mean -> MEAN LPAREN array RPAREN
-Rule 85    layers -> ID EQUAL LAYERS LPAREN UNITS EQUAL INT RPAREN
-Rule 86    sequential -> ID EQUAL SEQUENTIAL LPAREN LBRACKET layers sequentialp
-Rule 87    sequentialp -> RBRACKET RPAREN
-Rule 88    sequentialp -> COMMA layers sequentialp
-Rule 89    compile -> sequential DOT COMPILE LPAREN RPAREN
-Rule 90    fit -> ID EQUAL sequential DOT FIT LPAREN array COMMA array COMMA EPOCHS EQUAL INT COMMA VERBOSE EQUAL fitp
-Rule 91    fitp -> TRUE RPAREN
-Rule 92    fitp -> FALSE RPAREN
-Rule 93    predict -> ID EQUAL sequential DOT PREDICT LPAREN LBRACKET predictp
-Rule 94    predictp -> INT RBRACKET RPAREN
-Rule 95    predictp -> FLOAT RBRACKET RPAREN
-Rule 96    getweights -> layers DOT GETWEIGHTS LPAREN RPAREN
-Rule 97    empty -> <empty>
+Rule 62    ifp -> ELSE quadsElse statements
+Rule 63    quadsIf -> <empty>
+Rule 64    jumpsIf -> <empty>
+Rule 65    quadsElse -> <empty>
+Rule 66    while -> WHILE LPAREN exp RPAREN statements whilep
+Rule 67    whilep -> SEMICOLON
+Rule 68    whilep -> statements whilep
+Rule 69    for -> FOR LPAREN var SEMICOLON exp SEMICOLON exp RPAREN LBRACKET statements forp
+Rule 70    forp -> RBRACKET
+Rule 71    forp -> statements forp
+Rule 72    funcesp -> array
+Rule 73    funcesp -> matrix
+Rule 74    funcesp -> mean
+Rule 75    funcesp -> layers
+Rule 76    funcesp -> sequential
+Rule 77    funcesp -> compile
+Rule 78    funcesp -> fit
+Rule 79    funcesp -> predict
+Rule 80    funcesp -> getweights
+Rule 81    array -> ID EQUAL ARRAY LPAREN var arrayp
+Rule 82    arrayp -> RPAREN
+Rule 83    arrayp -> COMMA var RPAREN
+Rule 84    matrix -> ID EQUAL MATRIX LPAREN array matrixp
+Rule 85    matrixp -> RPAREN
+Rule 86    matrixp -> COMMA array RPAREN
+Rule 87    mean -> MEAN LPAREN array RPAREN
+Rule 88    layers -> ID EQUAL LAYERS LPAREN UNITS EQUAL INT RPAREN
+Rule 89    sequential -> ID EQUAL SEQUENTIAL LPAREN LBRACKET layers sequentialp
+Rule 90    sequentialp -> RBRACKET RPAREN
+Rule 91    sequentialp -> COMMA layers sequentialp
+Rule 92    compile -> sequential DOT COMPILE LPAREN RPAREN
+Rule 93    fit -> ID EQUAL sequential DOT FIT LPAREN array COMMA array COMMA EPOCHS EQUAL INT COMMA VERBOSE EQUAL fitp
+Rule 94    fitp -> TRUE RPAREN
+Rule 95    fitp -> FALSE RPAREN
+Rule 96    predict -> ID EQUAL sequential DOT PREDICT LPAREN LBRACKET predictp
+Rule 97    predictp -> INT RBRACKET RPAREN
+Rule 98    predictp -> FLOAT RBRACKET RPAREN
+Rule 99    getweights -> layers DOT GETWEIGHTS LPAREN RPAREN
+Rule 100   empty -> <empty>
 
 Terminals, with rules where they appear
 
 AND                  : 21
-ARRAY                : 78
+ARRAY                : 81
 ASSIGN               : 
 CHAR                 : 
 COLON                : 
-COMMA                : 3 17 53 80 83 88 90 90 90
-COMPILE              : 89
+COMMA                : 3 17 53 83 86 91 93 93 93
+COMPILE              : 92
 CTF                  : 
-CTI                  : 
+CTI                  : 60 60
 DIFF                 : 27
 DIV                  : 33
-DOT                  : 89 90 93 96
+DOT                  : 92 93 96 99
 ELSE                 : 62
-EPOCHS               : 90
-EQUAL                : 26 49 78 81 85 85 86 90 90 90 93
-FALSE                : 92
-FIT                  : 90
-FLOAT                : 6 36 95
-FOR                  : 66
+EPOCHS               : 93
+EQUAL                : 26 49 81 84 88 88 89 93 93 93 96
+FALSE                : 95
+FIT                  : 93
+FLOAT                : 6 36 98
+FOR                  : 69
 FUNCESP              : 
 FUNCTION             : 7 8
-GETWEIGHTS           : 96
-GT                   : 25
+GETWEIGHTS           : 99
+GT                   : 25 60
 GTE                  : 
-ID                   : 1 3 4 7 8 16 17 54 55 56 57 78 81 85 86 90 93
+ID                   : 1 3 4 7 8 16 17 54 55 56 57 81 84 88 89 93 96
 IF                   : 60
-INT                  : 5 35 85 90 94
-LAYERS               : 85
+INT                  : 5 35 88 93 97
+LAYERS               : 88
 LBRACE               : 9
-LBRACKET             : 55 56 56 66 86 93
-LPAREN               : 7 8 34 51 57 60 63 66 78 81 84 85 86 89 90 93 96
+LBRACKET             : 55 56 56 69 89 96
+LPAREN               : 7 8 34 51 57 60 66 69 81 84 87 88 89 92 93 96 99
 LT                   : 24
 LTE                  : 
-MATRIX               : 81
-MEAN                 : 84
+MATRIX               : 84
+MEAN                 : 87
 MINUS                : 30
 MULT                 : 32
 NUMPY                : 
 OR                   : 19
 PLUS                 : 29
-PREDICT              : 93
+PREDICT              : 96
 PRINT                : 51
 PROGRAM              : 1
 QUOTE                : 
 RBRACE               : 9
-RBRACKET             : 55 56 56 67 87 94 95
+RBRACKET             : 55 56 56 70 90 97 98
 READ                 : 50
-RPAREN               : 7 8 34 52 57 60 63 66 79 80 82 83 84 85 87 89 91 92 94 95 96
-SEMICOLON            : 1 2 58 64 66 66
-SEQUENTIAL           : 86
+RPAREN               : 7 8 34 52 57 60 66 69 82 83 85 86 87 88 90 92 94 95 97 98 99
+SEMICOLON            : 1 2 58 67 69 69
+SEQUENTIAL           : 89
 STRING               : 
-TRUE                 : 91
-UNITS                : 85
+TRUE                 : 94
+UNITS                : 88
 VAR                  : 2
-VERBOSE              : 90
+VERBOSE              : 93
 VOID                 : 8
-WHILE                : 63
+WHILE                : 66
 error                : 
 
 Nonterminals, with rules where they appear
 
-array                : 69 81 83 84 90 90
-arrayp               : 78
+array                : 72 84 86 87 93 93
+arrayp               : 81
 assign               : 39
 body                 : 7 8
 bodyp                : 9 10 11
 call                 : 38 42
 callp                : 57 58
-compile              : 74
+compile              : 77
 decvar               : 1 10 12
 decvarp              : 2 3
 empty                : 
-exp                  : 19 34 49 52 53 55 56 56 58 59 60 63 66 66
+exp                  : 19 34 49 52 53 55 56 56 58 59 66 69 69
 f                    : 31 32 33
-fit                  : 75
-fitp                 : 90
+fit                  : 78
+fitp                 : 93
 for                  : 47
-forp                 : 66 68
+forp                 : 69 71
 funcesp              : 48
 function             : 40
-getweights           : 77
+getweights           : 80
 gexp                 : 20 21
 gexpp                : 23
 if                   : 45
 ifp                  : 60
-layers               : 72 86 88 96
-matrix               : 70
-matrixp              : 81
-mean                 : 71
+jumpsIf              : 60
+layers               : 75 89 91 99
+matrix               : 73
+matrixp              : 84
+mean                 : 74
 mexp                 : 22 23 23 29 30
 param                : 7 8 17
 paramp               : 15
-predict              : 76
-predictp             : 93
+predict              : 79
+predictp             : 96
 print                : 44
 printp               : 51 53
 program              : 0
+quadsElse            : 62
+quadsIf              : 60
 read                 : 43
-sequential           : 73 89 90 93
-sequentialp          : 86 88
-statements           : 10 11 60 62 63 65 66 68
+sequential           : 76 92 93 96
+sequentialp          : 89 91
+statements           : 10 11 62 66 68 69 71
 t                    : 28 29 30 32 33
 texp                 : 18 19 21
 type                 : 2 7 15
-var                  : 37 49 50 66 78 80
+var                  : 37 49 50 69 81 83
 voidfunction         : 41
 while                : 46
-whilep               : 63 65
+whilep               : 66 68
 
 Parsing method: LALR
 

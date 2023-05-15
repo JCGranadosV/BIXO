@@ -150,7 +150,7 @@ def p_decvar(p):
                     var_table["local"]["variables"][var_type][vars] = [var_mem]      
                     sTypes.append(var_type) 
         print("pilatypes: ", sTypes)
-        print ("var_table (local): ",var_table["local"])
+        print ("var_table (global): ",var_table["local"])
 
     if scope == "global":
         print("pilavars: ", sVars)
@@ -297,37 +297,45 @@ def p_call(p):
 def p_callp(p):
     '''callp : exp SEMICOLON callp
              | exp'''
-    ##################Quads if######################         
+       
+##################Quads if######################   
+#def p_if(p):
+#    '''if : IF LPAREN exp quadsIf RPAREN statements ifp jumpsIf'''    
 def p_if(p):
-    '''if : IF LPAREN exp RPAREN statements ifp'''
+    '''if : IF LPAREN CTI GT CTI RPAREN quadsIf ifp jumpsIf'''
  
 def p_ifp(p):
     ''' ifp : 
-            | ELSE statements'''
+            | ELSE quadsElse statements'''
 
-#def p_quadsIf(p):
-   # '''quadsIf : '''            
-    #global SOperators, sOperands, sTypes, SQuads, qCounter
-    #if len(SOperators) != 0:
-        #if sTypes [-1] == 'int':
-            #sTypes.pop()
-            #SQuads.append(QuadGenerator("gotoF", sOperands.pop(), None, None))
-            #sJumps.append(qCounter)
-            #qCounter += 1
+def p_quadsIf(p):
+    '''quadsIf : '''            
+    global SOperators, sOperands, sTypes, SQuads, qCounter
+    print("quadsif")
+    if len(SOperators) != 1:
+        print("entro1")
+        #if sTypes [0] == 'int':
+        print("entro")
+        #sTypes.pop()
+        #SQuads.append(QuadGenerator("gotoF", sOperands.pop(), None, None))
+        SQuads.append(QuadGenerator("gotoF", None, None, None))
+        sJumps.append(qCounter)
+        qCounter += 1
 
-#def p_jumpsIf(p):
-    #'''jumpsIf : '''            
-    #jumps = sJumps.pop()
-    #SQuads[jumps].temp = qCounter
+def p_jumpsIf(p):
+    '''jumpsIf : '''  
+    print("jumpsif")          
+    jumps = sJumps.pop()
+    SQuads[jumps].temp = qCounter
 
-#def p_quadsElse(p):
-    #'''quadsElse : '''    
-    #global qCounter
-    #SQuads.append(QuadGenerator("goto", None, None, None))
-    #jumps = sJumps.pop()
-    #sJumps.append(qCounter)
-    #qCounter += 1
-    #SQuads[jumps].temp = qCounter
+def p_quadsElse(p):
+    '''quadsElse : '''    
+    global qCounter
+    SQuads.append(QuadGenerator("goto", None, None, None))
+    jumps = sJumps.pop()
+    sJumps.append(qCounter)
+    qCounter += 1
+    SQuads[jumps].temp=qCounter
 
 ###############################Quands while#############
 def p_while(p):
@@ -337,18 +345,14 @@ def p_whilep(p):
     ''' whilep : SEMICOLON
                | statements whilep'''
 
-#def p_quadsWhile(p):
-    #'''quadsWhile : '''
-    #global SOperators, sOperands, sTypes, SQuads, qCounter
-    #if len(SOperators) != 0:
-        #if sTypes [-1] == 'int':
-            #sTypes.pop()
-            #SQuads.append(QuadGenerator("gotoF", sOperands.pop(), None, None))
-            #sJumps.append(qCounter)
-            #qCounter += 1
-
-#def p_jumpsWhile(p):
-    #'''jumpsWhile : '''          
+#global SOperators, sOperands, sTypes, SQuads, qCounter
+ #   if len(SOperators) != 0:
+  #      if sTypes [-1] == 'int':
+   #         sTypes.pop()
+    #        SQuads.append(QuadGenerator("gotoF", sOperands.pop(), None, None))
+     #       sJumps.append(qCounter)
+      #      qCounter += 1
+            
     #global qCounter
     #qJumpsF = sJumps.pop()
     #qJumpsT = sJumps.pop()

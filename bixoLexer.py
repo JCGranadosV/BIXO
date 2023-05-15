@@ -114,7 +114,6 @@ t_STRING = r'\".*?\"'
 #t_VAR = r'var'
 t_TRUE = r'true'
 t_FALSE = r'false'
-t_IF = r'if'
 t_ELSE = r'else'
 t_WHILE = r'while'
 t_FOR = r'for'
@@ -148,6 +147,10 @@ def t_PROGRAM(t):
 
 def t_VAR(t):
     r'var'
+    return t
+
+def t_IF(t):
+    r'if'
     return t
 
 def t_INT(t):
