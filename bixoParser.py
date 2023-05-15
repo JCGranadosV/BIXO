@@ -326,12 +326,9 @@ def p_quadsIf(p):
         #if sTypes [0] == 'int':
         print("entro")
         #sTypes.pop()
-        #SQuads.append(QuadGenerator("gotoF", sOperands.pop(), None, None))
-        #SQuads.append({"op" : "+","arg1" : 3,"arg2" : 4,"res" : "t1"})
         quadGen.gen_quad("+", "2", "3", "t1")
         quadGen.gen_quad("*", "1", "5", "t2")
 
-        #SQuads.append(QuadGenerator("gotoF", None, None, None))
         sJumps.append(qCounter)
         qCounter += 1
         print("QG ES: ",str(quadGen))
@@ -341,16 +338,16 @@ def p_jumpsIf(p):
     '''jumpsIf : '''  
     print("jumpsif")          
     jumps = sJumps.pop()
-    SQuads[jumps].temp = qCounter
+    #SQuads[jumps].temp = qCounter
 
 def p_quadsElse(p):
     '''quadsElse : '''    
     global qCounter
-    SQuads.append(QuadGenerator("goto", None, None, None))
+    #SQuads.append(QuadGenerator("goto", None, None, None))
     jumps = sJumps.pop()
     sJumps.append(qCounter)
     qCounter += 1
-    SQuads[jumps].temp=qCounter
+    #SQuads[jumps].temp=qCounter
 
 ###############################Quands while#############
 def p_while(p):
