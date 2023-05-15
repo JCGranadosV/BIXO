@@ -5,14 +5,22 @@ from bixoLexer import tokens
 
 
 class QuadGenerator:
-    def __init__(self, op, arg1, arg2, res):
-        self.op = op
-        self.arg1 = arg1
-        self.arg2 = arg2
-        self.res = res
+    def __init__(self):
+        self.quads = []
+
+    def gen_quad(self, op, arg1, arg2, res):
+        quad = [op, arg1, arg2, res]
+        self.quads.append(quad)
 
     def __str__(self):
-        return f'[{self.op}][{self.arg1}][{self.arg2}][{self.res}]'
+        result = ""
+        for i, quad in enumerate(self.quads):
+            result += f"{i}: {QuadGenerator.format_quad(quad)}\n"
+        return result
+
+    @staticmethod
+    def format_quad(quad):
+        return f'[{quad[0]}][{quad[1]}][{quad[2]}][{quad[3]}]'
 
 
 var_table = {
@@ -52,8 +60,6 @@ tokens=bixoLexer.tokens
 sTypes = [] 
 #pila saltos
 sJumps = []
-#Pila cuadruplos
-SQuads = []
 qCounter=0
 #pila operandos
 sOperands = []
@@ -63,6 +69,9 @@ SOperators = []
 scope="global"
 #pilavars
 sVars=[]
+quadGen=QuadGenerator()
+#pila de cuadruplos = quadGen.quads
+#para imprimir cuadruplos : print(str(quadGen))
 
 
 functions_table = {}
@@ -310,7 +319,7 @@ def p_ifp(p):
 
 def p_quadsIf(p):
     '''quadsIf : '''            
-    global SOperators, sOperands, sTypes, SQuads, qCounter
+    global SOperators, sOperands, sTypes, qCounter
     print("quadsif")
     if len(SOperators) != 1:
         print("entro1")
@@ -318,9 +327,15 @@ def p_quadsIf(p):
         print("entro")
         #sTypes.pop()
         #SQuads.append(QuadGenerator("gotoF", sOperands.pop(), None, None))
-        SQuads.append(QuadGenerator("gotoF", None, None, None))
+        #SQuads.append({"op" : "+","arg1" : 3,"arg2" : 4,"res" : "t1"})
+        quadGen.gen_quad("+", "2", "3", "t1")
+        quadGen.gen_quad("*", "1", "5", "t2")
+
+        #SQuads.append(QuadGenerator("gotoF", None, None, None))
         sJumps.append(qCounter)
         qCounter += 1
+        print("QG ES: ",str(quadGen))
+        print(quadGen.quads)
 
 def p_jumpsIf(p):
     '''jumpsIf : '''  
