@@ -1,2 +1,2 @@
 program id;
-var int pel, col;
+var int col, que;

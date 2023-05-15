@@ -61,6 +61,9 @@ sOperands = []
 SOperators = []
 #almacena el scope actual
 scope="global"
+#pilavars
+sVars=[]
+
 
 functions_table = {}
 
@@ -123,44 +126,62 @@ def p_program(p):
 
 
 def p_decvar(p):
-    '''decvar : VAR type ID SEMICOLON
-              | VAR type decvarp SEMICOLON'''
-    
-    if len(p)==5:
+    '''decvar : VAR type decvarp SEMICOLON'''
 
-        var_type = p[2]
-        var_name = p[3]
-        print("type: ", var_type)
-        print("name: ",var_name)
+    var_type = p[2]
+    var_name = p[3]
 
-        if scope == "local":
+    if scope == "local":
+        print("pilavars: ", sVars)
+        #Revisa que la variable no exista ya en la tabla 
+        if var_name in var_table["local"]["variables"][var_type]:
+            print("ya existeeeeeeeeeeeee")
+        else:
             if var_type == "int":
-                var_mem = var_table["local"]["counters"]["int"] + localInt
-                var_table["local"]["counters"]["int"] +=1
+                for vars in sVars:
+                    var_mem = var_table["local"]["counters"]["int"] + localInt
+                    var_table["local"]["counters"]["int"] += 1
+                    var_table["local"]["variables"][var_type][vars] = [var_mem]
+                    sTypes.append(var_type) 
             elif var_type =="float":
-                var_mem = var_table["local"]["counters"]["float"] + localFloat
-                var_table["local"]["counters"]["float"] += 1
-            var_table["local"]["variables"][var_type][var_name]=var_mem
+                for vars in sVars:
+                    var_mem = var_table["local"]["counters"]["float"] + localFloat
+                    var_table["local"]["counters"]["float"] += 1
+                    var_table["local"]["variables"][var_type][vars] = [var_mem]      
+                    sTypes.append(var_type) 
+        print("pilatypes: ", sTypes)
+        print ("var_table (local): ",var_table["local"])
 
-        if scope == "global":
+    if scope == "global":
+        print("pilavars: ", sVars)
+        #Revisa que la variable no exista ya en la tabla 
+        if var_name in var_table["global"]["variables"][var_type]:
+            print("ya existeeeeeeeeeeeee")
+        else:
             if var_type == "int":
-                var_mem = var_table["global"]["counters"]["int"] + globalInt
-                var_table["global"]["counters"]["int"] +=1
+                for vars in sVars:
+                    var_mem = var_table["global"]["counters"]["int"] + globalInt
+                    var_table["global"]["counters"]["int"] += 1
+                    var_table["global"]["variables"][var_type][vars] = [var_mem]
+                    sTypes.append(var_type) 
             elif var_type =="float":
-                var_mem = var_table["global"]["counters"]["float"] + globalFloat
-                var_table["global"]["counters"]["float"] += 1
-            var_table["global"]["variables"][var_type][var_name]=var_mem
-        
-        print ("varmem: ",var_mem)
-        print ("var_table: ",var_table)
+                for vars in sVars:
+                    var_mem = var_table["global"]["counters"]["float"] + globalFloat
+                    var_table["global"]["counters"]["float"] += 1
+                    var_table["global"]["variables"][var_type][vars] = [var_mem]      
+                    sTypes.append(var_type) 
+        print("pilatypes: ", sTypes)
+        print ("var_table (global): ",var_table["global"])
 
 
 def p_decvarp(p):
     '''decvarp : ID COMMA decvarp
                | ID'''
     if len(p)==2:
+        sVars.append(p[1])
         p[0]=p[1]
     else:
+        sVars.append(p[1])
         p[0]=p[3]
 
 def p_type(p):
