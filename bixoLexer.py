@@ -158,7 +158,7 @@ def t_INT(t):
     return t
 
 def t_FLOAT(t):
-    r'int'
+    r'float'
     return t
 
 def t_CTF(t):

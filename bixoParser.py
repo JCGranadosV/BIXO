@@ -54,6 +54,21 @@ var_table = {
     }
 }
 
+def add_var_local(name, type, currFunc):
+
+    var_table[currFunc] = {
+    }
+
+def add_var_global(name, type):
+     if(type=="int"):
+        var_mem = var_table["global"]["counters"][type] + globalInt
+     elif(type=="float"):
+        var_mem = var_table["global"]["counters"][type] + globalFloat
+     print("memoria:",var_mem)
+     var_table["global"]["counters"][type] += 1
+     var_table["global"]["variables"][type][name] = [var_mem]      
+     sTypes.append(type)
+
 tokens=bixoLexer.tokens
 
 #almacena los tipos de variables
@@ -72,6 +87,8 @@ sVars=[]
 quadGen=QuadGenerator()
 #pila de cuadruplos = quadGen.quads
 #para imprimir cuadruplos : print(str(quadGen))
+#current function
+currFunc=""
 
 
 functions_table = {}
@@ -169,16 +186,10 @@ def p_decvar(p):
         else:
             if var_type == "int":
                 for vars in sVars:
-                    var_mem = var_table["global"]["counters"]["int"] + globalInt
-                    var_table["global"]["counters"]["int"] += 1
-                    var_table["global"]["variables"][var_type][vars] = [var_mem]
-                    sTypes.append(var_type) 
+                    add_var_global(vars,var_type)
             elif var_type =="float":
                 for vars in sVars:
-                    var_mem = var_table["global"]["counters"]["float"] + globalFloat
-                    var_table["global"]["counters"]["float"] += 1
-                    var_table["global"]["variables"][var_type][vars] = [var_mem]      
-                    sTypes.append(var_type) 
+                    add_var_global(vars,var_type)
         print("pilatypes: ", sTypes)
         print ("var_table (global): ",var_table["global"])
 
