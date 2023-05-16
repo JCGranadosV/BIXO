@@ -332,8 +332,11 @@ def p_callp(p):
 #def p_if(p):
 #    '''if : IF LPAREN exp quadsIf RPAREN statements ifp jumpsIf'''    
 def p_if(p):
-    '''if : IF LPAREN CTI GT CTI RPAREN quadsIf ifp jumpsIf'''
- 
+    '''if : IF LPAREN INT EQUAL CTI RPAREN quadsIf ifp jumpsIf'''
+    if p[5]== 0 | 1:
+        print("si es bool")
+    else: print("no es bool")
+        
 def p_ifp(p):
     ''' ifp : 
             | ELSE quadsElse statements'''
@@ -344,10 +347,7 @@ def p_quadsIf(p):
     print("quadsif")
     if len(SOperators) != 1:
         print("entro1")
-        #if sTypes [0] == 'int':
-        print("entro")
-        #sTypes.pop()
-        quadGen.gen_quad("+", "2", "3", "t1")
+        quadGen.gen_quad("gotoF", None, None, None)
         quadGen.gen_quad("*", "1", "5", "t2")
 
         sJumps.append(qCounter)
