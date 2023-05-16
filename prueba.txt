@@ -1,2 +1,2 @@
 program id;
-var int col, que;
+var float col, que;

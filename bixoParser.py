@@ -39,6 +39,7 @@ var_table = {
         }
     },
     "local": {
+        "function":"",
         "variables": {
             "int": {},
             "float": {},
@@ -55,9 +56,15 @@ var_table = {
 }
 
 def add_var_local(name, type, currFunc):
-
-    var_table[currFunc] = {
-    }
+     if(type=="int"):
+        var_mem = var_table["local"]["counters"][type] + localInt
+     elif(type=="float"):
+        var_mem = var_table["local"]["counters"][type] + localFloat
+     print("memoria:",var_mem)
+     var_table["local"]["function"] = currFunc
+     var_table["local"]["counters"][type] += 1
+     var_table["local"]["variables"][type][name] = [var_mem]      
+     sTypes.append(type)
 
 def add_var_global(name, type):
      if(type=="int"):
@@ -88,7 +95,7 @@ quadGen=QuadGenerator()
 #pila de cuadruplos = quadGen.quads
 #para imprimir cuadruplos : print(str(quadGen))
 #current function
-currFunc=""
+currFunc="ejemplo1"
 
 
 functions_table = {}
@@ -165,16 +172,10 @@ def p_decvar(p):
         else:
             if var_type == "int":
                 for vars in sVars:
-                    var_mem = var_table["local"]["counters"]["int"] + localInt
-                    var_table["local"]["counters"]["int"] += 1
-                    var_table["local"]["variables"][var_type][vars] = [var_mem]
-                    sTypes.append(var_type) 
+                    add_var_local(vars,var_type,currFunc)
             elif var_type =="float":
                 for vars in sVars:
-                    var_mem = var_table["local"]["counters"]["float"] + localFloat
-                    var_table["local"]["counters"]["float"] += 1
-                    var_table["local"]["variables"][var_type][vars] = [var_mem]      
-                    sTypes.append(var_type) 
+                    add_var_local(vars,var_type,currFunc) 
         print("pilatypes: ", sTypes)
         print ("var_table (global): ",var_table["local"])
 
