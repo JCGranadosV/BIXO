@@ -159,10 +159,15 @@ def p_program(p):
 
 
 def p_decvar(p):
-    '''decvar : VAR type decvarp SEMICOLON'''
+    '''decvar : VAR decvarp
+              | VAR decvarp decvar'''
+    #p[0]=p[2]
 
-    var_type = p[2]
-    var_name = p[3]
+def p_decvarp(p):
+    '''decvarp : type decvarpp SEMICOLON'''
+
+    var_type = p[1]
+    var_name = p[2]
 
     if scope == "local":
         print("pilavars: ", sVars)
@@ -177,7 +182,7 @@ def p_decvar(p):
                 for vars in sVars:
                     add_var_local(vars,var_type,currFunc) 
         print("pilatypes: ", sTypes)
-        print ("var_table (global): ",var_table["local"])
+        print ("var_table (local): ",var_table["local"])
 
     if scope == "global":
         print("pilavars: ", sVars)
@@ -185,25 +190,29 @@ def p_decvar(p):
         if var_name in var_table["global"]["variables"][var_type]:
             print("ya existeeeeeeeeeeeee")
         else:
-            if var_type == "int":
-                for vars in sVars:
+            for vars in sVars:
+                if var_type == "int":
+                    print("ES INT Y :", vars, var_type)
                     add_var_global(vars,var_type)
-            elif var_type =="float":
-                for vars in sVars:
+                elif var_type == "float":
                     add_var_global(vars,var_type)
         print("pilatypes: ", sTypes)
         print ("var_table (global): ",var_table["global"])
 
+    sVars.clear()
 
-def p_decvarp(p):
-    '''decvarp : ID COMMA decvarp
-               | ID'''
+
+def p_decvarpp(p):
+    '''decvarpp : ID COMMA decvarpp
+                | ID'''
     if len(p)==2:
         sVars.append(p[1])
         p[0]=p[1]
     else:
         sVars.append(p[1])
         p[0]=p[3]
+    
+
 
 def p_type(p):
     '''type : INT

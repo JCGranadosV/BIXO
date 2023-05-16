@@ -17,219 +17,222 @@ Grammar
 
 Rule 0     S' -> program
 Rule 1     program -> PROGRAM ID SEMICOLON decvar
-Rule 2     decvar -> VAR type decvarp SEMICOLON
-Rule 3     decvarp -> ID COMMA decvarp
-Rule 4     decvarp -> ID
-Rule 5     type -> INT
-Rule 6     type -> FLOAT
-Rule 7     function -> FUNCTION type ID LPAREN param RPAREN body
-Rule 8     voidfunction -> FUNCTION VOID ID LPAREN param RPAREN body
-Rule 9     body -> LBRACE bodyp RBRACE
-Rule 10    bodyp -> decvar statements bodyp
-Rule 11    bodyp -> statements bodyp
-Rule 12    bodyp -> decvar
-Rule 13    bodyp -> <empty>
-Rule 14    param -> <empty>
-Rule 15    param -> type paramp
-Rule 16    paramp -> ID
-Rule 17    paramp -> ID COMMA param
-Rule 18    exp -> texp
-Rule 19    exp -> texp OR exp
-Rule 20    texp -> gexp
-Rule 21    texp -> gexp AND texp
-Rule 22    gexp -> mexp
-Rule 23    gexp -> mexp gexpp mexp
-Rule 24    gexpp -> LT
-Rule 25    gexpp -> GT
-Rule 26    gexpp -> EQUAL
-Rule 27    gexpp -> DIFF
-Rule 28    mexp -> t
-Rule 29    mexp -> t PLUS mexp
-Rule 30    mexp -> t MINUS mexp
-Rule 31    t -> f
-Rule 32    t -> f MULT t
-Rule 33    t -> f DIV t
-Rule 34    f -> LPAREN exp RPAREN
-Rule 35    f -> INT
-Rule 36    f -> FLOAT
-Rule 37    f -> var
-Rule 38    f -> call
-Rule 39    statements -> assign
-Rule 40    statements -> function
-Rule 41    statements -> voidfunction
-Rule 42    statements -> call
-Rule 43    statements -> read
-Rule 44    statements -> print
-Rule 45    statements -> if
-Rule 46    statements -> while
-Rule 47    statements -> for
-Rule 48    statements -> funcesp
-Rule 49    assign -> var EQUAL exp
-Rule 50    read -> READ var
-Rule 51    print -> PRINT LPAREN printp
-Rule 52    printp -> exp RPAREN
-Rule 53    printp -> exp COMMA printp
-Rule 54    var -> ID
-Rule 55    var -> ID LBRACKET exp RBRACKET
-Rule 56    var -> ID LBRACKET exp RBRACKET LBRACKET exp RBRACKET
-Rule 57    call -> ID LPAREN callp RPAREN
-Rule 58    callp -> exp SEMICOLON callp
-Rule 59    callp -> exp
-Rule 60    if -> IF LPAREN CTI GT CTI RPAREN quadsIf ifp jumpsIf
-Rule 61    ifp -> <empty>
-Rule 62    ifp -> ELSE quadsElse statements
-Rule 63    quadsIf -> <empty>
-Rule 64    jumpsIf -> <empty>
-Rule 65    quadsElse -> <empty>
-Rule 66    while -> WHILE LPAREN exp RPAREN statements whilep
-Rule 67    whilep -> SEMICOLON
-Rule 68    whilep -> statements whilep
-Rule 69    for -> FOR LPAREN var SEMICOLON exp SEMICOLON exp RPAREN LBRACKET statements forp
-Rule 70    forp -> RBRACKET
-Rule 71    forp -> statements forp
-Rule 72    funcesp -> array
-Rule 73    funcesp -> matrix
-Rule 74    funcesp -> mean
-Rule 75    funcesp -> layers
-Rule 76    funcesp -> sequential
-Rule 77    funcesp -> compile
-Rule 78    funcesp -> fit
-Rule 79    funcesp -> predict
-Rule 80    funcesp -> getweights
-Rule 81    array -> ID EQUAL ARRAY LPAREN var arrayp
-Rule 82    arrayp -> RPAREN
-Rule 83    arrayp -> COMMA var RPAREN
-Rule 84    matrix -> ID EQUAL MATRIX LPAREN array matrixp
-Rule 85    matrixp -> RPAREN
-Rule 86    matrixp -> COMMA array RPAREN
-Rule 87    mean -> MEAN LPAREN array RPAREN
-Rule 88    layers -> ID EQUAL LAYERS LPAREN UNITS EQUAL INT RPAREN
-Rule 89    sequential -> ID EQUAL SEQUENTIAL LPAREN LBRACKET layers sequentialp
-Rule 90    sequentialp -> RBRACKET RPAREN
-Rule 91    sequentialp -> COMMA layers sequentialp
-Rule 92    compile -> sequential DOT COMPILE LPAREN RPAREN
-Rule 93    fit -> ID EQUAL sequential DOT FIT LPAREN array COMMA array COMMA EPOCHS EQUAL INT COMMA VERBOSE EQUAL fitp
-Rule 94    fitp -> TRUE RPAREN
-Rule 95    fitp -> FALSE RPAREN
-Rule 96    predict -> ID EQUAL sequential DOT PREDICT LPAREN LBRACKET predictp
-Rule 97    predictp -> INT RBRACKET RPAREN
-Rule 98    predictp -> FLOAT RBRACKET RPAREN
-Rule 99    getweights -> layers DOT GETWEIGHTS LPAREN RPAREN
-Rule 100   empty -> <empty>
+Rule 2     decvar -> VAR decvarp
+Rule 3     decvar -> VAR decvarp decvar
+Rule 4     decvarp -> type decvarpp SEMICOLON
+Rule 5     decvarpp -> ID COMMA decvarpp
+Rule 6     decvarpp -> ID
+Rule 7     type -> INT
+Rule 8     type -> FLOAT
+Rule 9     function -> FUNCTION type ID LPAREN param RPAREN body
+Rule 10    voidfunction -> FUNCTION VOID ID LPAREN param RPAREN body
+Rule 11    body -> LBRACE bodyp RBRACE
+Rule 12    bodyp -> decvar statements bodyp
+Rule 13    bodyp -> statements bodyp
+Rule 14    bodyp -> decvar
+Rule 15    bodyp -> <empty>
+Rule 16    param -> <empty>
+Rule 17    param -> type paramp
+Rule 18    paramp -> ID
+Rule 19    paramp -> ID COMMA param
+Rule 20    exp -> texp
+Rule 21    exp -> texp OR exp
+Rule 22    texp -> gexp
+Rule 23    texp -> gexp AND texp
+Rule 24    gexp -> mexp
+Rule 25    gexp -> mexp gexpp mexp
+Rule 26    gexpp -> LT
+Rule 27    gexpp -> GT
+Rule 28    gexpp -> EQUAL
+Rule 29    gexpp -> DIFF
+Rule 30    mexp -> t
+Rule 31    mexp -> t PLUS mexp
+Rule 32    mexp -> t MINUS mexp
+Rule 33    t -> f
+Rule 34    t -> f MULT t
+Rule 35    t -> f DIV t
+Rule 36    f -> LPAREN exp RPAREN
+Rule 37    f -> INT
+Rule 38    f -> FLOAT
+Rule 39    f -> var
+Rule 40    f -> call
+Rule 41    statements -> assign
+Rule 42    statements -> function
+Rule 43    statements -> voidfunction
+Rule 44    statements -> call
+Rule 45    statements -> read
+Rule 46    statements -> print
+Rule 47    statements -> if
+Rule 48    statements -> while
+Rule 49    statements -> for
+Rule 50    statements -> funcesp
+Rule 51    assign -> var EQUAL exp
+Rule 52    read -> READ var
+Rule 53    print -> PRINT LPAREN printp
+Rule 54    printp -> exp RPAREN
+Rule 55    printp -> exp COMMA printp
+Rule 56    var -> ID
+Rule 57    var -> ID LBRACKET exp RBRACKET
+Rule 58    var -> ID LBRACKET exp RBRACKET LBRACKET exp RBRACKET
+Rule 59    call -> ID LPAREN callp RPAREN
+Rule 60    callp -> exp SEMICOLON callp
+Rule 61    callp -> exp
+Rule 62    if -> IF LPAREN CTI GT CTI RPAREN quadsIf ifp jumpsIf
+Rule 63    ifp -> <empty>
+Rule 64    ifp -> ELSE quadsElse statements
+Rule 65    quadsIf -> <empty>
+Rule 66    jumpsIf -> <empty>
+Rule 67    quadsElse -> <empty>
+Rule 68    while -> WHILE LPAREN exp RPAREN statements whilep
+Rule 69    whilep -> SEMICOLON
+Rule 70    whilep -> statements whilep
+Rule 71    for -> FOR LPAREN var SEMICOLON exp SEMICOLON exp RPAREN LBRACKET statements forp
+Rule 72    forp -> RBRACKET
+Rule 73    forp -> statements forp
+Rule 74    funcesp -> array
+Rule 75    funcesp -> matrix
+Rule 76    funcesp -> mean
+Rule 77    funcesp -> layers
+Rule 78    funcesp -> sequential
+Rule 79    funcesp -> compile
+Rule 80    funcesp -> fit
+Rule 81    funcesp -> predict
+Rule 82    funcesp -> getweights
+Rule 83    array -> ID EQUAL ARRAY LPAREN var arrayp
+Rule 84    arrayp -> RPAREN
+Rule 85    arrayp -> COMMA var RPAREN
+Rule 86    matrix -> ID EQUAL MATRIX LPAREN array matrixp
+Rule 87    matrixp -> RPAREN
+Rule 88    matrixp -> COMMA array RPAREN
+Rule 89    mean -> MEAN LPAREN array RPAREN
+Rule 90    layers -> ID EQUAL LAYERS LPAREN UNITS EQUAL INT RPAREN
+Rule 91    sequential -> ID EQUAL SEQUENTIAL LPAREN LBRACKET layers sequentialp
+Rule 92    sequentialp -> RBRACKET RPAREN
+Rule 93    sequentialp -> COMMA layers sequentialp
+Rule 94    compile -> sequential DOT COMPILE LPAREN RPAREN
+Rule 95    fit -> ID EQUAL sequential DOT FIT LPAREN array COMMA array COMMA EPOCHS EQUAL INT COMMA VERBOSE EQUAL fitp
+Rule 96    fitp -> TRUE RPAREN
+Rule 97    fitp -> FALSE RPAREN
+Rule 98    predict -> ID EQUAL sequential DOT PREDICT LPAREN LBRACKET predictp
+Rule 99    predictp -> INT RBRACKET RPAREN
+Rule 100   predictp -> FLOAT RBRACKET RPAREN
+Rule 101   getweights -> layers DOT GETWEIGHTS LPAREN RPAREN
+Rule 102   empty -> <empty>
 
 Terminals, with rules where they appear
 
-AND                  : 21
-ARRAY                : 81
+AND                  : 23
+ARRAY                : 83
 ASSIGN               : 
 CHAR                 : 
 COLON                : 
-COMMA                : 3 17 53 83 86 91 93 93 93
-COMPILE              : 92
+COMMA                : 5 19 55 85 88 93 95 95 95
+COMPILE              : 94
 CTF                  : 
-CTI                  : 60 60
-DIFF                 : 27
-DIV                  : 33
-DOT                  : 92 93 96 99
-ELSE                 : 62
-EPOCHS               : 93
-EQUAL                : 26 49 81 84 88 88 89 93 93 93 96
-FALSE                : 95
-FIT                  : 93
-FLOAT                : 6 36 98
-FOR                  : 69
+CTI                  : 62 62
+DIFF                 : 29
+DIV                  : 35
+DOT                  : 94 95 98 101
+ELSE                 : 64
+EPOCHS               : 95
+EQUAL                : 28 51 83 86 90 90 91 95 95 95 98
+FALSE                : 97
+FIT                  : 95
+FLOAT                : 8 38 100
+FOR                  : 71
 FUNCESP              : 
-FUNCTION             : 7 8
-GETWEIGHTS           : 99
-GT                   : 25 60
+FUNCTION             : 9 10
+GETWEIGHTS           : 101
+GT                   : 27 62
 GTE                  : 
-ID                   : 1 3 4 7 8 16 17 54 55 56 57 81 84 88 89 93 96
-IF                   : 60
-INT                  : 5 35 88 93 97
-LAYERS               : 88
-LBRACE               : 9
-LBRACKET             : 55 56 56 69 89 96
-LPAREN               : 7 8 34 51 57 60 66 69 81 84 87 88 89 92 93 96 99
-LT                   : 24
+ID                   : 1 5 6 9 10 18 19 56 57 58 59 83 86 90 91 95 98
+IF                   : 62
+INT                  : 7 37 90 95 99
+LAYERS               : 90
+LBRACE               : 11
+LBRACKET             : 57 58 58 71 91 98
+LPAREN               : 9 10 36 53 59 62 68 71 83 86 89 90 91 94 95 98 101
+LT                   : 26
 LTE                  : 
-MATRIX               : 84
-MEAN                 : 87
-MINUS                : 30
-MULT                 : 32
+MATRIX               : 86
+MEAN                 : 89
+MINUS                : 32
+MULT                 : 34
 NUMPY                : 
-OR                   : 19
-PLUS                 : 29
-PREDICT              : 96
-PRINT                : 51
+OR                   : 21
+PLUS                 : 31
+PREDICT              : 98
+PRINT                : 53
 PROGRAM              : 1
 QUOTE                : 
-RBRACE               : 9
-RBRACKET             : 55 56 56 70 90 97 98
-READ                 : 50
-RPAREN               : 7 8 34 52 57 60 66 69 82 83 85 86 87 88 90 92 94 95 97 98 99
-SEMICOLON            : 1 2 58 67 69 69
-SEQUENTIAL           : 89
+RBRACE               : 11
+RBRACKET             : 57 58 58 72 92 99 100
+READ                 : 52
+RPAREN               : 9 10 36 54 59 62 68 71 84 85 87 88 89 90 92 94 96 97 99 100 101
+SEMICOLON            : 1 4 60 69 71 71
+SEQUENTIAL           : 91
 STRING               : 
-TRUE                 : 94
-UNITS                : 88
-VAR                  : 2
-VERBOSE              : 93
-VOID                 : 8
-WHILE                : 66
+TRUE                 : 96
+UNITS                : 90
+VAR                  : 2 3
+VERBOSE              : 95
+VOID                 : 10
+WHILE                : 68
 error                : 
 
 Nonterminals, with rules where they appear
 
-array                : 72 84 86 87 93 93
-arrayp               : 81
-assign               : 39
-body                 : 7 8
-bodyp                : 9 10 11
-call                 : 38 42
-callp                : 57 58
-compile              : 77
-decvar               : 1 10 12
+array                : 74 86 88 89 95 95
+arrayp               : 83
+assign               : 41
+body                 : 9 10
+bodyp                : 11 12 13
+call                 : 40 44
+callp                : 59 60
+compile              : 79
+decvar               : 1 3 12 14
 decvarp              : 2 3
+decvarpp             : 4 5
 empty                : 
-exp                  : 19 34 49 52 53 55 56 56 58 59 66 69 69
-f                    : 31 32 33
-fit                  : 78
-fitp                 : 93
-for                  : 47
-forp                 : 69 71
-funcesp              : 48
-function             : 40
-getweights           : 80
-gexp                 : 20 21
-gexpp                : 23
-if                   : 45
-ifp                  : 60
-jumpsIf              : 60
-layers               : 75 89 91 99
-matrix               : 73
-matrixp              : 84
-mean                 : 74
-mexp                 : 22 23 23 29 30
-param                : 7 8 17
-paramp               : 15
-predict              : 79
-predictp             : 96
-print                : 44
-printp               : 51 53
+exp                  : 21 36 51 54 55 57 58 58 60 61 68 71 71
+f                    : 33 34 35
+fit                  : 80
+fitp                 : 95
+for                  : 49
+forp                 : 71 73
+funcesp              : 50
+function             : 42
+getweights           : 82
+gexp                 : 22 23
+gexpp                : 25
+if                   : 47
+ifp                  : 62
+jumpsIf              : 62
+layers               : 77 91 93 101
+matrix               : 75
+matrixp              : 86
+mean                 : 76
+mexp                 : 24 25 25 31 32
+param                : 9 10 19
+paramp               : 17
+predict              : 81
+predictp             : 98
+print                : 46
+printp               : 53 55
 program              : 0
-quadsElse            : 62
-quadsIf              : 60
-read                 : 43
-sequential           : 76 92 93 96
-sequentialp          : 89 91
-statements           : 10 11 62 66 68 69 71
-t                    : 28 29 30 32 33
-texp                 : 18 19 21
-type                 : 2 7 15
-var                  : 37 49 50 69 81 83
-voidfunction         : 41
-while                : 46
-whilep               : 66 68
+quadsElse            : 64
+quadsIf              : 62
+read                 : 45
+sequential           : 78 94 95 98
+sequentialp          : 91 93
+statements           : 12 13 64 68 70 71 73
+t                    : 30 31 32 34 35
+texp                 : 20 21 23
+type                 : 4 9 17
+var                  : 39 51 52 71 83 85
+voidfunction         : 43
+while                : 48
+whilep               : 68 70
 
 Parsing method: LALR
 
@@ -265,7 +268,8 @@ state 3
 state 4
 
     (1) program -> PROGRAM ID SEMICOLON . decvar
-    (2) decvar -> . VAR type decvarp SEMICOLON
+    (2) decvar -> . VAR decvarp
+    (3) decvar -> . VAR decvarp decvar
 
     VAR             shift and go to state 6
 
@@ -280,75 +284,98 @@ state 5
 
 state 6
 
-    (2) decvar -> VAR . type decvarp SEMICOLON
-    (5) type -> . INT
-    (6) type -> . FLOAT
+    (2) decvar -> VAR . decvarp
+    (3) decvar -> VAR . decvarp decvar
+    (4) decvarp -> . type decvarpp SEMICOLON
+    (7) type -> . INT
+    (8) type -> . FLOAT
 
-    INT             shift and go to state 8
-    FLOAT           shift and go to state 9
+    INT             shift and go to state 9
+    FLOAT           shift and go to state 10
 
-    type                           shift and go to state 7
+    decvarp                        shift and go to state 7
+    type                           shift and go to state 8
 
 state 7
 
-    (2) decvar -> VAR type . decvarp SEMICOLON
-    (3) decvarp -> . ID COMMA decvarp
-    (4) decvarp -> . ID
+    (2) decvar -> VAR decvarp .
+    (3) decvar -> VAR decvarp . decvar
+    (2) decvar -> . VAR decvarp
+    (3) decvar -> . VAR decvarp decvar
 
-    ID              shift and go to state 11
+    $end            reduce using rule 2 (decvar -> VAR decvarp .)
+    VAR             shift and go to state 6
 
-    decvarp                        shift and go to state 10
+    decvar                         shift and go to state 11
 
 state 8
 
-    (5) type -> INT .
+    (4) decvarp -> type . decvarpp SEMICOLON
+    (5) decvarpp -> . ID COMMA decvarpp
+    (6) decvarpp -> . ID
 
-    ID              reduce using rule 5 (type -> INT .)
+    ID              shift and go to state 13
 
+    decvarpp                       shift and go to state 12
 
 state 9
 
-    (6) type -> FLOAT .
+    (7) type -> INT .
 
-    ID              reduce using rule 6 (type -> FLOAT .)
+    ID              reduce using rule 7 (type -> INT .)
 
 
 state 10
 
-    (2) decvar -> VAR type decvarp . SEMICOLON
+    (8) type -> FLOAT .
 
-    SEMICOLON       shift and go to state 12
+    ID              reduce using rule 8 (type -> FLOAT .)
 
 
 state 11
 
-    (3) decvarp -> ID . COMMA decvarp
-    (4) decvarp -> ID .
+    (3) decvar -> VAR decvarp decvar .
 
-    COMMA           shift and go to state 13
-    SEMICOLON       reduce using rule 4 (decvarp -> ID .)
+    $end            reduce using rule 3 (decvar -> VAR decvarp decvar .)
 
 
 state 12
 
-    (2) decvar -> VAR type decvarp SEMICOLON .
+    (4) decvarp -> type decvarpp . SEMICOLON
 
-    $end            reduce using rule 2 (decvar -> VAR type decvarp SEMICOLON .)
+    SEMICOLON       shift and go to state 14
 
 
 state 13
 
-    (3) decvarp -> ID COMMA . decvarp
-    (3) decvarp -> . ID COMMA decvarp
-    (4) decvarp -> . ID
+    (5) decvarpp -> ID . COMMA decvarpp
+    (6) decvarpp -> ID .
 
-    ID              shift and go to state 11
+    COMMA           shift and go to state 15
+    SEMICOLON       reduce using rule 6 (decvarpp -> ID .)
 
-    decvarp                        shift and go to state 14
 
 state 14
 
-    (3) decvarp -> ID COMMA decvarp .
+    (4) decvarp -> type decvarpp SEMICOLON .
 
-    SEMICOLON       reduce using rule 3 (decvarp -> ID COMMA decvarp .)
+    VAR             reduce using rule 4 (decvarp -> type decvarpp SEMICOLON .)
+    $end            reduce using rule 4 (decvarp -> type decvarpp SEMICOLON .)
+
+
+state 15
+
+    (5) decvarpp -> ID COMMA . decvarpp
+    (5) decvarpp -> . ID COMMA decvarpp
+    (6) decvarpp -> . ID
+
+    ID              shift and go to state 13
+
+    decvarpp                       shift and go to state 16
+
+state 16
+
+    (5) decvarpp -> ID COMMA decvarpp .
+
+    SEMICOLON       reduce using rule 5 (decvarpp -> ID COMMA decvarpp .)
 
