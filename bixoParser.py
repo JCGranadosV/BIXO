@@ -236,11 +236,14 @@ def p_bodyp(p):
 #checar si se puede vacio o epsilon
 def p_param(p):
     '''param : 
-             | type paramp'''
+             | paramp'''
 
 def p_paramp(p):
-    ''' paramp : ID
-               | ID COMMA param'''
+    '''paramp : type parampp'''
+
+def p_parampp(p):
+    ''' parampp : ID
+                | ID COMMA paramp'''
                
 def p_exp(p):
     '''exp : texp 
