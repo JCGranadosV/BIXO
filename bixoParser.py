@@ -60,7 +60,7 @@ def add_var_local(name, type, currFunc):
         var_mem = var_table["local"]["counters"][type] + localInt
      elif(type=="float"):
         var_mem = var_table["local"]["counters"][type] + localFloat
-     print("memoria:",var_mem)
+     #print("memoria:",var_mem)
      var_table["local"]["function"] = currFunc
      var_table["local"]["counters"][type] += 1
      var_table["local"]["variables"][type][name] = [var_mem]      
@@ -71,7 +71,7 @@ def add_var_global(name, type):
         var_mem = var_table["global"]["counters"][type] + globalInt
      elif(type=="float"):
         var_mem = var_table["global"]["counters"][type] + globalFloat
-     print("memoria:",var_mem)
+     #print("memoria:",var_mem)
      var_table["global"]["counters"][type] += 1
      var_table["global"]["variables"][type][name] = [var_mem]      
      sTypes.append(type)
@@ -171,15 +171,15 @@ def p_decvarp(p):
 
     if scope == "local":
         print("pilavars: ", sVars)
+        for vars in sVars:
         #Revisa que la variable no exista ya en la tabla 
-        if var_name in var_table["local"]["variables"][var_type]:
-            print("ya existeeeeeeeeeeeee")
-        else:
-            if var_type == "int":
-                for vars in sVars:
+            if (vars in var_table["local"]["variables"]["int"]) or (vars in var_table["local"]["variables"]["float"]):
+                #antes de implementar este error checar la logica 
+                print(vars,"ERROR YA EXISTE")
+            else:
+                if var_type == "int":
                     add_var_local(vars,var_type,currFunc)
-            elif var_type =="float":
-                for vars in sVars:
+                elif var_type =="float":
                     add_var_local(vars,var_type,currFunc) 
         print("pilatypes: ", sTypes)
         print ("var_table (local): ",var_table["local"])
@@ -187,18 +187,17 @@ def p_decvarp(p):
     if scope == "global":
         print("pilavars: ", sVars)
         #Revisa que la variable no exista ya en la tabla 
-        if var_name in var_table["global"]["variables"][var_type]:
-            print("ya existeeeeeeeeeeeee")
-        else:
-            for vars in sVars:
+        for vars in sVars:
+            if (vars in var_table["global"]["variables"]["int"]) or (vars in var_table["global"]["variables"]["float"]):
+                #antes de implementar este error checar la logica 
+                print(vars,"ERROR YA EXISTE ")
+            else:
                 if var_type == "int":
-                    print("ES INT Y :", vars, var_type)
-                    add_var_global(vars,var_type)
+                     add_var_global(vars,var_type)
                 elif var_type == "float":
                     add_var_global(vars,var_type)
         print("pilatypes: ", sTypes)
         print ("var_table (global): ",var_table["global"])
-
     sVars.clear()
 
 
@@ -227,6 +226,7 @@ def p_voidfunction(p):
     
 def p_body(p):
     '''body : LBRACE bodyp RBRACE'''
+    #p[0]=p[2]
     
 def p_bodyp(p):
     '''bodyp : decvar statements bodyp
@@ -238,21 +238,33 @@ def p_param(p):
     '''param : 
              | type paramp'''
 
+#AQUI FALTA EL DEL SEGUNDO  
 def p_paramp(p):
     ''' paramp : ID
                | ID COMMA param'''
-               
+    if len(p) == 2:
+        p[0]=p[1]
+
+#AQUI FALTA EL DEL SEGUNDO     
 def p_exp(p):
     '''exp : texp 
            | texp OR exp'''
+    if len(p) == 2:
+        p[0]=p[1]
 
+#AQUI FALTA EL DEL SEGUNDO 
 def p_texp(p):
     '''texp : gexp 
             | gexp AND texp'''
+    if len(p) == 2:
+        p[0]=p[1]
 
+#AQUI FALTA EL DEL SEGUNDO 
 def p_gexp(p):
     '''gexp : mexp 
             | mexp gexpp mexp'''
+    if len(p) == 2:
+        p[0]=p[1]
     
 
 def p_gexpp(p):
@@ -260,34 +272,41 @@ def p_gexpp(p):
              | GT
              | EQUAL
              | DIFF'''
-    p[0] = p[1]
+    p[0]=p[1]
              
 def p_mexp(p):
     '''mexp : t
             | t PLUS mexp
             | t MINUS mexp'''
+    if len(p) == 2:
+        p[0]=p[1]
+    elif len(p)==4:
+        if p[2]=="+":
+            p[0] = p[1] + p[3]
+        elif p[2]=="-":
+            p[0] = p[1] - p[3]
     
-    if p[2]=="+":
-        p[0] = p[1] + p[3]
-    elif p[2]=="-":
-        p[0] = p[1] - p[3]
 
 def p_t(p):
     '''t : f 
          | f MULT t
          | f DIV t'''
-    if p.len()==2:
+    if len(p) == 2:
         p[0]=p[1]
-         
+    elif len(p)==4:
+        if p[2]=="*":
+            p[0] = p[1] * p[3]
+        elif p[2]=="/":
+            p[0] = p[1] / p[3]
+   
 def p_f(p):
     '''f : LPAREN exp RPAREN
-         | INT
-         | FLOAT
+         | CTI
+         | CTF
          | var
          | call'''
-    if p.len()==2:
+    if len(p)==2:
         p[0]=p[1]
-    
 
 def p_statements(p):
     '''statements : assign
@@ -304,6 +323,32 @@ def p_statements(p):
     
 def p_assign(p):
     '''assign : var EQUAL exp'''
+    var_name=p[1]
+    var_assign=p[3]
+    estaenlocal=0
+    if scope == "global":
+        if var_name in (var_table["global"]["variables"]["int"] or var_table["global"]["variables"]["float"]):
+            print("si existe en global")
+            quadGen.gen_quad("=",var_assign,None,var_name)
+        else:
+            print("ERROR NO EXISTE")
+    elif scope == "local":
+        #primero revisa si esta en el local
+        if var_name in (var_table["local"]["variables"]["int"] or var_table["local"]["variables"]["float"]):
+            print("si existe en local")
+            quadGen.gen_quad("=",var_assign,None,var_name)
+            #switch para avisar que esta en local para que no revise en global
+            estaenlocal=1
+        elif (var_name in (var_table["global"]["variables"]["int"] or var_table["global"]["variables"]["float"])) and estaenlocal==0:
+            print("si existe en global")
+            quadGen.gen_quad("=",var_assign,None,var_name)
+        else:
+            print("ERROR NO EXISTE")
+
+            
+    print(quadGen.quads)
+        
+
 
 def p_read(p):
     '''read : READ var'''
@@ -316,12 +361,8 @@ def p_printp(p):
               | exp COMMA printp'''
 
 def p_var(p):
-    '''var : ID 
-           | ID LBRACKET exp RBRACKET
-           | ID LBRACKET exp RBRACKET LBRACKET exp RBRACKET'''
-    
-    if len(p)==2:
-        p[0]=p[1]
+    '''var : ID '''
+    p[0]=p[1]
     
 def p_call(p):
     '''call : ID LPAREN callp RPAREN'''
@@ -334,7 +375,7 @@ def p_callp(p):
 #def p_if(p):
 #    '''if : IF LPAREN exp quadsIf RPAREN statements ifp jumpsIf'''    
 def p_if(p):
-    '''if : IF LPAREN INT exp RPAREN quadsIf ifp jumpsIf'''
+    '''if : IF LPAREN INT EQUAL EQUAL CTI RPAREN quadsIf ifp jumpsIf'''
                 
 def p_ifp(p):
     ''' ifp : 
