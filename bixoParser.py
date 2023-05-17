@@ -335,20 +335,8 @@ def p_callp(p):
 #def p_if(p):
 #    '''if : IF LPAREN exp quadsIf RPAREN statements ifp jumpsIf'''    
 def p_if(p):
-    '''if : IF LPAREN INT EQUAL CTI RPAREN quadsIf ifp jumpsIf'''
-    global SOperators, sOperands, sTypes, qCounter
-    if p[5]== 0 | 1:
-        print("si es bool")
-        print("entro1")
-        quadGen.gen_quad("gotoF", None, None, None)
-        quadGen.gen_quad("*", "1", "5", "t2")
-        sJumps.append(qCounter)
-        qCounter += 1
-        print("QG ES: ",str(quadGen))
-        print(quadGen.quads)
-    else: print("no es bool")
-    
-        
+    '''if : IF LPAREN INT EQUAL EQUAL CTI RPAREN quadsIf ifp jumpsIf'''
+                
 def p_ifp(p):
     ''' ifp : 
             | ELSE quadsElse statements'''
@@ -357,12 +345,25 @@ def p_quadsIf(p):
     '''quadsIf : '''            
     global SOperators, sOperands, sTypes, qCounter
     print("quadsif")
+    sTypes = 1
+    if  sTypes == 0 | 1:
+        print("si es bool")
+        print("entro1")
+        quadGen.gen_quad("gotoF", None, None, None)
+        quadGen.gen_quad("*", "1", "5", "t2")
+        quadGen.gen_quad("*", "1", "5", "t2")
+        sJumps.append(qCounter)
+        qCounter += 1
+        print("QG ES: ",str(quadGen))
+        
+        print("QG POS 0 ES>>> ",quadGen.quads)
+    else: print("no es bool")
 
 def p_jumpsIf(p):
     '''jumpsIf : '''  
     print("jumpsif")          
-    #jumps = sJumps.pop()
-    #quadGen[jumps].temp = qCounter
+    jumps = sJumps.pop()
+    print("jumpsif", quadGen.quads[0]) 
 
 def p_quadsElse(p):
     '''quadsElse : '''    
