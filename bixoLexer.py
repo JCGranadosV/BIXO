@@ -20,6 +20,7 @@ tokens = (
     'LT',
     'LTE',
     'EQUAL',
+    'IFEQUAL',
     'DIFF',
     'LPAREN',
     'RPAREN',
@@ -151,6 +152,10 @@ def t_VAR(t):
 
 def t_IF(t):
     r'if'
+    return t
+
+def t_IFEQUAL(t):
+    r'=='
     return t
 
 def t_INT(t):

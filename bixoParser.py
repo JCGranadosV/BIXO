@@ -86,7 +86,7 @@ qCounter=0
 #pila operandos
 sOperands = []
 #pila operadores
-SOperators = []
+sOperators = []
 #almacena el scope actual
 scope="global"
 #pilavars
@@ -265,12 +265,19 @@ def p_gexp(p):
             | mexp gexpp mexp'''
     if len(p) == 2:
         p[0]=p[1]
-    
+    if len(p) == 4:
+        sOperands.append(p[1])
+        sOperands.append(p[3])
+        sOperators.append(p[2])
+        print(sOperands)
+        print(sOperators)
+        
+        
 
 def p_gexpp(p):
     '''gexpp : LT
              | GT
-             | EQUAL
+             | IFEQUAL
              | DIFF'''
     p[0]=p[1]
              
@@ -375,8 +382,35 @@ def p_callp(p):
 #def p_if(p):
 #    '''if : IF LPAREN exp quadsIf RPAREN statements ifp jumpsIf'''    
 def p_if(p):
-    '''if : IF LPAREN INT EQUAL EQUAL CTI RPAREN quadsIf ifp jumpsIf'''
-                
+    '''if : IF LPAREN exp RPAREN quadsIf ifp jumpsIf'''
+    arg2=sOperands.pop()
+    arg1=sOperands.pop()
+    operator=sOperators.pop()
+    #aqui meterle counter de temporales
+    quadGen.gen_quad(operator, arg1, arg2, "t3")
+    print(arg1,arg2,operator)
+    if(operator == ">"):
+        if(arg1>arg2):
+            sOperands.append(1)
+        else: sOperands.append(0)
+    elif(operator == "=="):
+        if(arg1==arg2):
+            sOperands.append(1)
+        else: sOperands.append(0)    
+    elif(operator == "<"):
+        if(arg1<arg2):
+            sOperands.append(1)
+        else: sOperands.append(0)    
+    elif(operator == "!="):
+        if(arg1!=arg2):
+            sOperands.append(1)
+        else: sOperands.append(0) 
+        
+    print(sOperands)
+    toF=sOperands[0]
+    quadGen.gen_quad("=", toF, None, "t3")
+    print(quadGen.quads)
+    
 def p_ifp(p):
     ''' ifp : 
             | ELSE quadsElse statements'''
