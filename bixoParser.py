@@ -86,7 +86,7 @@ qCounter=0
 #pila operandos
 sOperands = []
 #pila operadores
-SOperators = []
+sOperators = []
 #almacena el scope actual
 scope="global"
 #pilavars
@@ -211,8 +211,6 @@ def p_decvarpp(p):
         sVars.append(p[1])
         p[0]=p[3]
     
-
-
 def p_type(p):
     '''type : INT
             | FLOAT'''
@@ -259,12 +257,17 @@ def p_texp(p):
     if len(p) == 2:
         p[0]=p[1]
 
-#AQUI FALTA EL DEL SEGUNDO 
 def p_gexp(p):
     '''gexp : mexp 
             | mexp gexpp mexp'''
     if len(p) == 2:
         p[0]=p[1]
+    if len(p) == 4:
+        sOperands.append(p[1])
+        sOperands.append(p[3])
+        sOperators.append(p[2])
+        print(sOperands)
+        print(sOperators)
     
 
 def p_gexpp(p):
