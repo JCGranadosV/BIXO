@@ -253,12 +253,14 @@ def p_texp(p):
 def p_gexp(p):
     '''gexp : mexp 
             | mexp gexpp mexp'''
+    
 
 def p_gexpp(p):
     '''gexpp : LT
              | GT
              | EQUAL
              | DIFF'''
+    p[0] = p[1]
              
 def p_mexp(p):
     '''mexp : t
@@ -332,7 +334,7 @@ def p_callp(p):
 #def p_if(p):
 #    '''if : IF LPAREN exp quadsIf RPAREN statements ifp jumpsIf'''    
 def p_if(p):
-    '''if : IF LPAREN INT EQUAL EQUAL CTI RPAREN quadsIf ifp jumpsIf'''
+    '''if : IF LPAREN INT exp RPAREN quadsIf ifp jumpsIf'''
                 
 def p_ifp(p):
     ''' ifp : 
