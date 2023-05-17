@@ -1,2 +1,2 @@
 program id;
-if(2>3)
+if(int=1)

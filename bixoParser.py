@@ -153,7 +153,7 @@ precedence = (
 
 
 def p_program(p):
-    '''program : PROGRAM ID SEMICOLON decvar'''
+    '''program : PROGRAM ID SEMICOLON if'''
     print("Nombre del programa:", p[2])
     #p[0]=p[4]
 
@@ -336,9 +336,18 @@ def p_callp(p):
 #    '''if : IF LPAREN exp quadsIf RPAREN statements ifp jumpsIf'''    
 def p_if(p):
     '''if : IF LPAREN INT EQUAL CTI RPAREN quadsIf ifp jumpsIf'''
+    global SOperators, sOperands, sTypes, qCounter
     if p[5]== 0 | 1:
         print("si es bool")
+        print("entro1")
+        quadGen.gen_quad("gotoF", None, None, None)
+        quadGen.gen_quad("*", "1", "5", "t2")
+        sJumps.append(qCounter)
+        qCounter += 1
+        print("QG ES: ",str(quadGen))
+        print(quadGen.quads)
     else: print("no es bool")
+    
         
 def p_ifp(p):
     ''' ifp : 
@@ -348,30 +357,21 @@ def p_quadsIf(p):
     '''quadsIf : '''            
     global SOperators, sOperands, sTypes, qCounter
     print("quadsif")
-    if len(SOperators) != 1:
-        print("entro1")
-        quadGen.gen_quad("gotoF", None, None, None)
-        quadGen.gen_quad("*", "1", "5", "t2")
-
-        sJumps.append(qCounter)
-        qCounter += 1
-        print("QG ES: ",str(quadGen))
-        print(quadGen.quads)
 
 def p_jumpsIf(p):
     '''jumpsIf : '''  
     print("jumpsif")          
-    jumps = sJumps.pop()
-    #SQuads[jumps].temp = qCounter
+    #jumps = sJumps.pop()
+    #quadGen[jumps].temp = qCounter
 
 def p_quadsElse(p):
     '''quadsElse : '''    
     global qCounter
-    #SQuads.append(QuadGenerator("goto", None, None, None))
+    quadGen.gen_quad("goto", None, None, None)
     jumps = sJumps.pop()
     sJumps.append(qCounter)
     qCounter += 1
-    #SQuads[jumps].temp=qCounter
+    #quadGen[jumps].temp=qCounter
 
 ###############################Quands while#############
 def p_while(p):
@@ -481,7 +481,7 @@ parser = yacc.yacc()
 # Procesar cada línea con el parser
 
 
-fileName = "prueba.txt"   
+fileName = "prueba2.txt"   
 inputFile = open(fileName, 'r')
 inputCode = inputFile.read()
 inputFile.close()
