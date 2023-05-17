@@ -339,13 +339,10 @@ def p_assign(p):
             quadGen.gen_quad("=",var_assign,None,var_name)
             #switch para avisar que esta en local para que no revise en global
             estaenlocal=1
-        else:
-            print("ERROR NO EXISTE")
-        #luego revisa si esta en el global
-        if (var_name in (var_table["global"]["variables"]["int"] or var_table["global"]["variables"]["float"])) and estaenlocal==0:
+        elif (var_name in (var_table["global"]["variables"]["int"] or var_table["global"]["variables"]["float"])) and estaenlocal==0:
             print("si existe en global")
             quadGen.gen_quad("=",var_assign,None,var_name)
-        elif estaenlocal==0:
+        else:
             print("ERROR NO EXISTE")
 
             
