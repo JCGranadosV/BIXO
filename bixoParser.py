@@ -266,9 +266,6 @@ def p_gexp(p):
         sOperands.append(p[1])
         sOperands.append(p[3])
         sOperators.append(p[2])
-        print(sOperands)
-        print(sOperators)
-    
 
 def p_gexpp(p):
     '''gexpp : LT
