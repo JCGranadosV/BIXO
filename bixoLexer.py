@@ -2,6 +2,8 @@ import ply.lex as lex
 
 tokens = (
     'PROGRAM',
+    'END',
+    'MAIN',
     'ID',
     'INT',
     'FLOAT',
@@ -65,6 +67,8 @@ tokens = (
 
 reserved = {
     'program' : 'PROGRAM',
+    'end' : 'END',
+    'main' : 'MAIN',
     'var' : 'VAR',
     'type' : 'TYPE',
     'function' : 'FUNCTION',
@@ -82,7 +86,7 @@ reserved = {
     'print' : 'PRINT',
     'void' : 'VOID',
     'epochs' : 'EPOCHS',
-    'verbose' : 'VERBOSE',
+    'verbose' : 'VERBOSE'
 }
 
 #REGEX TOKENS
@@ -143,6 +147,14 @@ t_MEAN = r'mean'
 
 def t_PROGRAM(t):
     r'program'
+    return t
+
+def t_END(t):
+    r'end'
+    return t
+
+def t_MAIN(t):
+    r'main'
     return t
 
 def t_VAR(t):
