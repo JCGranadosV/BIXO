@@ -387,7 +387,7 @@ def p_if(p):
     
         
     print("OPERANDS",sOperands)
-    toF=sOperands[len(sOperands)-1]
+    #toF=sOperands[len(sOperands)-1]
     #quadGen.gen_quad("=", toF, None, "t3")
     #print(quadGen.quads)
     
@@ -425,11 +425,8 @@ def p_quadsIf(p):
         else: sOperands.append(0) 
     if len(sOperands) != 0:
         toF = sOperands[len(sOperands)-1]
-        print("quadsif")
-        print("LEN OPERANDS ES: ",len(sOperands))
         print("TOF ES: ",sOperands[len(sOperands)-1])
         if (toF == 1):
-            print("entroIF")
             #habra diferencia si hago pop antes a que en el cuadruplo? preguntar a camilo
             quadGen.gen_quad("gotoF", sOperands.pop(), None, None)
             sJumps.append(qCounter)
@@ -457,7 +454,7 @@ def p_quadsElse(p):
         print("TOF ES: ",sOperands[len(sOperands)-1])
         if (toF == 0):
             print("entroELSE")
-    quadGen.gen_quad("goto", sOperands.pop(), None, None)
+    #quadGen.gen_quad("goto", sOperands.pop(), None, None)
     #jumps = sJumps.pop()
     #sJumps.append(qCounter)
     #qCounter += 1
