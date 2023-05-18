@@ -259,7 +259,7 @@ def p_texp(p):
     if len(p) == 2:
         p[0]=p[1]
 
-#AQUI FALTA EL DEL SEGUNDO 
+
 def p_gexp(p):
     '''gexp : mexp 
             | mexp gexpp mexp'''
@@ -383,6 +383,24 @@ def p_callp(p):
 #    '''if : IF LPAREN exp quadsIf RPAREN statements ifp jumpsIf'''    
 def p_if(p):
     '''if : IF LPAREN exp RPAREN quadsIf ifp jumpsIf'''
+    print("AQUI CORRE EL IF")
+    
+        
+    print("OPERANDS",sOperands)
+    toF=sOperands[len(sOperands)-1]
+    #quadGen.gen_quad("=", toF, None, "t3")
+    #print(quadGen.quads)
+    
+def p_ifp(p):
+    ''' ifp : 
+            | ELSE quadsElse statements'''
+    print("AQUI CORRE EL IFP")
+            
+
+def p_quadsIf(p):
+    '''quadsIf : '''            
+    print("AQUI CORRE EL QUADSIF")
+    global sOperators, sOperands, sTypes, qCounter
     arg2=sOperands.pop()
     arg1=sOperands.pop()
     operator=sOperators.pop()
@@ -405,47 +423,44 @@ def p_if(p):
         if(arg1!=arg2):
             sOperands.append(1)
         else: sOperands.append(0) 
-        
-    print(sOperands)
-    toF=sOperands[0]
-    quadGen.gen_quad("=", toF, None, "t3")
-    print(quadGen.quads)
-    
-def p_ifp(p):
-    ''' ifp : 
-            | ELSE quadsElse statements'''
-
-def p_quadsIf(p):
-    '''quadsIf : '''            
-    global SOperators, sOperands, sTypes, qCounter
-    print("quadsif")
-    sTypes = 1
-    if  sTypes == 0 | 1:
-        print("si es bool")
-        print("entro1")
-        quadGen.gen_quad("gotoF", None, None, None)
-        quadGen.gen_quad("*", "1", "5", "t2")
-        quadGen.gen_quad("*", "1", "5", "t2")
-        sJumps.append(qCounter)
-        qCounter += 1
-        print("QG ES: ",str(quadGen))
-        
-        print("QG POS 0 ES>>> ",quadGen.quads)
+    if len(sOperands) != 0:
+        toF = sOperands[len(sOperands)-1]
+        print("quadsif")
+        print("LEN OPERANDS ES: ",len(sOperands))
+        print("TOF ES: ",sOperands[len(sOperands)-1])
+        if (toF == 1):
+            print("entroIF")
+            #habra diferencia si hago pop antes a que en el cuadruplo? preguntar a camilo
+            quadGen.gen_quad("gotoF", sOperands.pop(), None, None)
+            sJumps.append(qCounter)
+            qCounter += 1
+            print("QG ES: ",str(quadGen))
+            print("QG POS 0 ES>>> ",quadGen.quads)
     else: print("no es bool")
+    
 
 def p_jumpsIf(p):
     '''jumpsIf : '''  
+    print("AQUI CORRE EL JUMPIF")
     print("jumpsif")          
-    jumps = sJumps.pop()
-    print("jumpsif", quadGen.quads[0]) 
+    #jumps = sJumps.pop()
+    #print("jumpsif", quadGen.quads[0]) 
 
 def p_quadsElse(p):
-    '''quadsElse : '''    
-    global qCounter
-    quadGen.gen_quad("goto", None, None, None)
-    jumps = sJumps.pop()
-    sJumps.append(qCounter)
-    qCounter += 1
+    '''quadsElse : '''   
+    print("AQUI CORRE EL QUADSELSE") 
+    global sOperators, sOperands, sTypes, qCounter
+    if len(sOperands) != 0:
+        toF = sOperands[len(sOperands)-1]
+        print("quadsElse")
+        print("LEN OPERANDS ES: ",len(sOperands))
+        print("TOF ES: ",sOperands[len(sOperands)-1])
+        if (toF == 0):
+            print("entroELSE")
+    quadGen.gen_quad("goto", sOperands.pop(), None, None)
+    #jumps = sJumps.pop()
+    #sJumps.append(qCounter)
+    #qCounter += 1
     #quadGen[jumps].temp=qCounter
 
 ###############################Quands while#############
