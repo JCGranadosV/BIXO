@@ -34,17 +34,6 @@ var_table = {
             "int": 0,
             "float": 0
         }
-    },
-    "local": {
-        "function":"",
-        "variables": {
-            "int": {},
-            "float": {}
-        },
-        "counters": {
-            "int": 0,
-            "float": 0
-        }
     }
 }
 
