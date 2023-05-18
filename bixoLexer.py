@@ -124,7 +124,6 @@ t_FOR = r'for'
 t_PRINT = r'print'
 t_READ = r'read'
 t_ASSIGN = r'assign'
-t_FUNCTION = r'function'
 t_FUNCESP = r'funcesp'
 t_VOID = r'void'
 #LIBRERIAS DE ML:
@@ -147,6 +146,10 @@ t_MEAN = r'mean'
 
 def t_PROGRAM(t):
     r'program'
+    return t
+
+def t_FUNCTION(t):
+    r'function'
     return t
 
 def t_END(t):

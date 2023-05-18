@@ -1,0 +1,10 @@
+program id;
+var float col, que;
+var int pepe, rodrigo, juan;
+function int abrir(float k){
+    var int carlitos;
+}
+function int cerrar(int c){
+    var int rodrigo;
+}
+main

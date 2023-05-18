@@ -1,4 +1,5 @@
 program id;
 var float col, que;
 var int pepe, rodrigo, juan;
-juan=3
+juan=3;
+
