@@ -106,7 +106,7 @@ def add_function(name, return_type, start_address, varInt, varFloat, tempInt, te
             "tempInt": tempInt,
             "tempFloat": tempFloat
         },
-        "vars_table": {local_table}
+        "vars_table": local_table
     }
 
 #para acceder a tabla de funciones de alguna funcion
@@ -161,7 +161,6 @@ precedence = (
 def p_program(p):
     '''program : PROGRAM ID SEMICOLON decvar modules mainfunction'''
     print("Nombre del programa:", p[2])
-    #p[0]=p[4]
 
 
 def p_decvar(p):
@@ -233,13 +232,14 @@ def p_type(p):
             
 def p_function(p):
     '''function : FUNCTION type decfunc LPAREN param RPAREN LBRACE body RBRACE'''
-    global localArray
-    lA=localArray
-    global currFunc
+    global localArray, currFunc, qCounter, functions_table
     func_type=p[2]
-    func_id=p[3]
+    func_var_table=localArray.pop()
     print("CURRENT FUNC",currFunc)
-    print("LOCAL ARRAY ES EN FUNC: ",lA)
+    print("LOCAL ARRAY ES EN FUNC: ",func_var_table)
+    add_function(currFunc, func_type, qCounter, 0, 0, 0, 0, func_var_table)
+    print("TABLA DE FUNCIONES",currFunc,functions_table)
+    print("FIN")
     #add_function(func_id, func_type, qCounter, varInt, varFloat, tempInt, tempFloat, tabla_local)
 
 def p_decfunc(p):
