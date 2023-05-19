@@ -96,6 +96,7 @@ quadGen=QuadGenerator()
 #para imprimir cuadruplos : print(str(quadGen))
 #current function
 currFunc="ejemplo1"
+hayElse=0
 
 
 functions_table = {}
@@ -382,7 +383,7 @@ def p_callp(p):
 #def p_if(p):
 #    '''if : IF LPAREN exp quadsIf RPAREN statements ifp jumpsIf'''    
 def p_if(p):
-    '''if : IF LPAREN exp RPAREN quadsIf ifp jumpsIf'''
+    '''if : IF LPAREN exp RPAREN quadsIf ifelse jumpsIf'''
     print("AQUI CORRE EL IF")
     
         
@@ -391,10 +392,14 @@ def p_if(p):
     #quadGen.gen_quad("=", toF, None, "t3")
     #print(quadGen.quads)
     
-def p_ifp(p):
-    ''' ifp : 
-            | ELSE quadsElse statements'''
-    print("AQUI CORRE EL IFP")
+def p_ifelse(p):
+    ''' ifelse : 
+               | ELSE quadsElse statements'''
+    global hayElse
+    if (len(p)>2):
+        hayElse=1
+    else: hayElse=0
+    print("AQUI CORRE EL IFELSE")
             
 
 def p_quadsIf(p):
@@ -405,7 +410,7 @@ def p_quadsIf(p):
     arg1=sOperands.pop()
     operator=sOperators.pop()
     #aqui meterle counter de temporales
-    quadGen.gen_quad(operator, arg1, arg2, "t3")
+    quadGen.gen_quad(operator, arg1, arg2, "t1")
     print(arg1,arg2,operator)
     if(operator == ">"):
         if(arg1>arg2):
@@ -423,15 +428,18 @@ def p_quadsIf(p):
         if(arg1!=arg2):
             sOperands.append(1)
         else: sOperands.append(0) 
-    if len(sOperands) != 0:
-        toF = sOperands[len(sOperands)-1]
+    toF = sOperands[len(sOperands)-1]
+    print(toF)
+    if (len(sOperands) != 0):
         print("TOF ES: ",sOperands[len(sOperands)-1])
-        if (toF == 1):
+        if (toF == 0 or toF ==1):
+            print("ENTRO AL IF")
             #habra diferencia si hago pop antes a que en el cuadruplo? preguntar a camilo
-            quadGen.gen_quad("gotoF", sOperands.pop(), None, None)
-            sJumps.append(qCounter)
+            quadGen.gen_quad("gotoF", len(sOperands)-1, None, None)
             qCounter += 1
-            print("QG ES: ",str(quadGen))
+            sJumps.append(qCounter)
+            print("QG ES 1: ",str(quadGen))
+            print(sJumps)
             print("QG POS 0 ES>>> ",quadGen.quads)
     else: print("no es bool")
     
@@ -440,7 +448,9 @@ def p_jumpsIf(p):
     '''jumpsIf : '''  
     print("AQUI CORRE EL JUMPIF")
     print("jumpsif")          
-    #jumps = sJumps.pop()
+    jumps = sJumps.pop()
+    quadGen.quads[jumps] = ("gotoF",len(sOperands)-1,None,jumps)
+    print("QG ES 2: ",str(quadGen))
     #print("jumpsif", quadGen.quads[0]) 
 
 def p_quadsElse(p):
