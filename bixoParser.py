@@ -412,10 +412,10 @@ def p_quadsIf(p):
     operator=sOperators.pop()
     #aqui meterle counter de temporales
     if operator not in ['ERA', 'GOSUB']:
-        temp = "t" + str(qCounter)
+        temp = "t" + str(tempCounter)
         quadGen.gen_quad(operator, arg1, arg2, temp)
-        qCounter += 1
-        print("el contador es", qCounter)
+        tempCounter += 1
+        print("el contador es", tempCounter)
     else:
         print("no entro el temp")
         quadGen.gen_quad(operator, arg1, arg2, None)
