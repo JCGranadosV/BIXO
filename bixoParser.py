@@ -97,6 +97,7 @@ quadGen=QuadGenerator()
 #current function
 currFunc="ejemplo1"
 hayElse=0
+tempCounter = 0
 
 
 functions_table = {}
@@ -405,12 +406,19 @@ def p_ifelse(p):
 def p_quadsIf(p):
     '''quadsIf : '''            
     print("AQUI CORRE EL QUADSIF")
-    global sOperators, sOperands, sTypes, qCounter
+    global sOperators, sOperands, sTypes, qCounter, tempCounter
     arg2=sOperands.pop()
     arg1=sOperands.pop()
     operator=sOperators.pop()
     #aqui meterle counter de temporales
-    quadGen.gen_quad(operator, arg1, arg2, "t1")
+    if operator not in ['ERA', 'GOSUB']:
+        temp = "t" + str(qCounter)
+        quadGen.gen_quad(operator, arg1, arg2, temp)
+        qCounter += 1
+        print("el contador es", qCounter)
+    else:
+        print("no entro el temp")
+        quadGen.gen_quad(operator, arg1, arg2, None)
     print(arg1,arg2,operator)
     if(operator == ">"):
         if(arg1>arg2):
@@ -434,8 +442,7 @@ def p_quadsIf(p):
         print("TOF ES: ",sOperands[len(sOperands)-1])
         if (toF == 0 or toF ==1):
             print("ENTRO AL IF")
-            #habra diferencia si hago pop antes a que en el cuadruplo? preguntar a camilo
-            quadGen.gen_quad("gotoF", len(sOperands)-1, None, None)
+            quadGen.gen_quad("gotoF", len(sOperands)-1, None, temp)
             qCounter += 1
             sJumps.append(qCounter)
             print("QG ES 1: ",str(quadGen))
