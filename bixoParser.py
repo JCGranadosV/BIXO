@@ -455,50 +455,86 @@ def p_jumpsIf(p):
     '''jumpsIf : '''  
     print("AQUI CORRE EL JUMPIF")
     print("jumpsif")          
-    jumps = sJumps.pop()
-    quadGen.quads[jumps] = ("gotoF",len(sOperands)-1,None,jumps)
-    print("QG ES 2: ",str(quadGen))
-    #print("jumpsif", quadGen.quads[0]) 
+    end = sJumps.pop()
+    quadGen.quads[end].res = qCounter
 
 def p_quadsElse(p):
     '''quadsElse : '''   
     print("AQUI CORRE EL QUADSELSE") 
     global sOperators, sOperands, sTypes, qCounter
-    if len(sOperands) != 0:
-        toF = sOperands[len(sOperands)-1]
-        print("quadsElse")
-        print("LEN OPERANDS ES: ",len(sOperands))
-        print("TOF ES: ",sOperands[len(sOperands)-1])
-        if (toF == 0):
-            print("entroELSE")
-    #quadGen.gen_quad("goto", sOperands.pop(), None, None)
-    #jumps = sJumps.pop()
-    #sJumps.append(qCounter)
-    #qCounter += 1
-    #quadGen[jumps].temp=qCounter
+    quadGen.gen_quad("goto", sOperands.pop(), None, None)
+    end = sJumps.pop()
+    sJumps.append(qCounter)
+    qCounter += 1
+    quadGen[end].res = qCounter
 
 ###############################Quands while#############
 def p_while(p):
-    ''' while : WHILE LPAREN exp RPAREN statements whilep'''
+    ''' while : WHILE LPAREN saveJumps exp RPAREN quadsWhile statements jumpsWhile whilep'''
 
 def p_whilep(p):
     ''' whilep : SEMICOLON
                | statements whilep'''
+               
+def p_saveJumps(p):
+    ''' saveJumps :'''
+    sJumps.append(qCounter)
+    
+def p_quadsWhile(p):
+    ''' quadsWhile :'''
+    print("AQUI CORRE EL QUADSWHILE")
+    global sOperators, sOperands, sTypes, qCounter, tempCounter
+    arg2=sOperands.pop()
+    arg1=sOperands.pop()
+    operator=sOperators.pop()
+    #aqui meterle counter de temporales
+    if operator not in ['ERA', 'GOSUB']:
+        temp = "t" + str(tempCounter)
+        quadGen.gen_quad(operator, arg1, arg2, temp)
+        tempCounter += 1
+        print("el contador es", tempCounter)
+    else:
+        print("no entro el temp")
+        quadGen.gen_quad(operator, arg1, arg2, None)
+    print(arg1,arg2,operator)
+    if(operator == ">"):
+        if(arg1>arg2):
+            sOperands.append(1)
+        else: sOperands.append(0)
+    elif(operator == "=="):
+        if(arg1==arg2):
+            sOperands.append(1)
+        else: sOperands.append(0)    
+    elif(operator == "<"):
+        if(arg1<arg2):
+            sOperands.append(1)
+        else: sOperands.append(0)    
+    elif(operator == "!="):
+        if(arg1!=arg2):
+            sOperands.append(1)
+        else: sOperands.append(0) 
+    toF = sOperands[len(sOperands)-1]
+    print(toF)
+    if (len(sOperands) != 0):
+        print("TOF ES: ",sOperands[len(sOperands)-1])
+        if (toF == 0 or toF ==1):
+            print("ENTRO AL IF")
+            quadGen.gen_quad("gotoF", len(sOperands)-1, None, temp)
+            qCounter += 1
+            sJumps.append(qCounter)
+            print("QG ES 1: ",str(quadGen))
+            print(sJumps)
+            print("QG POS 0 ES>>> ",quadGen.quads)
+    else: print("no es bool")
+    
+def p_jumpsWhile(p):
+    ''' jumpsWhile :'''
+    global sOperators, sOperands, sTypes, qCounter, sJumps
+    end = sJumps.pop()
+    #return sJumps.pop()
+    quadGen.gen_quad("gotoF", len(sOperands)-1, None, temp)
+    qCounter += 1
 
-#global SOperators, sOperands, sTypes, SQuads, qCounter
- #   if len(SOperators) != 0:
-  #      if sTypes [-1] == 'int':
-   #         sTypes.pop()
-    #        SQuads.append(QuadGenerator("gotoF", sOperands.pop(), None, None))
-     #       sJumps.append(qCounter)
-      #      qCounter += 1
-            
-    #global qCounter
-    #qJumpsF = sJumps.pop()
-    #qJumpsT = sJumps.pop()
-    #SQuads.append(QuadGenerator("goto", None, None, qJumpsT))
-    #qCounter += 1
-    #SQuads[qJumpsF].temp = qCounter 
     ##################################################################   
   
 def p_for(p):
