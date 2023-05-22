@@ -2,6 +2,7 @@ import ply.lex as lex
 
 tokens = (
     'PROGRAM',
+    'MAIN',
     'ID',
     'INT',
     'FLOAT',
@@ -142,6 +143,10 @@ t_MEAN = r'mean'
 
 def t_PROGRAM(t):
     r'program'
+    return t
+
+def t_MAIN(t):
+    r'main'
     return t
 
 def t_VAR(t):
