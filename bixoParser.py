@@ -1,4 +1,3 @@
-import sys
 import copy
 import ply.yacc as yacc
 import bixoLexer
