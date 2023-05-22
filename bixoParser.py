@@ -155,7 +155,7 @@ precedence = (
 
 
 def p_program(p):
-    '''program : PROGRAM ID SEMICOLON if'''
+    '''program : PROGRAM ID SEMICOLON while'''
     print("Nombre del programa:", p[2])
     #p[0]=p[4]
 
@@ -384,16 +384,10 @@ def p_callp(p):
 #def p_if(p):
 #    '''if : IF LPAREN exp quadsIf RPAREN statements ifp jumpsIf'''    
 def p_if(p):
-    '''if : IF LPAREN exp RPAREN quadsIf ifelse jumpsIf'''
+    '''if : IF LPAREN exp RPAREN quadsIf statements ifelse jumpsIf'''
     print("AQUI CORRE EL IF")
-    print("QG ES: ",str(quadGen))
-    
-        
-    print("OPERANDS",sOperands)
-    #toF=sOperands[len(sOperands)-1]
-    #quadGen.gen_quad("=", toF, None, "t3")
-    #print(quadGen.quads)
-    
+    print("QG ES: ",str(quadGen))    
+    print("OPERANDS",sOperands)    
 def p_ifelse(p):
     ''' ifelse : 
                | ELSE quadsElse statements'''

@@ -115,7 +115,6 @@ t_STRING = r'\".*?\"'
 #t_VAR = r'var'
 t_TRUE = r'true'
 t_FALSE = r'false'
-t_WHILE = r'while'
 t_FOR = r'for'
 t_PRINT = r'print'
 t_READ = r'read'
@@ -155,6 +154,10 @@ def t_IF(t):
 
 def t_ELSE(t):
     r'else'
+    return t
+
+def t_WHILE(t):
+    r'while'
     return t
 
 def t_IFEQUAL(t):
