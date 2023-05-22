@@ -125,7 +125,6 @@ t_PRINT = r'print'
 t_READ = r'read'
 t_ASSIGN = r'assign'
 t_FUNCESP = r'funcesp'
-t_VOID = r'void'
 #LIBRERIAS DE ML:
 #t_TENSORFLOW = r'tensorflow'
 t_LAYERS = r'layers'
@@ -174,6 +173,10 @@ def t_INT(t):
 
 def t_FLOAT(t):
     r'float'
+    return t
+
+def t_VOID(t):
+    r'void'
     return t
 
 def t_CTF(t):

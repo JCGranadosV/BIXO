@@ -26,7 +26,7 @@ Rule 7     type -> INT
 Rule 8     type -> FLOAT
 Rule 9     function -> FUNCTION type decfunc LPAREN param RPAREN LBRACE body RBRACE
 Rule 10    decfunc -> ID
-Rule 11    voidfunction -> FUNCTION VOID ID LPAREN param RPAREN LBRACE body RBRACE
+Rule 11    voidfunction -> FUNCTION VOID decfunc LPAREN param RPAREN LBRACE body RBRACE
 Rule 12    mainfunction -> MAIN
 Rule 13    modules -> function modules
 Rule 14    modules -> voidfunction modules
@@ -147,7 +147,7 @@ FUNCTION             : 9 11
 GETWEIGHTS           : 102
 GT                   : 30 63
 GTE                  : 
-ID                   : 1 5 6 10 11 21 22 59 60 84 87 91 92 96 99
+ID                   : 1 5 6 10 21 22 59 60 84 87 91 92 96 99
 IF                   : 63
 INT                  : 7 91 96 100
 LAYERS               : 91
@@ -192,7 +192,7 @@ body                 : 9 11 17 18
 call                 : 43 47
 callp                : 60 61
 compile              : 80
-decfunc              : 9
+decfunc              : 9 11
 decvar               : 1 3 17 19
 decvarp              : 2 3
 decvarpp             : 4 5
@@ -287,7 +287,7 @@ state 5
     (15) modules -> . function
     (16) modules -> . voidfunction
     (9) function -> . FUNCTION type decfunc LPAREN param RPAREN LBRACE body RBRACE
-    (11) voidfunction -> . FUNCTION VOID ID LPAREN param RPAREN LBRACE body RBRACE
+    (11) voidfunction -> . FUNCTION VOID decfunc LPAREN param RPAREN LBRACE body RBRACE
 
     FUNCTION        shift and go to state 10
 
@@ -327,7 +327,7 @@ state 8
     (15) modules -> . function
     (16) modules -> . voidfunction
     (9) function -> . FUNCTION type decfunc LPAREN param RPAREN LBRACE body RBRACE
-    (11) voidfunction -> . FUNCTION VOID ID LPAREN param RPAREN LBRACE body RBRACE
+    (11) voidfunction -> . FUNCTION VOID decfunc LPAREN param RPAREN LBRACE body RBRACE
 
     MAIN            reduce using rule 15 (modules -> function .)
     FUNCTION        shift and go to state 10
@@ -345,7 +345,7 @@ state 9
     (15) modules -> . function
     (16) modules -> . voidfunction
     (9) function -> . FUNCTION type decfunc LPAREN param RPAREN LBRACE body RBRACE
-    (11) voidfunction -> . FUNCTION VOID ID LPAREN param RPAREN LBRACE body RBRACE
+    (11) voidfunction -> . FUNCTION VOID decfunc LPAREN param RPAREN LBRACE body RBRACE
 
     MAIN            reduce using rule 16 (modules -> voidfunction .)
     FUNCTION        shift and go to state 10
@@ -357,7 +357,7 @@ state 9
 state 10
 
     (9) function -> FUNCTION . type decfunc LPAREN param RPAREN LBRACE body RBRACE
-    (11) voidfunction -> FUNCTION . VOID ID LPAREN param RPAREN LBRACE body RBRACE
+    (11) voidfunction -> FUNCTION . VOID decfunc LPAREN param RPAREN LBRACE body RBRACE
     (7) type -> . INT
     (8) type -> . FLOAT
 
@@ -450,10 +450,12 @@ state 19
 
 state 20
 
-    (11) voidfunction -> FUNCTION VOID . ID LPAREN param RPAREN LBRACE body RBRACE
+    (11) voidfunction -> FUNCTION VOID . decfunc LPAREN param RPAREN LBRACE body RBRACE
+    (10) decfunc -> . ID
 
-    ID              shift and go to state 26
+    ID              shift and go to state 25
 
+    decfunc                        shift and go to state 26
 
 state 21
 
@@ -502,7 +504,7 @@ state 25
 
 state 26
 
-    (11) voidfunction -> FUNCTION VOID ID . LPAREN param RPAREN LBRACE body RBRACE
+    (11) voidfunction -> FUNCTION VOID decfunc . LPAREN param RPAREN LBRACE body RBRACE
 
     LPAREN          shift and go to state 30
 
@@ -549,7 +551,7 @@ state 29
 
 state 30
 
-    (11) voidfunction -> FUNCTION VOID ID LPAREN . param RPAREN LBRACE body RBRACE
+    (11) voidfunction -> FUNCTION VOID decfunc LPAREN . param RPAREN LBRACE body RBRACE
     (21) param -> . type ID
     (22) param -> . type ID COMMA param
     (7) type -> . INT
@@ -585,7 +587,7 @@ state 33
 
 state 34
 
-    (11) voidfunction -> FUNCTION VOID ID LPAREN param . RPAREN LBRACE body RBRACE
+    (11) voidfunction -> FUNCTION VOID decfunc LPAREN param . RPAREN LBRACE body RBRACE
 
     RPAREN          shift and go to state 37
 
@@ -608,7 +610,7 @@ state 36
 
 state 37
 
-    (11) voidfunction -> FUNCTION VOID ID LPAREN param RPAREN . LBRACE body RBRACE
+    (11) voidfunction -> FUNCTION VOID decfunc LPAREN param RPAREN . LBRACE body RBRACE
 
     LBRACE          shift and go to state 40
 
@@ -648,7 +650,7 @@ state 39
     (53) statements -> . funcesp
     (54) assign -> . var EQUAL exp SEMICOLON
     (9) function -> . FUNCTION type decfunc LPAREN param RPAREN LBRACE body RBRACE
-    (11) voidfunction -> . FUNCTION VOID ID LPAREN param RPAREN LBRACE body RBRACE
+    (11) voidfunction -> . FUNCTION VOID decfunc LPAREN param RPAREN LBRACE body RBRACE
     (60) call -> . ID LPAREN callp RPAREN
     (55) read -> . READ var
     (56) print -> . PRINT LPAREN printp
@@ -712,7 +714,7 @@ state 39
 
 state 40
 
-    (11) voidfunction -> FUNCTION VOID ID LPAREN param RPAREN LBRACE . body RBRACE
+    (11) voidfunction -> FUNCTION VOID decfunc LPAREN param RPAREN LBRACE . body RBRACE
     (17) body -> . decvar statements body
     (18) body -> . statements body
     (19) body -> . decvar
@@ -731,7 +733,7 @@ state 40
     (53) statements -> . funcesp
     (54) assign -> . var EQUAL exp SEMICOLON
     (9) function -> . FUNCTION type decfunc LPAREN param RPAREN LBRACE body RBRACE
-    (11) voidfunction -> . FUNCTION VOID ID LPAREN param RPAREN LBRACE body RBRACE
+    (11) voidfunction -> . FUNCTION VOID decfunc LPAREN param RPAREN LBRACE body RBRACE
     (60) call -> . ID LPAREN callp RPAREN
     (55) read -> . READ var
     (56) print -> . PRINT LPAREN printp
@@ -823,7 +825,7 @@ state 43
     (53) statements -> . funcesp
     (54) assign -> . var EQUAL exp SEMICOLON
     (9) function -> . FUNCTION type decfunc LPAREN param RPAREN LBRACE body RBRACE
-    (11) voidfunction -> . FUNCTION VOID ID LPAREN param RPAREN LBRACE body RBRACE
+    (11) voidfunction -> . FUNCTION VOID decfunc LPAREN param RPAREN LBRACE body RBRACE
     (60) call -> . ID LPAREN callp RPAREN
     (55) read -> . READ var
     (56) print -> . PRINT LPAREN printp
@@ -903,7 +905,7 @@ state 44
     (53) statements -> . funcesp
     (54) assign -> . var EQUAL exp SEMICOLON
     (9) function -> . FUNCTION type decfunc LPAREN param RPAREN LBRACE body RBRACE
-    (11) voidfunction -> . FUNCTION VOID ID LPAREN param RPAREN LBRACE body RBRACE
+    (11) voidfunction -> . FUNCTION VOID decfunc LPAREN param RPAREN LBRACE body RBRACE
     (60) call -> . ID LPAREN callp RPAREN
     (55) read -> . READ var
     (56) print -> . PRINT LPAREN printp
@@ -1382,7 +1384,7 @@ state 71
 
 state 72
 
-    (11) voidfunction -> FUNCTION VOID ID LPAREN param RPAREN LBRACE body . RBRACE
+    (11) voidfunction -> FUNCTION VOID decfunc LPAREN param RPAREN LBRACE body . RBRACE
 
     RBRACE          shift and go to state 88
 
@@ -1427,7 +1429,7 @@ state 74
     (53) statements -> . funcesp
     (54) assign -> . var EQUAL exp SEMICOLON
     (9) function -> . FUNCTION type decfunc LPAREN param RPAREN LBRACE body RBRACE
-    (11) voidfunction -> . FUNCTION VOID ID LPAREN param RPAREN LBRACE body RBRACE
+    (11) voidfunction -> . FUNCTION VOID decfunc LPAREN param RPAREN LBRACE body RBRACE
     (60) call -> . ID LPAREN callp RPAREN
     (55) read -> . READ var
     (56) print -> . PRINT LPAREN printp
@@ -1747,21 +1749,21 @@ state 87
 
 state 88
 
-    (11) voidfunction -> FUNCTION VOID ID LPAREN param RPAREN LBRACE body RBRACE .
+    (11) voidfunction -> FUNCTION VOID decfunc LPAREN param RPAREN LBRACE body RBRACE .
 
-    FUNCTION        reduce using rule 11 (voidfunction -> FUNCTION VOID ID LPAREN param RPAREN LBRACE body RBRACE .)
-    MAIN            reduce using rule 11 (voidfunction -> FUNCTION VOID ID LPAREN param RPAREN LBRACE body RBRACE .)
-    VAR             reduce using rule 11 (voidfunction -> FUNCTION VOID ID LPAREN param RPAREN LBRACE body RBRACE .)
-    ID              reduce using rule 11 (voidfunction -> FUNCTION VOID ID LPAREN param RPAREN LBRACE body RBRACE .)
-    READ            reduce using rule 11 (voidfunction -> FUNCTION VOID ID LPAREN param RPAREN LBRACE body RBRACE .)
-    PRINT           reduce using rule 11 (voidfunction -> FUNCTION VOID ID LPAREN param RPAREN LBRACE body RBRACE .)
-    IF              reduce using rule 11 (voidfunction -> FUNCTION VOID ID LPAREN param RPAREN LBRACE body RBRACE .)
-    WHILE           reduce using rule 11 (voidfunction -> FUNCTION VOID ID LPAREN param RPAREN LBRACE body RBRACE .)
-    FOR             reduce using rule 11 (voidfunction -> FUNCTION VOID ID LPAREN param RPAREN LBRACE body RBRACE .)
-    MEAN            reduce using rule 11 (voidfunction -> FUNCTION VOID ID LPAREN param RPAREN LBRACE body RBRACE .)
-    RBRACE          reduce using rule 11 (voidfunction -> FUNCTION VOID ID LPAREN param RPAREN LBRACE body RBRACE .)
-    SEMICOLON       reduce using rule 11 (voidfunction -> FUNCTION VOID ID LPAREN param RPAREN LBRACE body RBRACE .)
-    RBRACKET        reduce using rule 11 (voidfunction -> FUNCTION VOID ID LPAREN param RPAREN LBRACE body RBRACE .)
+    FUNCTION        reduce using rule 11 (voidfunction -> FUNCTION VOID decfunc LPAREN param RPAREN LBRACE body RBRACE .)
+    MAIN            reduce using rule 11 (voidfunction -> FUNCTION VOID decfunc LPAREN param RPAREN LBRACE body RBRACE .)
+    VAR             reduce using rule 11 (voidfunction -> FUNCTION VOID decfunc LPAREN param RPAREN LBRACE body RBRACE .)
+    ID              reduce using rule 11 (voidfunction -> FUNCTION VOID decfunc LPAREN param RPAREN LBRACE body RBRACE .)
+    READ            reduce using rule 11 (voidfunction -> FUNCTION VOID decfunc LPAREN param RPAREN LBRACE body RBRACE .)
+    PRINT           reduce using rule 11 (voidfunction -> FUNCTION VOID decfunc LPAREN param RPAREN LBRACE body RBRACE .)
+    IF              reduce using rule 11 (voidfunction -> FUNCTION VOID decfunc LPAREN param RPAREN LBRACE body RBRACE .)
+    WHILE           reduce using rule 11 (voidfunction -> FUNCTION VOID decfunc LPAREN param RPAREN LBRACE body RBRACE .)
+    FOR             reduce using rule 11 (voidfunction -> FUNCTION VOID decfunc LPAREN param RPAREN LBRACE body RBRACE .)
+    MEAN            reduce using rule 11 (voidfunction -> FUNCTION VOID decfunc LPAREN param RPAREN LBRACE body RBRACE .)
+    RBRACE          reduce using rule 11 (voidfunction -> FUNCTION VOID decfunc LPAREN param RPAREN LBRACE body RBRACE .)
+    SEMICOLON       reduce using rule 11 (voidfunction -> FUNCTION VOID decfunc LPAREN param RPAREN LBRACE body RBRACE .)
+    RBRACKET        reduce using rule 11 (voidfunction -> FUNCTION VOID decfunc LPAREN param RPAREN LBRACE body RBRACE .)
 
 
 state 89
@@ -2597,7 +2599,7 @@ state 143
     (53) statements -> . funcesp
     (54) assign -> . var EQUAL exp SEMICOLON
     (9) function -> . FUNCTION type decfunc LPAREN param RPAREN LBRACE body RBRACE
-    (11) voidfunction -> . FUNCTION VOID ID LPAREN param RPAREN LBRACE body RBRACE
+    (11) voidfunction -> . FUNCTION VOID decfunc LPAREN param RPAREN LBRACE body RBRACE
     (60) call -> . ID LPAREN callp RPAREN
     (55) read -> . READ var
     (56) print -> . PRINT LPAREN printp
@@ -2945,7 +2947,7 @@ state 166
     (53) statements -> . funcesp
     (54) assign -> . var EQUAL exp SEMICOLON
     (9) function -> . FUNCTION type decfunc LPAREN param RPAREN LBRACE body RBRACE
-    (11) voidfunction -> . FUNCTION VOID ID LPAREN param RPAREN LBRACE body RBRACE
+    (11) voidfunction -> . FUNCTION VOID decfunc LPAREN param RPAREN LBRACE body RBRACE
     (60) call -> . ID LPAREN callp RPAREN
     (55) read -> . READ var
     (56) print -> . PRINT LPAREN printp
@@ -3221,7 +3223,7 @@ state 182
     (53) statements -> . funcesp
     (54) assign -> . var EQUAL exp SEMICOLON
     (9) function -> . FUNCTION type decfunc LPAREN param RPAREN LBRACE body RBRACE
-    (11) voidfunction -> . FUNCTION VOID ID LPAREN param RPAREN LBRACE body RBRACE
+    (11) voidfunction -> . FUNCTION VOID decfunc LPAREN param RPAREN LBRACE body RBRACE
     (60) call -> . ID LPAREN callp RPAREN
     (55) read -> . READ var
     (56) print -> . PRINT LPAREN printp
@@ -3727,7 +3729,7 @@ state 215
     (53) statements -> . funcesp
     (54) assign -> . var EQUAL exp SEMICOLON
     (9) function -> . FUNCTION type decfunc LPAREN param RPAREN LBRACE body RBRACE
-    (11) voidfunction -> . FUNCTION VOID ID LPAREN param RPAREN LBRACE body RBRACE
+    (11) voidfunction -> . FUNCTION VOID decfunc LPAREN param RPAREN LBRACE body RBRACE
     (60) call -> . ID LPAREN callp RPAREN
     (55) read -> . READ var
     (56) print -> . PRINT LPAREN printp
@@ -3800,7 +3802,7 @@ state 216
     (53) statements -> . funcesp
     (54) assign -> . var EQUAL exp SEMICOLON
     (9) function -> . FUNCTION type decfunc LPAREN param RPAREN LBRACE body RBRACE
-    (11) voidfunction -> . FUNCTION VOID ID LPAREN param RPAREN LBRACE body RBRACE
+    (11) voidfunction -> . FUNCTION VOID decfunc LPAREN param RPAREN LBRACE body RBRACE
     (60) call -> . ID LPAREN callp RPAREN
     (55) read -> . READ var
     (56) print -> . PRINT LPAREN printp
@@ -3936,7 +3938,7 @@ state 221
     (53) statements -> . funcesp
     (54) assign -> . var EQUAL exp SEMICOLON
     (9) function -> . FUNCTION type decfunc LPAREN param RPAREN LBRACE body RBRACE
-    (11) voidfunction -> . FUNCTION VOID ID LPAREN param RPAREN LBRACE body RBRACE
+    (11) voidfunction -> . FUNCTION VOID decfunc LPAREN param RPAREN LBRACE body RBRACE
     (60) call -> . ID LPAREN callp RPAREN
     (55) read -> . READ var
     (56) print -> . PRINT LPAREN printp
@@ -4020,7 +4022,7 @@ state 223
     (53) statements -> . funcesp
     (54) assign -> . var EQUAL exp SEMICOLON
     (9) function -> . FUNCTION type decfunc LPAREN param RPAREN LBRACE body RBRACE
-    (11) voidfunction -> . FUNCTION VOID ID LPAREN param RPAREN LBRACE body RBRACE
+    (11) voidfunction -> . FUNCTION VOID decfunc LPAREN param RPAREN LBRACE body RBRACE
     (60) call -> . ID LPAREN callp RPAREN
     (55) read -> . READ var
     (56) print -> . PRINT LPAREN printp

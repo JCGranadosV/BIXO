@@ -250,7 +250,16 @@ def p_decfunc(p):
 
     
 def p_voidfunction(p):
-    '''voidfunction : FUNCTION VOID ID LPAREN param RPAREN LBRACE body RBRACE'''
+    '''voidfunction : FUNCTION VOID decfunc LPAREN param RPAREN LBRACE body RBRACE'''
+    global localArray, currFunc, qCounter, functions_table
+    func_type=p[2]
+    func_var_table=localArray.pop()
+    print("CURRENT FUNC",currFunc)
+    print("LOCAL ARRAY ES EN FUNC: ",func_var_table)
+    add_function(currFunc, func_type, qCounter, 0, 0, 0, 0, func_var_table)
+    print("TABLA DE FUNCIONES",currFunc,functions_table)
+    print("FIN")
+    #add_function(func_id, func_type, qCounter, varInt, varFloat, tempInt, tempFloat, tabla_local)
 
 def p_mainfunction(p):
     '''mainfunction : MAIN'''
