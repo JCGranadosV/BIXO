@@ -386,6 +386,7 @@ def p_callp(p):
 def p_if(p):
     '''if : IF LPAREN exp RPAREN quadsIf ifelse jumpsIf'''
     print("AQUI CORRE EL IF")
+    print("QG ES: ",str(quadGen))
     
         
     print("OPERANDS",sOperands)
@@ -400,7 +401,6 @@ def p_ifelse(p):
     if (len(p)>2):
         hayElse=1
     else: hayElse=0
-    print("AQUI CORRE EL IFELSE")
             
 
 def p_quadsIf(p):
@@ -415,7 +415,6 @@ def p_quadsIf(p):
         temp = "t" + str(tempCounter)
         quadGen.gen_quad(operator, arg1, arg2, temp)
         tempCounter += 1
-        print("el contador es", tempCounter)
     else:
         print("no entro el temp")
         quadGen.gen_quad(operator, arg1, arg2, None)
@@ -437,17 +436,15 @@ def p_quadsIf(p):
             sOperands.append(1)
         else: sOperands.append(0) 
     toF = sOperands[len(sOperands)-1]
-    print(toF)
     if (len(sOperands) != 0):
         print("TOF ES: ",sOperands[len(sOperands)-1])
         if (toF == 0 or toF ==1):
             print("ENTRO AL IF")
-            quadGen.gen_quad("gotoF", len(sOperands)-1, None, temp)
+            quadGen.gen_quad("gotoF", sOperands[len(sOperands)-1], None, None)
             qCounter += 1
             sJumps.append(qCounter)
-            print("QG ES 1: ",str(quadGen))
+            print("QG ES: ",str(quadGen))
             print(sJumps)
-            print("QG POS 0 ES>>> ",quadGen.quads)
     else: print("no es bool")
     
 
@@ -455,18 +452,23 @@ def p_jumpsIf(p):
     '''jumpsIf : '''  
     print("AQUI CORRE EL JUMPIF")
     print("jumpsif")          
-    end = sJumps.pop()
-    #quadGen.quads[end].res = qCounter
+    jumps = sJumps.pop()
+    print("JUMPS ES: ",jumps)
+    if(hayElse):
+        print("ENTRO ELSE")
+        quadGen.quads[jumps] = ("goto",None,None,qCounter)
+    else: quadGen.quads[jumps] = ("gotoF",sOperands[len(sOperands)-1],None,qCounter)
 
 def p_quadsElse(p):
     '''quadsElse : '''   
     print("AQUI CORRE EL QUADSELSE") 
     global sOperators, sOperands, sTypes, qCounter
-    quadGen.gen_quad("goto", sOperands.pop(), None, None)
-    end = sJumps.pop()
-    sJumps.append(qCounter)
+    quadGen.gen_quad("goto", None, None, None)
     qCounter += 1
-    #quadGen[end].res = qCounter
+    jumps = sJumps.pop()
+    sJumps.append(qCounter)
+    quadGen.quads[jumps] = ("gotoF",sOperands[len(sOperands)-1],None,qCounter)
+    print("QG ES: ",str(quadGen))
 
 ###############################Quands while#############
 def p_while(p):
@@ -514,11 +516,12 @@ def p_quadsWhile(p):
             sOperands.append(1)
         else: sOperands.append(0) 
     toF = sOperands[len(sOperands)-1]
-    print(toF)
     if (len(sOperands) != 0):
         print("TOF ES: ",sOperands[len(sOperands)-1])
         if (toF == 0 or toF ==1):
             print("ENTRO AL IF")
+            temp = "t" + str(tempCounter)
+            print("TEMP ES",temp)
             quadGen.gen_quad("gotoF", len(sOperands)-1, None, temp)
             qCounter += 1
             sJumps.append(qCounter)
