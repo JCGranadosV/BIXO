@@ -74,162 +74,4352 @@ Rule 56    var -> ID
 Rule 57    call -> ID LPAREN callp RPAREN
 Rule 58    callp -> exp SEMICOLON callp
 Rule 59    callp -> exp
-Rule 60    if -> IF LPAREN exp RPAREN quadsIf statement ifelse jumpsIf
+Rule 60    if -> IF LPAREN exp RPAREN quadsIf ifelse jumpsIf
 Rule 61    ifelse -> <empty>
 Rule 62    ifelse -> ELSE quadsElse statements
 Rule 63    quadsIf -> <empty>
 Rule 64    jumpsIf -> <empty>
 Rule 65    quadsElse -> <empty>
-Rule 66    while -> WHILE LPAREN exp RPAREN statements whilep
+Rule 66    while -> WHILE LPAREN saveJumps exp RPAREN quadsWhile statements jumpsWhile whilep
 Rule 67    whilep -> SEMICOLON
 Rule 68    whilep -> statements whilep
-Rule 69    for -> FOR LPAREN var SEMICOLON exp SEMICOLON exp RPAREN LBRACKET statements forp
-Rule 70    forp -> RBRACKET
-Rule 71    forp -> statements forp
-Rule 72    funcesp -> array
-Rule 73    funcesp -> matrix
-Rule 74    funcesp -> mean
-Rule 75    funcesp -> layers
-Rule 76    funcesp -> sequential
-Rule 77    funcesp -> compile
-Rule 78    funcesp -> fit
-Rule 79    funcesp -> predict
-Rule 80    funcesp -> getweights
-Rule 81    array -> ID EQUAL ARRAY LPAREN var arrayp
-Rule 82    arrayp -> RPAREN
-Rule 83    arrayp -> COMMA var RPAREN
-Rule 84    matrix -> ID EQUAL MATRIX LPAREN array matrixp
-Rule 85    matrixp -> RPAREN
-Rule 86    matrixp -> COMMA array RPAREN
-Rule 87    mean -> MEAN LPAREN array RPAREN
-Rule 88    layers -> ID EQUAL LAYERS LPAREN UNITS EQUAL INT RPAREN
-Rule 89    sequential -> ID EQUAL SEQUENTIAL LPAREN LBRACKET layers sequentialp
-Rule 90    sequentialp -> RBRACKET RPAREN
-Rule 91    sequentialp -> COMMA layers sequentialp
-Rule 92    compile -> sequential DOT COMPILE LPAREN RPAREN
-Rule 93    fit -> ID EQUAL sequential DOT FIT LPAREN array COMMA array COMMA EPOCHS EQUAL INT COMMA VERBOSE EQUAL fitp
-Rule 94    fitp -> TRUE RPAREN
-Rule 95    fitp -> FALSE RPAREN
-Rule 96    predict -> ID EQUAL sequential DOT PREDICT LPAREN LBRACKET predictp
-Rule 97    predictp -> INT RBRACKET RPAREN
-Rule 98    predictp -> FLOAT RBRACKET RPAREN
-Rule 99    getweights -> layers DOT GETWEIGHTS LPAREN RPAREN
-Rule 100   empty -> <empty>
+Rule 69    saveJumps -> <empty>
+Rule 70    quadsWhile -> <empty>
+Rule 71    jumpsWhile -> <empty>
+Rule 72    for -> FOR LPAREN var SEMICOLON exp SEMICOLON exp RPAREN LBRACKET statements forp
+Rule 73    forp -> RBRACKET
+Rule 74    forp -> statements forp
+Rule 75    funcesp -> array
+Rule 76    funcesp -> matrix
+Rule 77    funcesp -> mean
+Rule 78    funcesp -> layers
+Rule 79    funcesp -> sequential
+Rule 80    funcesp -> compile
+Rule 81    funcesp -> fit
+Rule 82    funcesp -> predict
+Rule 83    funcesp -> getweights
+Rule 84    array -> ID EQUAL ARRAY LPAREN var arrayp
+Rule 85    arrayp -> RPAREN
+Rule 86    arrayp -> COMMA var RPAREN
+Rule 87    matrix -> ID EQUAL MATRIX LPAREN array matrixp
+Rule 88    matrixp -> RPAREN
+Rule 89    matrixp -> COMMA array RPAREN
+Rule 90    mean -> MEAN LPAREN array RPAREN
+Rule 91    layers -> ID EQUAL LAYERS LPAREN UNITS EQUAL INT RPAREN
+Rule 92    sequential -> ID EQUAL SEQUENTIAL LPAREN LBRACKET layers sequentialp
+Rule 93    sequentialp -> RBRACKET RPAREN
+Rule 94    sequentialp -> COMMA layers sequentialp
+Rule 95    compile -> sequential DOT COMPILE LPAREN RPAREN
+Rule 96    fit -> ID EQUAL sequential DOT FIT LPAREN array COMMA array COMMA EPOCHS EQUAL INT COMMA VERBOSE EQUAL fitp
+Rule 97    fitp -> TRUE RPAREN
+Rule 98    fitp -> FALSE RPAREN
+Rule 99    predict -> ID EQUAL sequential DOT PREDICT LPAREN LBRACKET predictp
+Rule 100   predictp -> INT RBRACKET RPAREN
+Rule 101   predictp -> FLOAT RBRACKET RPAREN
+Rule 102   getweights -> layers DOT GETWEIGHTS LPAREN RPAREN
+Rule 103   empty -> <empty>
 
 Terminals, with rules where they appear
 
 AND                  : 23
-ARRAY                : 81
+ARRAY                : 84
 ASSIGN               : 
 CHAR                 : 
 COLON                : 
-COMMA                : 5 19 55 83 86 91 93 93 93
-COMPILE              : 92
+COMMA                : 5 19 55 86 89 94 96 96 96
+COMPILE              : 95
 CTF                  : 38
 CTI                  : 37
 DIFF                 : 29
 DIV                  : 35
-DOT                  : 92 93 96 99
+DOT                  : 95 96 99 102
 ELSE                 : 62
-EPOCHS               : 93
-EQUAL                : 51 81 84 88 88 89 93 93 93 96
-FALSE                : 95
-FIT                  : 93
-FLOAT                : 8 98
-FOR                  : 69
+EPOCHS               : 96
+EQUAL                : 51 84 87 91 91 92 96 96 96 99
+FALSE                : 98
+FIT                  : 96
+FLOAT                : 8 101
+FOR                  : 72
 FUNCESP              : 
 FUNCTION             : 9 10
-GETWEIGHTS           : 99
+GETWEIGHTS           : 102
 GT                   : 27
 GTE                  : 
-ID                   : 1 5 6 9 10 18 19 56 57 81 84 88 89 93 96
+ID                   : 1 5 6 9 10 18 19 56 57 84 87 91 92 96 99
 IF                   : 60
 IFEQUAL              : 28
-INT                  : 7 88 93 97
-LAYERS               : 88
+INT                  : 7 91 96 100
+LAYERS               : 91
 LBRACE               : 11
-LBRACKET             : 69 89 96
-LPAREN               : 9 10 36 53 57 60 66 69 81 84 87 88 89 92 93 96 99
+LBRACKET             : 72 92 99
+LPAREN               : 9 10 36 53 57 60 66 72 84 87 90 91 92 95 96 99 102
 LT                   : 26
 LTE                  : 
-MATRIX               : 84
-MEAN                 : 87
+MATRIX               : 87
+MEAN                 : 90
 MINUS                : 32
 MULT                 : 34
 NUMPY                : 
 OR                   : 21
 PLUS                 : 31
-PREDICT              : 96
+PREDICT              : 99
 PRINT                : 53
 PROGRAM              : 1
 QUOTE                : 
 RBRACE               : 11
-RBRACKET             : 70 90 97 98
+RBRACKET             : 73 93 100 101
 READ                 : 52
-RPAREN               : 9 10 36 54 57 60 66 69 82 83 85 86 87 88 90 92 94 95 97 98 99
-SEMICOLON            : 1 4 58 67 69 69
-SEQUENTIAL           : 89
+RPAREN               : 9 10 36 54 57 60 66 72 85 86 88 89 90 91 93 95 97 98 100 101 102
+SEMICOLON            : 1 4 58 67 72 72
+SEQUENTIAL           : 92
 STRING               : 
-TRUE                 : 94
-UNITS                : 88
+TRUE                 : 97
+UNITS                : 91
 VAR                  : 2 3
-VERBOSE              : 93
+VERBOSE              : 96
 VOID                 : 10
 WHILE                : 66
 error                : 
 
 Nonterminals, with rules where they appear
 
-array                : 72 84 86 87 93 93
-arrayp               : 81
+array                : 75 87 89 90 96 96
+arrayp               : 84
 assign               : 41
 body                 : 9 10
 bodyp                : 11 12 13
 call                 : 40 44
 callp                : 57 58
-compile              : 77
+compile              : 80
 decvar               : 3 12 14
 decvarp              : 2 3
 decvarpp             : 4 5
 empty                : 
-exp                  : 21 36 51 54 55 58 59 60 66 69 69
+exp                  : 21 36 51 54 55 58 59 60 66 72 72
 f                    : 33 34 35
-fit                  : 78
-fitp                 : 93
+fit                  : 81
+fitp                 : 96
 for                  : 49
-forp                 : 69 71
+forp                 : 72 74
 funcesp              : 50
 function             : 42
-getweights           : 80
+getweights           : 83
 gexp                 : 22 23
 gexpp                : 25
 if                   : 1 47
 ifelse               : 60
 jumpsIf              : 60
-layers               : 75 89 91 99
-matrix               : 73
-matrixp              : 84
-mean                 : 74
+jumpsWhile           : 66
+layers               : 78 92 94 102
+matrix               : 76
+matrixp              : 87
+mean                 : 77
 mexp                 : 24 25 25 31 32
 param                : 9 10 19
 paramp               : 17
-predict              : 79
-predictp             : 96
+predict              : 82
+predictp             : 99
 print                : 46
 printp               : 53 55
 program              : 0
 quadsElse            : 62
 quadsIf              : 60
+quadsWhile           : 66
 read                 : 45
-sequential           : 76 92 93 96
-sequentialp          : 89 91
-statement            : 60
-statements           : 12 13 62 66 68 69 71
+saveJumps            : 66
+sequential           : 79 95 96 99
+sequentialp          : 92 94
+statements           : 12 13 62 66 68 72 74
 t                    : 30 31 32 34 35
 texp                 : 20 21 23
 type                 : 4 9 17
-var                  : 39 51 52 69 81 83
+var                  : 39 51 52 72 84 86
 voidfunction         : 43
 while                : 48
 whilep               : 66 68
 
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . program
+    (1) program -> . PROGRAM ID SEMICOLON if
+
+    PROGRAM         shift and go to state 2
+
+    program                        shift and go to state 1
+
+state 1
+
+    (0) S' -> program .
+
+
+
+state 2
+
+    (1) program -> PROGRAM . ID SEMICOLON if
+
+    ID              shift and go to state 3
+
+
+state 3
+
+    (1) program -> PROGRAM ID . SEMICOLON if
+
+    SEMICOLON       shift and go to state 4
+
+
+state 4
+
+    (1) program -> PROGRAM ID SEMICOLON . if
+    (60) if -> . IF LPAREN exp RPAREN quadsIf ifelse jumpsIf
+
+    IF              shift and go to state 6
+
+    if                             shift and go to state 5
+
+state 5
+
+    (1) program -> PROGRAM ID SEMICOLON if .
+
+    $end            reduce using rule 1 (program -> PROGRAM ID SEMICOLON if .)
+
+
+state 6
+
+    (60) if -> IF . LPAREN exp RPAREN quadsIf ifelse jumpsIf
+
+    LPAREN          shift and go to state 7
+
+
+state 7
+
+    (60) if -> IF LPAREN . exp RPAREN quadsIf ifelse jumpsIf
+    (20) exp -> . texp
+    (21) exp -> . texp OR exp
+    (22) texp -> . gexp
+    (23) texp -> . gexp AND texp
+    (24) gexp -> . mexp
+    (25) gexp -> . mexp gexpp mexp
+    (30) mexp -> . t
+    (31) mexp -> . t PLUS mexp
+    (32) mexp -> . t MINUS mexp
+    (33) t -> . f
+    (34) t -> . f MULT t
+    (35) t -> . f DIV t
+    (36) f -> . LPAREN exp RPAREN
+    (37) f -> . CTI
+    (38) f -> . CTF
+    (39) f -> . var
+    (40) f -> . call
+    (56) var -> . ID
+    (57) call -> . ID LPAREN callp RPAREN
+
+    LPAREN          shift and go to state 8
+    CTI             shift and go to state 15
+    CTF             shift and go to state 16
+    ID              shift and go to state 19
+
+    exp                            shift and go to state 9
+    texp                           shift and go to state 10
+    gexp                           shift and go to state 11
+    mexp                           shift and go to state 12
+    t                              shift and go to state 13
+    f                              shift and go to state 14
+    var                            shift and go to state 17
+    call                           shift and go to state 18
+
+state 8
+
+    (36) f -> LPAREN . exp RPAREN
+    (20) exp -> . texp
+    (21) exp -> . texp OR exp
+    (22) texp -> . gexp
+    (23) texp -> . gexp AND texp
+    (24) gexp -> . mexp
+    (25) gexp -> . mexp gexpp mexp
+    (30) mexp -> . t
+    (31) mexp -> . t PLUS mexp
+    (32) mexp -> . t MINUS mexp
+    (33) t -> . f
+    (34) t -> . f MULT t
+    (35) t -> . f DIV t
+    (36) f -> . LPAREN exp RPAREN
+    (37) f -> . CTI
+    (38) f -> . CTF
+    (39) f -> . var
+    (40) f -> . call
+    (56) var -> . ID
+    (57) call -> . ID LPAREN callp RPAREN
+
+    LPAREN          shift and go to state 8
+    CTI             shift and go to state 15
+    CTF             shift and go to state 16
+    ID              shift and go to state 19
+
+    exp                            shift and go to state 20
+    texp                           shift and go to state 10
+    gexp                           shift and go to state 11
+    mexp                           shift and go to state 12
+    t                              shift and go to state 13
+    f                              shift and go to state 14
+    var                            shift and go to state 17
+    call                           shift and go to state 18
+
+state 9
+
+    (60) if -> IF LPAREN exp . RPAREN quadsIf ifelse jumpsIf
+
+    RPAREN          shift and go to state 21
+
+
+state 10
+
+    (20) exp -> texp .
+    (21) exp -> texp . OR exp
+
+    RPAREN          reduce using rule 20 (exp -> texp .)
+    SEMICOLON       reduce using rule 20 (exp -> texp .)
+    $end            reduce using rule 20 (exp -> texp .)
+    FUNCTION        reduce using rule 20 (exp -> texp .)
+    ID              reduce using rule 20 (exp -> texp .)
+    READ            reduce using rule 20 (exp -> texp .)
+    PRINT           reduce using rule 20 (exp -> texp .)
+    IF              reduce using rule 20 (exp -> texp .)
+    WHILE           reduce using rule 20 (exp -> texp .)
+    FOR             reduce using rule 20 (exp -> texp .)
+    MEAN            reduce using rule 20 (exp -> texp .)
+    VAR             reduce using rule 20 (exp -> texp .)
+    RBRACE          reduce using rule 20 (exp -> texp .)
+    RBRACKET        reduce using rule 20 (exp -> texp .)
+    COMMA           reduce using rule 20 (exp -> texp .)
+    OR              shift and go to state 22
+
+
+state 11
+
+    (22) texp -> gexp .
+    (23) texp -> gexp . AND texp
+
+    OR              reduce using rule 22 (texp -> gexp .)
+    RPAREN          reduce using rule 22 (texp -> gexp .)
+    SEMICOLON       reduce using rule 22 (texp -> gexp .)
+    $end            reduce using rule 22 (texp -> gexp .)
+    FUNCTION        reduce using rule 22 (texp -> gexp .)
+    ID              reduce using rule 22 (texp -> gexp .)
+    READ            reduce using rule 22 (texp -> gexp .)
+    PRINT           reduce using rule 22 (texp -> gexp .)
+    IF              reduce using rule 22 (texp -> gexp .)
+    WHILE           reduce using rule 22 (texp -> gexp .)
+    FOR             reduce using rule 22 (texp -> gexp .)
+    MEAN            reduce using rule 22 (texp -> gexp .)
+    VAR             reduce using rule 22 (texp -> gexp .)
+    RBRACE          reduce using rule 22 (texp -> gexp .)
+    RBRACKET        reduce using rule 22 (texp -> gexp .)
+    COMMA           reduce using rule 22 (texp -> gexp .)
+    AND             shift and go to state 23
+
+
+state 12
+
+    (24) gexp -> mexp .
+    (25) gexp -> mexp . gexpp mexp
+    (26) gexpp -> . LT
+    (27) gexpp -> . GT
+    (28) gexpp -> . IFEQUAL
+    (29) gexpp -> . DIFF
+
+    AND             reduce using rule 24 (gexp -> mexp .)
+    OR              reduce using rule 24 (gexp -> mexp .)
+    RPAREN          reduce using rule 24 (gexp -> mexp .)
+    SEMICOLON       reduce using rule 24 (gexp -> mexp .)
+    $end            reduce using rule 24 (gexp -> mexp .)
+    FUNCTION        reduce using rule 24 (gexp -> mexp .)
+    ID              reduce using rule 24 (gexp -> mexp .)
+    READ            reduce using rule 24 (gexp -> mexp .)
+    PRINT           reduce using rule 24 (gexp -> mexp .)
+    IF              reduce using rule 24 (gexp -> mexp .)
+    WHILE           reduce using rule 24 (gexp -> mexp .)
+    FOR             reduce using rule 24 (gexp -> mexp .)
+    MEAN            reduce using rule 24 (gexp -> mexp .)
+    VAR             reduce using rule 24 (gexp -> mexp .)
+    RBRACE          reduce using rule 24 (gexp -> mexp .)
+    RBRACKET        reduce using rule 24 (gexp -> mexp .)
+    COMMA           reduce using rule 24 (gexp -> mexp .)
+    LT              shift and go to state 25
+    GT              shift and go to state 26
+    IFEQUAL         shift and go to state 27
+    DIFF            shift and go to state 28
+
+    gexpp                          shift and go to state 24
+
+state 13
+
+    (30) mexp -> t .
+    (31) mexp -> t . PLUS mexp
+    (32) mexp -> t . MINUS mexp
+
+    LT              reduce using rule 30 (mexp -> t .)
+    GT              reduce using rule 30 (mexp -> t .)
+    IFEQUAL         reduce using rule 30 (mexp -> t .)
+    DIFF            reduce using rule 30 (mexp -> t .)
+    AND             reduce using rule 30 (mexp -> t .)
+    OR              reduce using rule 30 (mexp -> t .)
+    RPAREN          reduce using rule 30 (mexp -> t .)
+    SEMICOLON       reduce using rule 30 (mexp -> t .)
+    $end            reduce using rule 30 (mexp -> t .)
+    FUNCTION        reduce using rule 30 (mexp -> t .)
+    ID              reduce using rule 30 (mexp -> t .)
+    READ            reduce using rule 30 (mexp -> t .)
+    PRINT           reduce using rule 30 (mexp -> t .)
+    IF              reduce using rule 30 (mexp -> t .)
+    WHILE           reduce using rule 30 (mexp -> t .)
+    FOR             reduce using rule 30 (mexp -> t .)
+    MEAN            reduce using rule 30 (mexp -> t .)
+    VAR             reduce using rule 30 (mexp -> t .)
+    RBRACE          reduce using rule 30 (mexp -> t .)
+    RBRACKET        reduce using rule 30 (mexp -> t .)
+    COMMA           reduce using rule 30 (mexp -> t .)
+    PLUS            shift and go to state 29
+    MINUS           shift and go to state 30
+
+
+state 14
+
+    (33) t -> f .
+    (34) t -> f . MULT t
+    (35) t -> f . DIV t
+
+    PLUS            reduce using rule 33 (t -> f .)
+    MINUS           reduce using rule 33 (t -> f .)
+    LT              reduce using rule 33 (t -> f .)
+    GT              reduce using rule 33 (t -> f .)
+    IFEQUAL         reduce using rule 33 (t -> f .)
+    DIFF            reduce using rule 33 (t -> f .)
+    AND             reduce using rule 33 (t -> f .)
+    OR              reduce using rule 33 (t -> f .)
+    RPAREN          reduce using rule 33 (t -> f .)
+    SEMICOLON       reduce using rule 33 (t -> f .)
+    $end            reduce using rule 33 (t -> f .)
+    FUNCTION        reduce using rule 33 (t -> f .)
+    ID              reduce using rule 33 (t -> f .)
+    READ            reduce using rule 33 (t -> f .)
+    PRINT           reduce using rule 33 (t -> f .)
+    IF              reduce using rule 33 (t -> f .)
+    WHILE           reduce using rule 33 (t -> f .)
+    FOR             reduce using rule 33 (t -> f .)
+    MEAN            reduce using rule 33 (t -> f .)
+    VAR             reduce using rule 33 (t -> f .)
+    RBRACE          reduce using rule 33 (t -> f .)
+    RBRACKET        reduce using rule 33 (t -> f .)
+    COMMA           reduce using rule 33 (t -> f .)
+    MULT            shift and go to state 31
+    DIV             shift and go to state 32
+
+
+state 15
+
+    (37) f -> CTI .
+
+    MULT            reduce using rule 37 (f -> CTI .)
+    DIV             reduce using rule 37 (f -> CTI .)
+    PLUS            reduce using rule 37 (f -> CTI .)
+    MINUS           reduce using rule 37 (f -> CTI .)
+    LT              reduce using rule 37 (f -> CTI .)
+    GT              reduce using rule 37 (f -> CTI .)
+    IFEQUAL         reduce using rule 37 (f -> CTI .)
+    DIFF            reduce using rule 37 (f -> CTI .)
+    AND             reduce using rule 37 (f -> CTI .)
+    OR              reduce using rule 37 (f -> CTI .)
+    RPAREN          reduce using rule 37 (f -> CTI .)
+    SEMICOLON       reduce using rule 37 (f -> CTI .)
+    $end            reduce using rule 37 (f -> CTI .)
+    FUNCTION        reduce using rule 37 (f -> CTI .)
+    ID              reduce using rule 37 (f -> CTI .)
+    READ            reduce using rule 37 (f -> CTI .)
+    PRINT           reduce using rule 37 (f -> CTI .)
+    IF              reduce using rule 37 (f -> CTI .)
+    WHILE           reduce using rule 37 (f -> CTI .)
+    FOR             reduce using rule 37 (f -> CTI .)
+    MEAN            reduce using rule 37 (f -> CTI .)
+    VAR             reduce using rule 37 (f -> CTI .)
+    RBRACE          reduce using rule 37 (f -> CTI .)
+    RBRACKET        reduce using rule 37 (f -> CTI .)
+    COMMA           reduce using rule 37 (f -> CTI .)
+
+
+state 16
+
+    (38) f -> CTF .
+
+    MULT            reduce using rule 38 (f -> CTF .)
+    DIV             reduce using rule 38 (f -> CTF .)
+    PLUS            reduce using rule 38 (f -> CTF .)
+    MINUS           reduce using rule 38 (f -> CTF .)
+    LT              reduce using rule 38 (f -> CTF .)
+    GT              reduce using rule 38 (f -> CTF .)
+    IFEQUAL         reduce using rule 38 (f -> CTF .)
+    DIFF            reduce using rule 38 (f -> CTF .)
+    AND             reduce using rule 38 (f -> CTF .)
+    OR              reduce using rule 38 (f -> CTF .)
+    RPAREN          reduce using rule 38 (f -> CTF .)
+    SEMICOLON       reduce using rule 38 (f -> CTF .)
+    $end            reduce using rule 38 (f -> CTF .)
+    FUNCTION        reduce using rule 38 (f -> CTF .)
+    ID              reduce using rule 38 (f -> CTF .)
+    READ            reduce using rule 38 (f -> CTF .)
+    PRINT           reduce using rule 38 (f -> CTF .)
+    IF              reduce using rule 38 (f -> CTF .)
+    WHILE           reduce using rule 38 (f -> CTF .)
+    FOR             reduce using rule 38 (f -> CTF .)
+    MEAN            reduce using rule 38 (f -> CTF .)
+    VAR             reduce using rule 38 (f -> CTF .)
+    RBRACE          reduce using rule 38 (f -> CTF .)
+    RBRACKET        reduce using rule 38 (f -> CTF .)
+    COMMA           reduce using rule 38 (f -> CTF .)
+
+
+state 17
+
+    (39) f -> var .
+
+    MULT            reduce using rule 39 (f -> var .)
+    DIV             reduce using rule 39 (f -> var .)
+    PLUS            reduce using rule 39 (f -> var .)
+    MINUS           reduce using rule 39 (f -> var .)
+    LT              reduce using rule 39 (f -> var .)
+    GT              reduce using rule 39 (f -> var .)
+    IFEQUAL         reduce using rule 39 (f -> var .)
+    DIFF            reduce using rule 39 (f -> var .)
+    AND             reduce using rule 39 (f -> var .)
+    OR              reduce using rule 39 (f -> var .)
+    RPAREN          reduce using rule 39 (f -> var .)
+    SEMICOLON       reduce using rule 39 (f -> var .)
+    $end            reduce using rule 39 (f -> var .)
+    FUNCTION        reduce using rule 39 (f -> var .)
+    ID              reduce using rule 39 (f -> var .)
+    READ            reduce using rule 39 (f -> var .)
+    PRINT           reduce using rule 39 (f -> var .)
+    IF              reduce using rule 39 (f -> var .)
+    WHILE           reduce using rule 39 (f -> var .)
+    FOR             reduce using rule 39 (f -> var .)
+    MEAN            reduce using rule 39 (f -> var .)
+    VAR             reduce using rule 39 (f -> var .)
+    RBRACE          reduce using rule 39 (f -> var .)
+    RBRACKET        reduce using rule 39 (f -> var .)
+    COMMA           reduce using rule 39 (f -> var .)
+
+
+state 18
+
+    (40) f -> call .
+
+    MULT            reduce using rule 40 (f -> call .)
+    DIV             reduce using rule 40 (f -> call .)
+    PLUS            reduce using rule 40 (f -> call .)
+    MINUS           reduce using rule 40 (f -> call .)
+    LT              reduce using rule 40 (f -> call .)
+    GT              reduce using rule 40 (f -> call .)
+    IFEQUAL         reduce using rule 40 (f -> call .)
+    DIFF            reduce using rule 40 (f -> call .)
+    AND             reduce using rule 40 (f -> call .)
+    OR              reduce using rule 40 (f -> call .)
+    RPAREN          reduce using rule 40 (f -> call .)
+    SEMICOLON       reduce using rule 40 (f -> call .)
+    $end            reduce using rule 40 (f -> call .)
+    FUNCTION        reduce using rule 40 (f -> call .)
+    ID              reduce using rule 40 (f -> call .)
+    READ            reduce using rule 40 (f -> call .)
+    PRINT           reduce using rule 40 (f -> call .)
+    IF              reduce using rule 40 (f -> call .)
+    WHILE           reduce using rule 40 (f -> call .)
+    FOR             reduce using rule 40 (f -> call .)
+    MEAN            reduce using rule 40 (f -> call .)
+    VAR             reduce using rule 40 (f -> call .)
+    RBRACE          reduce using rule 40 (f -> call .)
+    RBRACKET        reduce using rule 40 (f -> call .)
+    COMMA           reduce using rule 40 (f -> call .)
+
+
+state 19
+
+    (56) var -> ID .
+    (57) call -> ID . LPAREN callp RPAREN
+
+    MULT            reduce using rule 56 (var -> ID .)
+    DIV             reduce using rule 56 (var -> ID .)
+    PLUS            reduce using rule 56 (var -> ID .)
+    MINUS           reduce using rule 56 (var -> ID .)
+    LT              reduce using rule 56 (var -> ID .)
+    GT              reduce using rule 56 (var -> ID .)
+    IFEQUAL         reduce using rule 56 (var -> ID .)
+    DIFF            reduce using rule 56 (var -> ID .)
+    AND             reduce using rule 56 (var -> ID .)
+    OR              reduce using rule 56 (var -> ID .)
+    RPAREN          reduce using rule 56 (var -> ID .)
+    SEMICOLON       reduce using rule 56 (var -> ID .)
+    $end            reduce using rule 56 (var -> ID .)
+    FUNCTION        reduce using rule 56 (var -> ID .)
+    ID              reduce using rule 56 (var -> ID .)
+    READ            reduce using rule 56 (var -> ID .)
+    PRINT           reduce using rule 56 (var -> ID .)
+    IF              reduce using rule 56 (var -> ID .)
+    WHILE           reduce using rule 56 (var -> ID .)
+    FOR             reduce using rule 56 (var -> ID .)
+    MEAN            reduce using rule 56 (var -> ID .)
+    VAR             reduce using rule 56 (var -> ID .)
+    RBRACE          reduce using rule 56 (var -> ID .)
+    RBRACKET        reduce using rule 56 (var -> ID .)
+    COMMA           reduce using rule 56 (var -> ID .)
+    LPAREN          shift and go to state 33
+
+
+state 20
+
+    (36) f -> LPAREN exp . RPAREN
+
+    RPAREN          shift and go to state 34
+
+
+state 21
+
+    (60) if -> IF LPAREN exp RPAREN . quadsIf ifelse jumpsIf
+    (63) quadsIf -> .
+
+    ELSE            reduce using rule 63 (quadsIf -> .)
+    $end            reduce using rule 63 (quadsIf -> .)
+    SEMICOLON       reduce using rule 63 (quadsIf -> .)
+    FUNCTION        reduce using rule 63 (quadsIf -> .)
+    ID              reduce using rule 63 (quadsIf -> .)
+    READ            reduce using rule 63 (quadsIf -> .)
+    PRINT           reduce using rule 63 (quadsIf -> .)
+    IF              reduce using rule 63 (quadsIf -> .)
+    WHILE           reduce using rule 63 (quadsIf -> .)
+    FOR             reduce using rule 63 (quadsIf -> .)
+    MEAN            reduce using rule 63 (quadsIf -> .)
+    VAR             reduce using rule 63 (quadsIf -> .)
+    RBRACE          reduce using rule 63 (quadsIf -> .)
+    RBRACKET        reduce using rule 63 (quadsIf -> .)
+
+    quadsIf                        shift and go to state 35
+
+state 22
+
+    (21) exp -> texp OR . exp
+    (20) exp -> . texp
+    (21) exp -> . texp OR exp
+    (22) texp -> . gexp
+    (23) texp -> . gexp AND texp
+    (24) gexp -> . mexp
+    (25) gexp -> . mexp gexpp mexp
+    (30) mexp -> . t
+    (31) mexp -> . t PLUS mexp
+    (32) mexp -> . t MINUS mexp
+    (33) t -> . f
+    (34) t -> . f MULT t
+    (35) t -> . f DIV t
+    (36) f -> . LPAREN exp RPAREN
+    (37) f -> . CTI
+    (38) f -> . CTF
+    (39) f -> . var
+    (40) f -> . call
+    (56) var -> . ID
+    (57) call -> . ID LPAREN callp RPAREN
+
+    LPAREN          shift and go to state 8
+    CTI             shift and go to state 15
+    CTF             shift and go to state 16
+    ID              shift and go to state 19
+
+    texp                           shift and go to state 10
+    exp                            shift and go to state 36
+    gexp                           shift and go to state 11
+    mexp                           shift and go to state 12
+    t                              shift and go to state 13
+    f                              shift and go to state 14
+    var                            shift and go to state 17
+    call                           shift and go to state 18
+
+state 23
+
+    (23) texp -> gexp AND . texp
+    (22) texp -> . gexp
+    (23) texp -> . gexp AND texp
+    (24) gexp -> . mexp
+    (25) gexp -> . mexp gexpp mexp
+    (30) mexp -> . t
+    (31) mexp -> . t PLUS mexp
+    (32) mexp -> . t MINUS mexp
+    (33) t -> . f
+    (34) t -> . f MULT t
+    (35) t -> . f DIV t
+    (36) f -> . LPAREN exp RPAREN
+    (37) f -> . CTI
+    (38) f -> . CTF
+    (39) f -> . var
+    (40) f -> . call
+    (56) var -> . ID
+    (57) call -> . ID LPAREN callp RPAREN
+
+    LPAREN          shift and go to state 8
+    CTI             shift and go to state 15
+    CTF             shift and go to state 16
+    ID              shift and go to state 19
+
+    gexp                           shift and go to state 11
+    texp                           shift and go to state 37
+    mexp                           shift and go to state 12
+    t                              shift and go to state 13
+    f                              shift and go to state 14
+    var                            shift and go to state 17
+    call                           shift and go to state 18
+
+state 24
+
+    (25) gexp -> mexp gexpp . mexp
+    (30) mexp -> . t
+    (31) mexp -> . t PLUS mexp
+    (32) mexp -> . t MINUS mexp
+    (33) t -> . f
+    (34) t -> . f MULT t
+    (35) t -> . f DIV t
+    (36) f -> . LPAREN exp RPAREN
+    (37) f -> . CTI
+    (38) f -> . CTF
+    (39) f -> . var
+    (40) f -> . call
+    (56) var -> . ID
+    (57) call -> . ID LPAREN callp RPAREN
+
+    LPAREN          shift and go to state 8
+    CTI             shift and go to state 15
+    CTF             shift and go to state 16
+    ID              shift and go to state 19
+
+    mexp                           shift and go to state 38
+    t                              shift and go to state 13
+    f                              shift and go to state 14
+    var                            shift and go to state 17
+    call                           shift and go to state 18
+
+state 25
+
+    (26) gexpp -> LT .
+
+    LPAREN          reduce using rule 26 (gexpp -> LT .)
+    CTI             reduce using rule 26 (gexpp -> LT .)
+    CTF             reduce using rule 26 (gexpp -> LT .)
+    ID              reduce using rule 26 (gexpp -> LT .)
+
+
+state 26
+
+    (27) gexpp -> GT .
+
+    LPAREN          reduce using rule 27 (gexpp -> GT .)
+    CTI             reduce using rule 27 (gexpp -> GT .)
+    CTF             reduce using rule 27 (gexpp -> GT .)
+    ID              reduce using rule 27 (gexpp -> GT .)
+
+
+state 27
+
+    (28) gexpp -> IFEQUAL .
+
+    LPAREN          reduce using rule 28 (gexpp -> IFEQUAL .)
+    CTI             reduce using rule 28 (gexpp -> IFEQUAL .)
+    CTF             reduce using rule 28 (gexpp -> IFEQUAL .)
+    ID              reduce using rule 28 (gexpp -> IFEQUAL .)
+
+
+state 28
+
+    (29) gexpp -> DIFF .
+
+    LPAREN          reduce using rule 29 (gexpp -> DIFF .)
+    CTI             reduce using rule 29 (gexpp -> DIFF .)
+    CTF             reduce using rule 29 (gexpp -> DIFF .)
+    ID              reduce using rule 29 (gexpp -> DIFF .)
+
+
+state 29
+
+    (31) mexp -> t PLUS . mexp
+    (30) mexp -> . t
+    (31) mexp -> . t PLUS mexp
+    (32) mexp -> . t MINUS mexp
+    (33) t -> . f
+    (34) t -> . f MULT t
+    (35) t -> . f DIV t
+    (36) f -> . LPAREN exp RPAREN
+    (37) f -> . CTI
+    (38) f -> . CTF
+    (39) f -> . var
+    (40) f -> . call
+    (56) var -> . ID
+    (57) call -> . ID LPAREN callp RPAREN
+
+    LPAREN          shift and go to state 8
+    CTI             shift and go to state 15
+    CTF             shift and go to state 16
+    ID              shift and go to state 19
+
+    t                              shift and go to state 13
+    mexp                           shift and go to state 39
+    f                              shift and go to state 14
+    var                            shift and go to state 17
+    call                           shift and go to state 18
+
+state 30
+
+    (32) mexp -> t MINUS . mexp
+    (30) mexp -> . t
+    (31) mexp -> . t PLUS mexp
+    (32) mexp -> . t MINUS mexp
+    (33) t -> . f
+    (34) t -> . f MULT t
+    (35) t -> . f DIV t
+    (36) f -> . LPAREN exp RPAREN
+    (37) f -> . CTI
+    (38) f -> . CTF
+    (39) f -> . var
+    (40) f -> . call
+    (56) var -> . ID
+    (57) call -> . ID LPAREN callp RPAREN
+
+    LPAREN          shift and go to state 8
+    CTI             shift and go to state 15
+    CTF             shift and go to state 16
+    ID              shift and go to state 19
+
+    t                              shift and go to state 13
+    mexp                           shift and go to state 40
+    f                              shift and go to state 14
+    var                            shift and go to state 17
+    call                           shift and go to state 18
+
+state 31
+
+    (34) t -> f MULT . t
+    (33) t -> . f
+    (34) t -> . f MULT t
+    (35) t -> . f DIV t
+    (36) f -> . LPAREN exp RPAREN
+    (37) f -> . CTI
+    (38) f -> . CTF
+    (39) f -> . var
+    (40) f -> . call
+    (56) var -> . ID
+    (57) call -> . ID LPAREN callp RPAREN
+
+    LPAREN          shift and go to state 8
+    CTI             shift and go to state 15
+    CTF             shift and go to state 16
+    ID              shift and go to state 19
+
+    f                              shift and go to state 14
+    t                              shift and go to state 41
+    var                            shift and go to state 17
+    call                           shift and go to state 18
+
+state 32
+
+    (35) t -> f DIV . t
+    (33) t -> . f
+    (34) t -> . f MULT t
+    (35) t -> . f DIV t
+    (36) f -> . LPAREN exp RPAREN
+    (37) f -> . CTI
+    (38) f -> . CTF
+    (39) f -> . var
+    (40) f -> . call
+    (56) var -> . ID
+    (57) call -> . ID LPAREN callp RPAREN
+
+    LPAREN          shift and go to state 8
+    CTI             shift and go to state 15
+    CTF             shift and go to state 16
+    ID              shift and go to state 19
+
+    f                              shift and go to state 14
+    t                              shift and go to state 42
+    var                            shift and go to state 17
+    call                           shift and go to state 18
+
+state 33
+
+    (57) call -> ID LPAREN . callp RPAREN
+    (58) callp -> . exp SEMICOLON callp
+    (59) callp -> . exp
+    (20) exp -> . texp
+    (21) exp -> . texp OR exp
+    (22) texp -> . gexp
+    (23) texp -> . gexp AND texp
+    (24) gexp -> . mexp
+    (25) gexp -> . mexp gexpp mexp
+    (30) mexp -> . t
+    (31) mexp -> . t PLUS mexp
+    (32) mexp -> . t MINUS mexp
+    (33) t -> . f
+    (34) t -> . f MULT t
+    (35) t -> . f DIV t
+    (36) f -> . LPAREN exp RPAREN
+    (37) f -> . CTI
+    (38) f -> . CTF
+    (39) f -> . var
+    (40) f -> . call
+    (56) var -> . ID
+    (57) call -> . ID LPAREN callp RPAREN
+
+    LPAREN          shift and go to state 8
+    CTI             shift and go to state 15
+    CTF             shift and go to state 16
+    ID              shift and go to state 19
+
+    callp                          shift and go to state 43
+    exp                            shift and go to state 44
+    texp                           shift and go to state 10
+    gexp                           shift and go to state 11
+    mexp                           shift and go to state 12
+    t                              shift and go to state 13
+    f                              shift and go to state 14
+    var                            shift and go to state 17
+    call                           shift and go to state 18
+
+state 34
+
+    (36) f -> LPAREN exp RPAREN .
+
+    MULT            reduce using rule 36 (f -> LPAREN exp RPAREN .)
+    DIV             reduce using rule 36 (f -> LPAREN exp RPAREN .)
+    PLUS            reduce using rule 36 (f -> LPAREN exp RPAREN .)
+    MINUS           reduce using rule 36 (f -> LPAREN exp RPAREN .)
+    LT              reduce using rule 36 (f -> LPAREN exp RPAREN .)
+    GT              reduce using rule 36 (f -> LPAREN exp RPAREN .)
+    IFEQUAL         reduce using rule 36 (f -> LPAREN exp RPAREN .)
+    DIFF            reduce using rule 36 (f -> LPAREN exp RPAREN .)
+    AND             reduce using rule 36 (f -> LPAREN exp RPAREN .)
+    OR              reduce using rule 36 (f -> LPAREN exp RPAREN .)
+    RPAREN          reduce using rule 36 (f -> LPAREN exp RPAREN .)
+    SEMICOLON       reduce using rule 36 (f -> LPAREN exp RPAREN .)
+    $end            reduce using rule 36 (f -> LPAREN exp RPAREN .)
+    FUNCTION        reduce using rule 36 (f -> LPAREN exp RPAREN .)
+    ID              reduce using rule 36 (f -> LPAREN exp RPAREN .)
+    READ            reduce using rule 36 (f -> LPAREN exp RPAREN .)
+    PRINT           reduce using rule 36 (f -> LPAREN exp RPAREN .)
+    IF              reduce using rule 36 (f -> LPAREN exp RPAREN .)
+    WHILE           reduce using rule 36 (f -> LPAREN exp RPAREN .)
+    FOR             reduce using rule 36 (f -> LPAREN exp RPAREN .)
+    MEAN            reduce using rule 36 (f -> LPAREN exp RPAREN .)
+    VAR             reduce using rule 36 (f -> LPAREN exp RPAREN .)
+    RBRACE          reduce using rule 36 (f -> LPAREN exp RPAREN .)
+    RBRACKET        reduce using rule 36 (f -> LPAREN exp RPAREN .)
+    COMMA           reduce using rule 36 (f -> LPAREN exp RPAREN .)
+
+
+state 35
+
+    (60) if -> IF LPAREN exp RPAREN quadsIf . ifelse jumpsIf
+    (61) ifelse -> .
+    (62) ifelse -> . ELSE quadsElse statements
+
+    $end            reduce using rule 61 (ifelse -> .)
+    SEMICOLON       reduce using rule 61 (ifelse -> .)
+    FUNCTION        reduce using rule 61 (ifelse -> .)
+    ID              reduce using rule 61 (ifelse -> .)
+    READ            reduce using rule 61 (ifelse -> .)
+    PRINT           reduce using rule 61 (ifelse -> .)
+    IF              reduce using rule 61 (ifelse -> .)
+    WHILE           reduce using rule 61 (ifelse -> .)
+    FOR             reduce using rule 61 (ifelse -> .)
+    MEAN            reduce using rule 61 (ifelse -> .)
+    VAR             reduce using rule 61 (ifelse -> .)
+    RBRACE          reduce using rule 61 (ifelse -> .)
+    RBRACKET        reduce using rule 61 (ifelse -> .)
+    ELSE            shift and go to state 46
+
+    ifelse                         shift and go to state 45
+
+state 36
+
+    (21) exp -> texp OR exp .
+
+    RPAREN          reduce using rule 21 (exp -> texp OR exp .)
+    SEMICOLON       reduce using rule 21 (exp -> texp OR exp .)
+    $end            reduce using rule 21 (exp -> texp OR exp .)
+    FUNCTION        reduce using rule 21 (exp -> texp OR exp .)
+    ID              reduce using rule 21 (exp -> texp OR exp .)
+    READ            reduce using rule 21 (exp -> texp OR exp .)
+    PRINT           reduce using rule 21 (exp -> texp OR exp .)
+    IF              reduce using rule 21 (exp -> texp OR exp .)
+    WHILE           reduce using rule 21 (exp -> texp OR exp .)
+    FOR             reduce using rule 21 (exp -> texp OR exp .)
+    MEAN            reduce using rule 21 (exp -> texp OR exp .)
+    VAR             reduce using rule 21 (exp -> texp OR exp .)
+    RBRACE          reduce using rule 21 (exp -> texp OR exp .)
+    RBRACKET        reduce using rule 21 (exp -> texp OR exp .)
+    COMMA           reduce using rule 21 (exp -> texp OR exp .)
+
+
+state 37
+
+    (23) texp -> gexp AND texp .
+
+    OR              reduce using rule 23 (texp -> gexp AND texp .)
+    RPAREN          reduce using rule 23 (texp -> gexp AND texp .)
+    SEMICOLON       reduce using rule 23 (texp -> gexp AND texp .)
+    $end            reduce using rule 23 (texp -> gexp AND texp .)
+    FUNCTION        reduce using rule 23 (texp -> gexp AND texp .)
+    ID              reduce using rule 23 (texp -> gexp AND texp .)
+    READ            reduce using rule 23 (texp -> gexp AND texp .)
+    PRINT           reduce using rule 23 (texp -> gexp AND texp .)
+    IF              reduce using rule 23 (texp -> gexp AND texp .)
+    WHILE           reduce using rule 23 (texp -> gexp AND texp .)
+    FOR             reduce using rule 23 (texp -> gexp AND texp .)
+    MEAN            reduce using rule 23 (texp -> gexp AND texp .)
+    VAR             reduce using rule 23 (texp -> gexp AND texp .)
+    RBRACE          reduce using rule 23 (texp -> gexp AND texp .)
+    RBRACKET        reduce using rule 23 (texp -> gexp AND texp .)
+    COMMA           reduce using rule 23 (texp -> gexp AND texp .)
+
+
+state 38
+
+    (25) gexp -> mexp gexpp mexp .
+
+    AND             reduce using rule 25 (gexp -> mexp gexpp mexp .)
+    OR              reduce using rule 25 (gexp -> mexp gexpp mexp .)
+    RPAREN          reduce using rule 25 (gexp -> mexp gexpp mexp .)
+    SEMICOLON       reduce using rule 25 (gexp -> mexp gexpp mexp .)
+    $end            reduce using rule 25 (gexp -> mexp gexpp mexp .)
+    FUNCTION        reduce using rule 25 (gexp -> mexp gexpp mexp .)
+    ID              reduce using rule 25 (gexp -> mexp gexpp mexp .)
+    READ            reduce using rule 25 (gexp -> mexp gexpp mexp .)
+    PRINT           reduce using rule 25 (gexp -> mexp gexpp mexp .)
+    IF              reduce using rule 25 (gexp -> mexp gexpp mexp .)
+    WHILE           reduce using rule 25 (gexp -> mexp gexpp mexp .)
+    FOR             reduce using rule 25 (gexp -> mexp gexpp mexp .)
+    MEAN            reduce using rule 25 (gexp -> mexp gexpp mexp .)
+    VAR             reduce using rule 25 (gexp -> mexp gexpp mexp .)
+    RBRACE          reduce using rule 25 (gexp -> mexp gexpp mexp .)
+    RBRACKET        reduce using rule 25 (gexp -> mexp gexpp mexp .)
+    COMMA           reduce using rule 25 (gexp -> mexp gexpp mexp .)
+
+
+state 39
+
+    (31) mexp -> t PLUS mexp .
+
+    LT              reduce using rule 31 (mexp -> t PLUS mexp .)
+    GT              reduce using rule 31 (mexp -> t PLUS mexp .)
+    IFEQUAL         reduce using rule 31 (mexp -> t PLUS mexp .)
+    DIFF            reduce using rule 31 (mexp -> t PLUS mexp .)
+    AND             reduce using rule 31 (mexp -> t PLUS mexp .)
+    OR              reduce using rule 31 (mexp -> t PLUS mexp .)
+    RPAREN          reduce using rule 31 (mexp -> t PLUS mexp .)
+    SEMICOLON       reduce using rule 31 (mexp -> t PLUS mexp .)
+    $end            reduce using rule 31 (mexp -> t PLUS mexp .)
+    FUNCTION        reduce using rule 31 (mexp -> t PLUS mexp .)
+    ID              reduce using rule 31 (mexp -> t PLUS mexp .)
+    READ            reduce using rule 31 (mexp -> t PLUS mexp .)
+    PRINT           reduce using rule 31 (mexp -> t PLUS mexp .)
+    IF              reduce using rule 31 (mexp -> t PLUS mexp .)
+    WHILE           reduce using rule 31 (mexp -> t PLUS mexp .)
+    FOR             reduce using rule 31 (mexp -> t PLUS mexp .)
+    MEAN            reduce using rule 31 (mexp -> t PLUS mexp .)
+    VAR             reduce using rule 31 (mexp -> t PLUS mexp .)
+    RBRACE          reduce using rule 31 (mexp -> t PLUS mexp .)
+    RBRACKET        reduce using rule 31 (mexp -> t PLUS mexp .)
+    COMMA           reduce using rule 31 (mexp -> t PLUS mexp .)
+
+
+state 40
+
+    (32) mexp -> t MINUS mexp .
+
+    LT              reduce using rule 32 (mexp -> t MINUS mexp .)
+    GT              reduce using rule 32 (mexp -> t MINUS mexp .)
+    IFEQUAL         reduce using rule 32 (mexp -> t MINUS mexp .)
+    DIFF            reduce using rule 32 (mexp -> t MINUS mexp .)
+    AND             reduce using rule 32 (mexp -> t MINUS mexp .)
+    OR              reduce using rule 32 (mexp -> t MINUS mexp .)
+    RPAREN          reduce using rule 32 (mexp -> t MINUS mexp .)
+    SEMICOLON       reduce using rule 32 (mexp -> t MINUS mexp .)
+    $end            reduce using rule 32 (mexp -> t MINUS mexp .)
+    FUNCTION        reduce using rule 32 (mexp -> t MINUS mexp .)
+    ID              reduce using rule 32 (mexp -> t MINUS mexp .)
+    READ            reduce using rule 32 (mexp -> t MINUS mexp .)
+    PRINT           reduce using rule 32 (mexp -> t MINUS mexp .)
+    IF              reduce using rule 32 (mexp -> t MINUS mexp .)
+    WHILE           reduce using rule 32 (mexp -> t MINUS mexp .)
+    FOR             reduce using rule 32 (mexp -> t MINUS mexp .)
+    MEAN            reduce using rule 32 (mexp -> t MINUS mexp .)
+    VAR             reduce using rule 32 (mexp -> t MINUS mexp .)
+    RBRACE          reduce using rule 32 (mexp -> t MINUS mexp .)
+    RBRACKET        reduce using rule 32 (mexp -> t MINUS mexp .)
+    COMMA           reduce using rule 32 (mexp -> t MINUS mexp .)
+
+
+state 41
+
+    (34) t -> f MULT t .
+
+    PLUS            reduce using rule 34 (t -> f MULT t .)
+    MINUS           reduce using rule 34 (t -> f MULT t .)
+    LT              reduce using rule 34 (t -> f MULT t .)
+    GT              reduce using rule 34 (t -> f MULT t .)
+    IFEQUAL         reduce using rule 34 (t -> f MULT t .)
+    DIFF            reduce using rule 34 (t -> f MULT t .)
+    AND             reduce using rule 34 (t -> f MULT t .)
+    OR              reduce using rule 34 (t -> f MULT t .)
+    RPAREN          reduce using rule 34 (t -> f MULT t .)
+    SEMICOLON       reduce using rule 34 (t -> f MULT t .)
+    $end            reduce using rule 34 (t -> f MULT t .)
+    FUNCTION        reduce using rule 34 (t -> f MULT t .)
+    ID              reduce using rule 34 (t -> f MULT t .)
+    READ            reduce using rule 34 (t -> f MULT t .)
+    PRINT           reduce using rule 34 (t -> f MULT t .)
+    IF              reduce using rule 34 (t -> f MULT t .)
+    WHILE           reduce using rule 34 (t -> f MULT t .)
+    FOR             reduce using rule 34 (t -> f MULT t .)
+    MEAN            reduce using rule 34 (t -> f MULT t .)
+    VAR             reduce using rule 34 (t -> f MULT t .)
+    RBRACE          reduce using rule 34 (t -> f MULT t .)
+    RBRACKET        reduce using rule 34 (t -> f MULT t .)
+    COMMA           reduce using rule 34 (t -> f MULT t .)
+
+
+state 42
+
+    (35) t -> f DIV t .
+
+    PLUS            reduce using rule 35 (t -> f DIV t .)
+    MINUS           reduce using rule 35 (t -> f DIV t .)
+    LT              reduce using rule 35 (t -> f DIV t .)
+    GT              reduce using rule 35 (t -> f DIV t .)
+    IFEQUAL         reduce using rule 35 (t -> f DIV t .)
+    DIFF            reduce using rule 35 (t -> f DIV t .)
+    AND             reduce using rule 35 (t -> f DIV t .)
+    OR              reduce using rule 35 (t -> f DIV t .)
+    RPAREN          reduce using rule 35 (t -> f DIV t .)
+    SEMICOLON       reduce using rule 35 (t -> f DIV t .)
+    $end            reduce using rule 35 (t -> f DIV t .)
+    FUNCTION        reduce using rule 35 (t -> f DIV t .)
+    ID              reduce using rule 35 (t -> f DIV t .)
+    READ            reduce using rule 35 (t -> f DIV t .)
+    PRINT           reduce using rule 35 (t -> f DIV t .)
+    IF              reduce using rule 35 (t -> f DIV t .)
+    WHILE           reduce using rule 35 (t -> f DIV t .)
+    FOR             reduce using rule 35 (t -> f DIV t .)
+    MEAN            reduce using rule 35 (t -> f DIV t .)
+    VAR             reduce using rule 35 (t -> f DIV t .)
+    RBRACE          reduce using rule 35 (t -> f DIV t .)
+    RBRACKET        reduce using rule 35 (t -> f DIV t .)
+    COMMA           reduce using rule 35 (t -> f DIV t .)
+
+
+state 43
+
+    (57) call -> ID LPAREN callp . RPAREN
+
+    RPAREN          shift and go to state 47
+
+
+state 44
+
+    (58) callp -> exp . SEMICOLON callp
+    (59) callp -> exp .
+
+    SEMICOLON       shift and go to state 48
+    RPAREN          reduce using rule 59 (callp -> exp .)
+
+
+state 45
+
+    (60) if -> IF LPAREN exp RPAREN quadsIf ifelse . jumpsIf
+    (64) jumpsIf -> .
+
+    $end            reduce using rule 64 (jumpsIf -> .)
+    SEMICOLON       reduce using rule 64 (jumpsIf -> .)
+    FUNCTION        reduce using rule 64 (jumpsIf -> .)
+    ID              reduce using rule 64 (jumpsIf -> .)
+    READ            reduce using rule 64 (jumpsIf -> .)
+    PRINT           reduce using rule 64 (jumpsIf -> .)
+    IF              reduce using rule 64 (jumpsIf -> .)
+    WHILE           reduce using rule 64 (jumpsIf -> .)
+    FOR             reduce using rule 64 (jumpsIf -> .)
+    MEAN            reduce using rule 64 (jumpsIf -> .)
+    VAR             reduce using rule 64 (jumpsIf -> .)
+    RBRACE          reduce using rule 64 (jumpsIf -> .)
+    RBRACKET        reduce using rule 64 (jumpsIf -> .)
+
+    jumpsIf                        shift and go to state 49
+
+state 46
+
+    (62) ifelse -> ELSE . quadsElse statements
+    (65) quadsElse -> .
+
+    FUNCTION        reduce using rule 65 (quadsElse -> .)
+    ID              reduce using rule 65 (quadsElse -> .)
+    READ            reduce using rule 65 (quadsElse -> .)
+    PRINT           reduce using rule 65 (quadsElse -> .)
+    IF              reduce using rule 65 (quadsElse -> .)
+    WHILE           reduce using rule 65 (quadsElse -> .)
+    FOR             reduce using rule 65 (quadsElse -> .)
+    MEAN            reduce using rule 65 (quadsElse -> .)
+
+    quadsElse                      shift and go to state 50
+
+state 47
+
+    (57) call -> ID LPAREN callp RPAREN .
+
+    MULT            reduce using rule 57 (call -> ID LPAREN callp RPAREN .)
+    DIV             reduce using rule 57 (call -> ID LPAREN callp RPAREN .)
+    PLUS            reduce using rule 57 (call -> ID LPAREN callp RPAREN .)
+    MINUS           reduce using rule 57 (call -> ID LPAREN callp RPAREN .)
+    LT              reduce using rule 57 (call -> ID LPAREN callp RPAREN .)
+    GT              reduce using rule 57 (call -> ID LPAREN callp RPAREN .)
+    IFEQUAL         reduce using rule 57 (call -> ID LPAREN callp RPAREN .)
+    DIFF            reduce using rule 57 (call -> ID LPAREN callp RPAREN .)
+    AND             reduce using rule 57 (call -> ID LPAREN callp RPAREN .)
+    OR              reduce using rule 57 (call -> ID LPAREN callp RPAREN .)
+    RPAREN          reduce using rule 57 (call -> ID LPAREN callp RPAREN .)
+    SEMICOLON       reduce using rule 57 (call -> ID LPAREN callp RPAREN .)
+    $end            reduce using rule 57 (call -> ID LPAREN callp RPAREN .)
+    FUNCTION        reduce using rule 57 (call -> ID LPAREN callp RPAREN .)
+    ID              reduce using rule 57 (call -> ID LPAREN callp RPAREN .)
+    READ            reduce using rule 57 (call -> ID LPAREN callp RPAREN .)
+    PRINT           reduce using rule 57 (call -> ID LPAREN callp RPAREN .)
+    IF              reduce using rule 57 (call -> ID LPAREN callp RPAREN .)
+    WHILE           reduce using rule 57 (call -> ID LPAREN callp RPAREN .)
+    FOR             reduce using rule 57 (call -> ID LPAREN callp RPAREN .)
+    MEAN            reduce using rule 57 (call -> ID LPAREN callp RPAREN .)
+    VAR             reduce using rule 57 (call -> ID LPAREN callp RPAREN .)
+    RBRACE          reduce using rule 57 (call -> ID LPAREN callp RPAREN .)
+    RBRACKET        reduce using rule 57 (call -> ID LPAREN callp RPAREN .)
+    COMMA           reduce using rule 57 (call -> ID LPAREN callp RPAREN .)
+
+
+state 48
+
+    (58) callp -> exp SEMICOLON . callp
+    (58) callp -> . exp SEMICOLON callp
+    (59) callp -> . exp
+    (20) exp -> . texp
+    (21) exp -> . texp OR exp
+    (22) texp -> . gexp
+    (23) texp -> . gexp AND texp
+    (24) gexp -> . mexp
+    (25) gexp -> . mexp gexpp mexp
+    (30) mexp -> . t
+    (31) mexp -> . t PLUS mexp
+    (32) mexp -> . t MINUS mexp
+    (33) t -> . f
+    (34) t -> . f MULT t
+    (35) t -> . f DIV t
+    (36) f -> . LPAREN exp RPAREN
+    (37) f -> . CTI
+    (38) f -> . CTF
+    (39) f -> . var
+    (40) f -> . call
+    (56) var -> . ID
+    (57) call -> . ID LPAREN callp RPAREN
+
+    LPAREN          shift and go to state 8
+    CTI             shift and go to state 15
+    CTF             shift and go to state 16
+    ID              shift and go to state 19
+
+    exp                            shift and go to state 44
+    callp                          shift and go to state 51
+    texp                           shift and go to state 10
+    gexp                           shift and go to state 11
+    mexp                           shift and go to state 12
+    t                              shift and go to state 13
+    f                              shift and go to state 14
+    var                            shift and go to state 17
+    call                           shift and go to state 18
+
+state 49
+
+    (60) if -> IF LPAREN exp RPAREN quadsIf ifelse jumpsIf .
+
+    $end            reduce using rule 60 (if -> IF LPAREN exp RPAREN quadsIf ifelse jumpsIf .)
+    SEMICOLON       reduce using rule 60 (if -> IF LPAREN exp RPAREN quadsIf ifelse jumpsIf .)
+    FUNCTION        reduce using rule 60 (if -> IF LPAREN exp RPAREN quadsIf ifelse jumpsIf .)
+    ID              reduce using rule 60 (if -> IF LPAREN exp RPAREN quadsIf ifelse jumpsIf .)
+    READ            reduce using rule 60 (if -> IF LPAREN exp RPAREN quadsIf ifelse jumpsIf .)
+    PRINT           reduce using rule 60 (if -> IF LPAREN exp RPAREN quadsIf ifelse jumpsIf .)
+    IF              reduce using rule 60 (if -> IF LPAREN exp RPAREN quadsIf ifelse jumpsIf .)
+    WHILE           reduce using rule 60 (if -> IF LPAREN exp RPAREN quadsIf ifelse jumpsIf .)
+    FOR             reduce using rule 60 (if -> IF LPAREN exp RPAREN quadsIf ifelse jumpsIf .)
+    MEAN            reduce using rule 60 (if -> IF LPAREN exp RPAREN quadsIf ifelse jumpsIf .)
+    VAR             reduce using rule 60 (if -> IF LPAREN exp RPAREN quadsIf ifelse jumpsIf .)
+    RBRACE          reduce using rule 60 (if -> IF LPAREN exp RPAREN quadsIf ifelse jumpsIf .)
+    RBRACKET        reduce using rule 60 (if -> IF LPAREN exp RPAREN quadsIf ifelse jumpsIf .)
+
+
+state 50
+
+    (62) ifelse -> ELSE quadsElse . statements
+    (41) statements -> . assign
+    (42) statements -> . function
+    (43) statements -> . voidfunction
+    (44) statements -> . call
+    (45) statements -> . read
+    (46) statements -> . print
+    (47) statements -> . if
+    (48) statements -> . while
+    (49) statements -> . for
+    (50) statements -> . funcesp
+    (51) assign -> . var EQUAL exp
+    (9) function -> . FUNCTION type ID LPAREN param RPAREN body
+    (10) voidfunction -> . FUNCTION VOID ID LPAREN param RPAREN body
+    (57) call -> . ID LPAREN callp RPAREN
+    (52) read -> . READ var
+    (53) print -> . PRINT LPAREN printp
+    (60) if -> . IF LPAREN exp RPAREN quadsIf ifelse jumpsIf
+    (66) while -> . WHILE LPAREN saveJumps exp RPAREN quadsWhile statements jumpsWhile whilep
+    (72) for -> . FOR LPAREN var SEMICOLON exp SEMICOLON exp RPAREN LBRACKET statements forp
+    (75) funcesp -> . array
+    (76) funcesp -> . matrix
+    (77) funcesp -> . mean
+    (78) funcesp -> . layers
+    (79) funcesp -> . sequential
+    (80) funcesp -> . compile
+    (81) funcesp -> . fit
+    (82) funcesp -> . predict
+    (83) funcesp -> . getweights
+    (56) var -> . ID
+    (84) array -> . ID EQUAL ARRAY LPAREN var arrayp
+    (87) matrix -> . ID EQUAL MATRIX LPAREN array matrixp
+    (90) mean -> . MEAN LPAREN array RPAREN
+    (91) layers -> . ID EQUAL LAYERS LPAREN UNITS EQUAL INT RPAREN
+    (92) sequential -> . ID EQUAL SEQUENTIAL LPAREN LBRACKET layers sequentialp
+    (95) compile -> . sequential DOT COMPILE LPAREN RPAREN
+    (96) fit -> . ID EQUAL sequential DOT FIT LPAREN array COMMA array COMMA EPOCHS EQUAL INT COMMA VERBOSE EQUAL fitp
+    (99) predict -> . ID EQUAL sequential DOT PREDICT LPAREN LBRACKET predictp
+    (102) getweights -> . layers DOT GETWEIGHTS LPAREN RPAREN
+
+    FUNCTION        shift and go to state 64
+    ID              shift and go to state 65
+    READ            shift and go to state 66
+    PRINT           shift and go to state 67
+    IF              shift and go to state 6
+    WHILE           shift and go to state 68
+    FOR             shift and go to state 69
+    MEAN            shift and go to state 79
+
+    statements                     shift and go to state 52
+    assign                         shift and go to state 53
+    function                       shift and go to state 54
+    voidfunction                   shift and go to state 55
+    call                           shift and go to state 56
+    read                           shift and go to state 57
+    print                          shift and go to state 58
+    if                             shift and go to state 59
+    while                          shift and go to state 60
+    for                            shift and go to state 61
+    funcesp                        shift and go to state 62
+    var                            shift and go to state 63
+    array                          shift and go to state 70
+    matrix                         shift and go to state 71
+    mean                           shift and go to state 72
+    layers                         shift and go to state 73
+    sequential                     shift and go to state 74
+    compile                        shift and go to state 75
+    fit                            shift and go to state 76
+    predict                        shift and go to state 77
+    getweights                     shift and go to state 78
+
+state 51
+
+    (58) callp -> exp SEMICOLON callp .
+
+    RPAREN          reduce using rule 58 (callp -> exp SEMICOLON callp .)
+
+
+state 52
+
+    (62) ifelse -> ELSE quadsElse statements .
+
+    $end            reduce using rule 62 (ifelse -> ELSE quadsElse statements .)
+    SEMICOLON       reduce using rule 62 (ifelse -> ELSE quadsElse statements .)
+    FUNCTION        reduce using rule 62 (ifelse -> ELSE quadsElse statements .)
+    ID              reduce using rule 62 (ifelse -> ELSE quadsElse statements .)
+    READ            reduce using rule 62 (ifelse -> ELSE quadsElse statements .)
+    PRINT           reduce using rule 62 (ifelse -> ELSE quadsElse statements .)
+    IF              reduce using rule 62 (ifelse -> ELSE quadsElse statements .)
+    WHILE           reduce using rule 62 (ifelse -> ELSE quadsElse statements .)
+    FOR             reduce using rule 62 (ifelse -> ELSE quadsElse statements .)
+    MEAN            reduce using rule 62 (ifelse -> ELSE quadsElse statements .)
+    VAR             reduce using rule 62 (ifelse -> ELSE quadsElse statements .)
+    RBRACE          reduce using rule 62 (ifelse -> ELSE quadsElse statements .)
+    RBRACKET        reduce using rule 62 (ifelse -> ELSE quadsElse statements .)
+
+
+state 53
+
+    (41) statements -> assign .
+
+    $end            reduce using rule 41 (statements -> assign .)
+    SEMICOLON       reduce using rule 41 (statements -> assign .)
+    FUNCTION        reduce using rule 41 (statements -> assign .)
+    ID              reduce using rule 41 (statements -> assign .)
+    READ            reduce using rule 41 (statements -> assign .)
+    PRINT           reduce using rule 41 (statements -> assign .)
+    IF              reduce using rule 41 (statements -> assign .)
+    WHILE           reduce using rule 41 (statements -> assign .)
+    FOR             reduce using rule 41 (statements -> assign .)
+    MEAN            reduce using rule 41 (statements -> assign .)
+    VAR             reduce using rule 41 (statements -> assign .)
+    RBRACE          reduce using rule 41 (statements -> assign .)
+    RBRACKET        reduce using rule 41 (statements -> assign .)
+
+
+state 54
+
+    (42) statements -> function .
+
+    $end            reduce using rule 42 (statements -> function .)
+    SEMICOLON       reduce using rule 42 (statements -> function .)
+    FUNCTION        reduce using rule 42 (statements -> function .)
+    ID              reduce using rule 42 (statements -> function .)
+    READ            reduce using rule 42 (statements -> function .)
+    PRINT           reduce using rule 42 (statements -> function .)
+    IF              reduce using rule 42 (statements -> function .)
+    WHILE           reduce using rule 42 (statements -> function .)
+    FOR             reduce using rule 42 (statements -> function .)
+    MEAN            reduce using rule 42 (statements -> function .)
+    VAR             reduce using rule 42 (statements -> function .)
+    RBRACE          reduce using rule 42 (statements -> function .)
+    RBRACKET        reduce using rule 42 (statements -> function .)
+
+
+state 55
+
+    (43) statements -> voidfunction .
+
+    $end            reduce using rule 43 (statements -> voidfunction .)
+    SEMICOLON       reduce using rule 43 (statements -> voidfunction .)
+    FUNCTION        reduce using rule 43 (statements -> voidfunction .)
+    ID              reduce using rule 43 (statements -> voidfunction .)
+    READ            reduce using rule 43 (statements -> voidfunction .)
+    PRINT           reduce using rule 43 (statements -> voidfunction .)
+    IF              reduce using rule 43 (statements -> voidfunction .)
+    WHILE           reduce using rule 43 (statements -> voidfunction .)
+    FOR             reduce using rule 43 (statements -> voidfunction .)
+    MEAN            reduce using rule 43 (statements -> voidfunction .)
+    VAR             reduce using rule 43 (statements -> voidfunction .)
+    RBRACE          reduce using rule 43 (statements -> voidfunction .)
+    RBRACKET        reduce using rule 43 (statements -> voidfunction .)
+
+
+state 56
+
+    (44) statements -> call .
+
+    $end            reduce using rule 44 (statements -> call .)
+    SEMICOLON       reduce using rule 44 (statements -> call .)
+    FUNCTION        reduce using rule 44 (statements -> call .)
+    ID              reduce using rule 44 (statements -> call .)
+    READ            reduce using rule 44 (statements -> call .)
+    PRINT           reduce using rule 44 (statements -> call .)
+    IF              reduce using rule 44 (statements -> call .)
+    WHILE           reduce using rule 44 (statements -> call .)
+    FOR             reduce using rule 44 (statements -> call .)
+    MEAN            reduce using rule 44 (statements -> call .)
+    VAR             reduce using rule 44 (statements -> call .)
+    RBRACE          reduce using rule 44 (statements -> call .)
+    RBRACKET        reduce using rule 44 (statements -> call .)
+
+
+state 57
+
+    (45) statements -> read .
+
+    $end            reduce using rule 45 (statements -> read .)
+    SEMICOLON       reduce using rule 45 (statements -> read .)
+    FUNCTION        reduce using rule 45 (statements -> read .)
+    ID              reduce using rule 45 (statements -> read .)
+    READ            reduce using rule 45 (statements -> read .)
+    PRINT           reduce using rule 45 (statements -> read .)
+    IF              reduce using rule 45 (statements -> read .)
+    WHILE           reduce using rule 45 (statements -> read .)
+    FOR             reduce using rule 45 (statements -> read .)
+    MEAN            reduce using rule 45 (statements -> read .)
+    VAR             reduce using rule 45 (statements -> read .)
+    RBRACE          reduce using rule 45 (statements -> read .)
+    RBRACKET        reduce using rule 45 (statements -> read .)
+
+
+state 58
+
+    (46) statements -> print .
+
+    $end            reduce using rule 46 (statements -> print .)
+    SEMICOLON       reduce using rule 46 (statements -> print .)
+    FUNCTION        reduce using rule 46 (statements -> print .)
+    ID              reduce using rule 46 (statements -> print .)
+    READ            reduce using rule 46 (statements -> print .)
+    PRINT           reduce using rule 46 (statements -> print .)
+    IF              reduce using rule 46 (statements -> print .)
+    WHILE           reduce using rule 46 (statements -> print .)
+    FOR             reduce using rule 46 (statements -> print .)
+    MEAN            reduce using rule 46 (statements -> print .)
+    VAR             reduce using rule 46 (statements -> print .)
+    RBRACE          reduce using rule 46 (statements -> print .)
+    RBRACKET        reduce using rule 46 (statements -> print .)
+
+
+state 59
+
+    (47) statements -> if .
+
+    $end            reduce using rule 47 (statements -> if .)
+    SEMICOLON       reduce using rule 47 (statements -> if .)
+    FUNCTION        reduce using rule 47 (statements -> if .)
+    ID              reduce using rule 47 (statements -> if .)
+    READ            reduce using rule 47 (statements -> if .)
+    PRINT           reduce using rule 47 (statements -> if .)
+    IF              reduce using rule 47 (statements -> if .)
+    WHILE           reduce using rule 47 (statements -> if .)
+    FOR             reduce using rule 47 (statements -> if .)
+    MEAN            reduce using rule 47 (statements -> if .)
+    VAR             reduce using rule 47 (statements -> if .)
+    RBRACE          reduce using rule 47 (statements -> if .)
+    RBRACKET        reduce using rule 47 (statements -> if .)
+
+
+state 60
+
+    (48) statements -> while .
+
+    $end            reduce using rule 48 (statements -> while .)
+    SEMICOLON       reduce using rule 48 (statements -> while .)
+    FUNCTION        reduce using rule 48 (statements -> while .)
+    ID              reduce using rule 48 (statements -> while .)
+    READ            reduce using rule 48 (statements -> while .)
+    PRINT           reduce using rule 48 (statements -> while .)
+    IF              reduce using rule 48 (statements -> while .)
+    WHILE           reduce using rule 48 (statements -> while .)
+    FOR             reduce using rule 48 (statements -> while .)
+    MEAN            reduce using rule 48 (statements -> while .)
+    VAR             reduce using rule 48 (statements -> while .)
+    RBRACE          reduce using rule 48 (statements -> while .)
+    RBRACKET        reduce using rule 48 (statements -> while .)
+
+
+state 61
+
+    (49) statements -> for .
+
+    $end            reduce using rule 49 (statements -> for .)
+    SEMICOLON       reduce using rule 49 (statements -> for .)
+    FUNCTION        reduce using rule 49 (statements -> for .)
+    ID              reduce using rule 49 (statements -> for .)
+    READ            reduce using rule 49 (statements -> for .)
+    PRINT           reduce using rule 49 (statements -> for .)
+    IF              reduce using rule 49 (statements -> for .)
+    WHILE           reduce using rule 49 (statements -> for .)
+    FOR             reduce using rule 49 (statements -> for .)
+    MEAN            reduce using rule 49 (statements -> for .)
+    VAR             reduce using rule 49 (statements -> for .)
+    RBRACE          reduce using rule 49 (statements -> for .)
+    RBRACKET        reduce using rule 49 (statements -> for .)
+
+
+state 62
+
+    (50) statements -> funcesp .
+
+    $end            reduce using rule 50 (statements -> funcesp .)
+    SEMICOLON       reduce using rule 50 (statements -> funcesp .)
+    FUNCTION        reduce using rule 50 (statements -> funcesp .)
+    ID              reduce using rule 50 (statements -> funcesp .)
+    READ            reduce using rule 50 (statements -> funcesp .)
+    PRINT           reduce using rule 50 (statements -> funcesp .)
+    IF              reduce using rule 50 (statements -> funcesp .)
+    WHILE           reduce using rule 50 (statements -> funcesp .)
+    FOR             reduce using rule 50 (statements -> funcesp .)
+    MEAN            reduce using rule 50 (statements -> funcesp .)
+    VAR             reduce using rule 50 (statements -> funcesp .)
+    RBRACE          reduce using rule 50 (statements -> funcesp .)
+    RBRACKET        reduce using rule 50 (statements -> funcesp .)
+
+
+state 63
+
+    (51) assign -> var . EQUAL exp
+
+    EQUAL           shift and go to state 80
+
+
+state 64
+
+    (9) function -> FUNCTION . type ID LPAREN param RPAREN body
+    (10) voidfunction -> FUNCTION . VOID ID LPAREN param RPAREN body
+    (7) type -> . INT
+    (8) type -> . FLOAT
+
+    VOID            shift and go to state 82
+    INT             shift and go to state 83
+    FLOAT           shift and go to state 84
+
+    type                           shift and go to state 81
+
+state 65
+
+    (57) call -> ID . LPAREN callp RPAREN
+    (56) var -> ID .
+    (84) array -> ID . EQUAL ARRAY LPAREN var arrayp
+    (87) matrix -> ID . EQUAL MATRIX LPAREN array matrixp
+    (91) layers -> ID . EQUAL LAYERS LPAREN UNITS EQUAL INT RPAREN
+    (92) sequential -> ID . EQUAL SEQUENTIAL LPAREN LBRACKET layers sequentialp
+    (96) fit -> ID . EQUAL sequential DOT FIT LPAREN array COMMA array COMMA EPOCHS EQUAL INT COMMA VERBOSE EQUAL fitp
+    (99) predict -> ID . EQUAL sequential DOT PREDICT LPAREN LBRACKET predictp
+
+  ! shift/reduce conflict for EQUAL resolved as shift
+    LPAREN          shift and go to state 33
+    EQUAL           shift and go to state 85
+
+  ! EQUAL           [ reduce using rule 56 (var -> ID .) ]
+
+
+state 66
+
+    (52) read -> READ . var
+    (56) var -> . ID
+
+    ID              shift and go to state 87
+
+    var                            shift and go to state 86
+
+state 67
+
+    (53) print -> PRINT . LPAREN printp
+
+    LPAREN          shift and go to state 88
+
+
+state 68
+
+    (66) while -> WHILE . LPAREN saveJumps exp RPAREN quadsWhile statements jumpsWhile whilep
+
+    LPAREN          shift and go to state 89
+
+
+state 69
+
+    (72) for -> FOR . LPAREN var SEMICOLON exp SEMICOLON exp RPAREN LBRACKET statements forp
+
+    LPAREN          shift and go to state 90
+
+
+state 70
+
+    (75) funcesp -> array .
+
+    $end            reduce using rule 75 (funcesp -> array .)
+    SEMICOLON       reduce using rule 75 (funcesp -> array .)
+    FUNCTION        reduce using rule 75 (funcesp -> array .)
+    ID              reduce using rule 75 (funcesp -> array .)
+    READ            reduce using rule 75 (funcesp -> array .)
+    PRINT           reduce using rule 75 (funcesp -> array .)
+    IF              reduce using rule 75 (funcesp -> array .)
+    WHILE           reduce using rule 75 (funcesp -> array .)
+    FOR             reduce using rule 75 (funcesp -> array .)
+    MEAN            reduce using rule 75 (funcesp -> array .)
+    VAR             reduce using rule 75 (funcesp -> array .)
+    RBRACE          reduce using rule 75 (funcesp -> array .)
+    RBRACKET        reduce using rule 75 (funcesp -> array .)
+
+
+state 71
+
+    (76) funcesp -> matrix .
+
+    $end            reduce using rule 76 (funcesp -> matrix .)
+    SEMICOLON       reduce using rule 76 (funcesp -> matrix .)
+    FUNCTION        reduce using rule 76 (funcesp -> matrix .)
+    ID              reduce using rule 76 (funcesp -> matrix .)
+    READ            reduce using rule 76 (funcesp -> matrix .)
+    PRINT           reduce using rule 76 (funcesp -> matrix .)
+    IF              reduce using rule 76 (funcesp -> matrix .)
+    WHILE           reduce using rule 76 (funcesp -> matrix .)
+    FOR             reduce using rule 76 (funcesp -> matrix .)
+    MEAN            reduce using rule 76 (funcesp -> matrix .)
+    VAR             reduce using rule 76 (funcesp -> matrix .)
+    RBRACE          reduce using rule 76 (funcesp -> matrix .)
+    RBRACKET        reduce using rule 76 (funcesp -> matrix .)
+
+
+state 72
+
+    (77) funcesp -> mean .
+
+    $end            reduce using rule 77 (funcesp -> mean .)
+    SEMICOLON       reduce using rule 77 (funcesp -> mean .)
+    FUNCTION        reduce using rule 77 (funcesp -> mean .)
+    ID              reduce using rule 77 (funcesp -> mean .)
+    READ            reduce using rule 77 (funcesp -> mean .)
+    PRINT           reduce using rule 77 (funcesp -> mean .)
+    IF              reduce using rule 77 (funcesp -> mean .)
+    WHILE           reduce using rule 77 (funcesp -> mean .)
+    FOR             reduce using rule 77 (funcesp -> mean .)
+    MEAN            reduce using rule 77 (funcesp -> mean .)
+    VAR             reduce using rule 77 (funcesp -> mean .)
+    RBRACE          reduce using rule 77 (funcesp -> mean .)
+    RBRACKET        reduce using rule 77 (funcesp -> mean .)
+
+
+state 73
+
+    (78) funcesp -> layers .
+    (102) getweights -> layers . DOT GETWEIGHTS LPAREN RPAREN
+
+    $end            reduce using rule 78 (funcesp -> layers .)
+    SEMICOLON       reduce using rule 78 (funcesp -> layers .)
+    FUNCTION        reduce using rule 78 (funcesp -> layers .)
+    ID              reduce using rule 78 (funcesp -> layers .)
+    READ            reduce using rule 78 (funcesp -> layers .)
+    PRINT           reduce using rule 78 (funcesp -> layers .)
+    IF              reduce using rule 78 (funcesp -> layers .)
+    WHILE           reduce using rule 78 (funcesp -> layers .)
+    FOR             reduce using rule 78 (funcesp -> layers .)
+    MEAN            reduce using rule 78 (funcesp -> layers .)
+    VAR             reduce using rule 78 (funcesp -> layers .)
+    RBRACE          reduce using rule 78 (funcesp -> layers .)
+    RBRACKET        reduce using rule 78 (funcesp -> layers .)
+    DOT             shift and go to state 91
+
+
+state 74
+
+    (79) funcesp -> sequential .
+    (95) compile -> sequential . DOT COMPILE LPAREN RPAREN
+
+    $end            reduce using rule 79 (funcesp -> sequential .)
+    SEMICOLON       reduce using rule 79 (funcesp -> sequential .)
+    FUNCTION        reduce using rule 79 (funcesp -> sequential .)
+    ID              reduce using rule 79 (funcesp -> sequential .)
+    READ            reduce using rule 79 (funcesp -> sequential .)
+    PRINT           reduce using rule 79 (funcesp -> sequential .)
+    IF              reduce using rule 79 (funcesp -> sequential .)
+    WHILE           reduce using rule 79 (funcesp -> sequential .)
+    FOR             reduce using rule 79 (funcesp -> sequential .)
+    MEAN            reduce using rule 79 (funcesp -> sequential .)
+    VAR             reduce using rule 79 (funcesp -> sequential .)
+    RBRACE          reduce using rule 79 (funcesp -> sequential .)
+    RBRACKET        reduce using rule 79 (funcesp -> sequential .)
+    DOT             shift and go to state 92
+
+
+state 75
+
+    (80) funcesp -> compile .
+
+    $end            reduce using rule 80 (funcesp -> compile .)
+    SEMICOLON       reduce using rule 80 (funcesp -> compile .)
+    FUNCTION        reduce using rule 80 (funcesp -> compile .)
+    ID              reduce using rule 80 (funcesp -> compile .)
+    READ            reduce using rule 80 (funcesp -> compile .)
+    PRINT           reduce using rule 80 (funcesp -> compile .)
+    IF              reduce using rule 80 (funcesp -> compile .)
+    WHILE           reduce using rule 80 (funcesp -> compile .)
+    FOR             reduce using rule 80 (funcesp -> compile .)
+    MEAN            reduce using rule 80 (funcesp -> compile .)
+    VAR             reduce using rule 80 (funcesp -> compile .)
+    RBRACE          reduce using rule 80 (funcesp -> compile .)
+    RBRACKET        reduce using rule 80 (funcesp -> compile .)
+
+
+state 76
+
+    (81) funcesp -> fit .
+
+    $end            reduce using rule 81 (funcesp -> fit .)
+    SEMICOLON       reduce using rule 81 (funcesp -> fit .)
+    FUNCTION        reduce using rule 81 (funcesp -> fit .)
+    ID              reduce using rule 81 (funcesp -> fit .)
+    READ            reduce using rule 81 (funcesp -> fit .)
+    PRINT           reduce using rule 81 (funcesp -> fit .)
+    IF              reduce using rule 81 (funcesp -> fit .)
+    WHILE           reduce using rule 81 (funcesp -> fit .)
+    FOR             reduce using rule 81 (funcesp -> fit .)
+    MEAN            reduce using rule 81 (funcesp -> fit .)
+    VAR             reduce using rule 81 (funcesp -> fit .)
+    RBRACE          reduce using rule 81 (funcesp -> fit .)
+    RBRACKET        reduce using rule 81 (funcesp -> fit .)
+
+
+state 77
+
+    (82) funcesp -> predict .
+
+    $end            reduce using rule 82 (funcesp -> predict .)
+    SEMICOLON       reduce using rule 82 (funcesp -> predict .)
+    FUNCTION        reduce using rule 82 (funcesp -> predict .)
+    ID              reduce using rule 82 (funcesp -> predict .)
+    READ            reduce using rule 82 (funcesp -> predict .)
+    PRINT           reduce using rule 82 (funcesp -> predict .)
+    IF              reduce using rule 82 (funcesp -> predict .)
+    WHILE           reduce using rule 82 (funcesp -> predict .)
+    FOR             reduce using rule 82 (funcesp -> predict .)
+    MEAN            reduce using rule 82 (funcesp -> predict .)
+    VAR             reduce using rule 82 (funcesp -> predict .)
+    RBRACE          reduce using rule 82 (funcesp -> predict .)
+    RBRACKET        reduce using rule 82 (funcesp -> predict .)
+
+
+state 78
+
+    (83) funcesp -> getweights .
+
+    $end            reduce using rule 83 (funcesp -> getweights .)
+    SEMICOLON       reduce using rule 83 (funcesp -> getweights .)
+    FUNCTION        reduce using rule 83 (funcesp -> getweights .)
+    ID              reduce using rule 83 (funcesp -> getweights .)
+    READ            reduce using rule 83 (funcesp -> getweights .)
+    PRINT           reduce using rule 83 (funcesp -> getweights .)
+    IF              reduce using rule 83 (funcesp -> getweights .)
+    WHILE           reduce using rule 83 (funcesp -> getweights .)
+    FOR             reduce using rule 83 (funcesp -> getweights .)
+    MEAN            reduce using rule 83 (funcesp -> getweights .)
+    VAR             reduce using rule 83 (funcesp -> getweights .)
+    RBRACE          reduce using rule 83 (funcesp -> getweights .)
+    RBRACKET        reduce using rule 83 (funcesp -> getweights .)
+
+
+state 79
+
+    (90) mean -> MEAN . LPAREN array RPAREN
+
+    LPAREN          shift and go to state 93
+
+
+state 80
+
+    (51) assign -> var EQUAL . exp
+    (20) exp -> . texp
+    (21) exp -> . texp OR exp
+    (22) texp -> . gexp
+    (23) texp -> . gexp AND texp
+    (24) gexp -> . mexp
+    (25) gexp -> . mexp gexpp mexp
+    (30) mexp -> . t
+    (31) mexp -> . t PLUS mexp
+    (32) mexp -> . t MINUS mexp
+    (33) t -> . f
+    (34) t -> . f MULT t
+    (35) t -> . f DIV t
+    (36) f -> . LPAREN exp RPAREN
+    (37) f -> . CTI
+    (38) f -> . CTF
+    (39) f -> . var
+    (40) f -> . call
+    (56) var -> . ID
+    (57) call -> . ID LPAREN callp RPAREN
+
+    LPAREN          shift and go to state 8
+    CTI             shift and go to state 15
+    CTF             shift and go to state 16
+    ID              shift and go to state 19
+
+    var                            shift and go to state 17
+    exp                            shift and go to state 94
+    texp                           shift and go to state 10
+    gexp                           shift and go to state 11
+    mexp                           shift and go to state 12
+    t                              shift and go to state 13
+    f                              shift and go to state 14
+    call                           shift and go to state 18
+
+state 81
+
+    (9) function -> FUNCTION type . ID LPAREN param RPAREN body
+
+    ID              shift and go to state 95
+
+
+state 82
+
+    (10) voidfunction -> FUNCTION VOID . ID LPAREN param RPAREN body
+
+    ID              shift and go to state 96
+
+
+state 83
+
+    (7) type -> INT .
+
+    ID              reduce using rule 7 (type -> INT .)
+
+
+state 84
+
+    (8) type -> FLOAT .
+
+    ID              reduce using rule 8 (type -> FLOAT .)
+
+
+state 85
+
+    (84) array -> ID EQUAL . ARRAY LPAREN var arrayp
+    (87) matrix -> ID EQUAL . MATRIX LPAREN array matrixp
+    (91) layers -> ID EQUAL . LAYERS LPAREN UNITS EQUAL INT RPAREN
+    (92) sequential -> ID EQUAL . SEQUENTIAL LPAREN LBRACKET layers sequentialp
+    (96) fit -> ID EQUAL . sequential DOT FIT LPAREN array COMMA array COMMA EPOCHS EQUAL INT COMMA VERBOSE EQUAL fitp
+    (99) predict -> ID EQUAL . sequential DOT PREDICT LPAREN LBRACKET predictp
+    (92) sequential -> . ID EQUAL SEQUENTIAL LPAREN LBRACKET layers sequentialp
+
+    ARRAY           shift and go to state 98
+    MATRIX          shift and go to state 99
+    LAYERS          shift and go to state 100
+    SEQUENTIAL      shift and go to state 101
+    ID              shift and go to state 97
+
+    sequential                     shift and go to state 102
+
+state 86
+
+    (52) read -> READ var .
+
+    $end            reduce using rule 52 (read -> READ var .)
+    SEMICOLON       reduce using rule 52 (read -> READ var .)
+    FUNCTION        reduce using rule 52 (read -> READ var .)
+    ID              reduce using rule 52 (read -> READ var .)
+    READ            reduce using rule 52 (read -> READ var .)
+    PRINT           reduce using rule 52 (read -> READ var .)
+    IF              reduce using rule 52 (read -> READ var .)
+    WHILE           reduce using rule 52 (read -> READ var .)
+    FOR             reduce using rule 52 (read -> READ var .)
+    MEAN            reduce using rule 52 (read -> READ var .)
+    VAR             reduce using rule 52 (read -> READ var .)
+    RBRACE          reduce using rule 52 (read -> READ var .)
+    RBRACKET        reduce using rule 52 (read -> READ var .)
+
+
+state 87
+
+    (56) var -> ID .
+
+    $end            reduce using rule 56 (var -> ID .)
+    SEMICOLON       reduce using rule 56 (var -> ID .)
+    FUNCTION        reduce using rule 56 (var -> ID .)
+    ID              reduce using rule 56 (var -> ID .)
+    READ            reduce using rule 56 (var -> ID .)
+    PRINT           reduce using rule 56 (var -> ID .)
+    IF              reduce using rule 56 (var -> ID .)
+    WHILE           reduce using rule 56 (var -> ID .)
+    FOR             reduce using rule 56 (var -> ID .)
+    MEAN            reduce using rule 56 (var -> ID .)
+    VAR             reduce using rule 56 (var -> ID .)
+    RBRACE          reduce using rule 56 (var -> ID .)
+    RBRACKET        reduce using rule 56 (var -> ID .)
+    RPAREN          reduce using rule 56 (var -> ID .)
+    COMMA           reduce using rule 56 (var -> ID .)
+
+
+state 88
+
+    (53) print -> PRINT LPAREN . printp
+    (54) printp -> . exp RPAREN
+    (55) printp -> . exp COMMA printp
+    (20) exp -> . texp
+    (21) exp -> . texp OR exp
+    (22) texp -> . gexp
+    (23) texp -> . gexp AND texp
+    (24) gexp -> . mexp
+    (25) gexp -> . mexp gexpp mexp
+    (30) mexp -> . t
+    (31) mexp -> . t PLUS mexp
+    (32) mexp -> . t MINUS mexp
+    (33) t -> . f
+    (34) t -> . f MULT t
+    (35) t -> . f DIV t
+    (36) f -> . LPAREN exp RPAREN
+    (37) f -> . CTI
+    (38) f -> . CTF
+    (39) f -> . var
+    (40) f -> . call
+    (56) var -> . ID
+    (57) call -> . ID LPAREN callp RPAREN
+
+    LPAREN          shift and go to state 8
+    CTI             shift and go to state 15
+    CTF             shift and go to state 16
+    ID              shift and go to state 19
+
+    printp                         shift and go to state 103
+    exp                            shift and go to state 104
+    texp                           shift and go to state 10
+    gexp                           shift and go to state 11
+    mexp                           shift and go to state 12
+    t                              shift and go to state 13
+    f                              shift and go to state 14
+    var                            shift and go to state 17
+    call                           shift and go to state 18
+
+state 89
+
+    (66) while -> WHILE LPAREN . saveJumps exp RPAREN quadsWhile statements jumpsWhile whilep
+    (69) saveJumps -> .
+
+    LPAREN          reduce using rule 69 (saveJumps -> .)
+    CTI             reduce using rule 69 (saveJumps -> .)
+    CTF             reduce using rule 69 (saveJumps -> .)
+    ID              reduce using rule 69 (saveJumps -> .)
+
+    saveJumps                      shift and go to state 105
+
+state 90
+
+    (72) for -> FOR LPAREN . var SEMICOLON exp SEMICOLON exp RPAREN LBRACKET statements forp
+    (56) var -> . ID
+
+    ID              shift and go to state 87
+
+    var                            shift and go to state 106
+
+state 91
+
+    (102) getweights -> layers DOT . GETWEIGHTS LPAREN RPAREN
+
+    GETWEIGHTS      shift and go to state 107
+
+
+state 92
+
+    (95) compile -> sequential DOT . COMPILE LPAREN RPAREN
+
+    COMPILE         shift and go to state 108
+
+
+state 93
+
+    (90) mean -> MEAN LPAREN . array RPAREN
+    (84) array -> . ID EQUAL ARRAY LPAREN var arrayp
+
+    ID              shift and go to state 110
+
+    array                          shift and go to state 109
+
+state 94
+
+    (51) assign -> var EQUAL exp .
+
+    $end            reduce using rule 51 (assign -> var EQUAL exp .)
+    SEMICOLON       reduce using rule 51 (assign -> var EQUAL exp .)
+    FUNCTION        reduce using rule 51 (assign -> var EQUAL exp .)
+    ID              reduce using rule 51 (assign -> var EQUAL exp .)
+    READ            reduce using rule 51 (assign -> var EQUAL exp .)
+    PRINT           reduce using rule 51 (assign -> var EQUAL exp .)
+    IF              reduce using rule 51 (assign -> var EQUAL exp .)
+    WHILE           reduce using rule 51 (assign -> var EQUAL exp .)
+    FOR             reduce using rule 51 (assign -> var EQUAL exp .)
+    MEAN            reduce using rule 51 (assign -> var EQUAL exp .)
+    VAR             reduce using rule 51 (assign -> var EQUAL exp .)
+    RBRACE          reduce using rule 51 (assign -> var EQUAL exp .)
+    RBRACKET        reduce using rule 51 (assign -> var EQUAL exp .)
+
+
+state 95
+
+    (9) function -> FUNCTION type ID . LPAREN param RPAREN body
+
+    LPAREN          shift and go to state 111
+
+
+state 96
+
+    (10) voidfunction -> FUNCTION VOID ID . LPAREN param RPAREN body
+
+    LPAREN          shift and go to state 112
+
+
+state 97
+
+    (92) sequential -> ID . EQUAL SEQUENTIAL LPAREN LBRACKET layers sequentialp
+
+    EQUAL           shift and go to state 113
+
+
+state 98
+
+    (84) array -> ID EQUAL ARRAY . LPAREN var arrayp
+
+    LPAREN          shift and go to state 114
+
+
+state 99
+
+    (87) matrix -> ID EQUAL MATRIX . LPAREN array matrixp
+
+    LPAREN          shift and go to state 115
+
+
+state 100
+
+    (91) layers -> ID EQUAL LAYERS . LPAREN UNITS EQUAL INT RPAREN
+
+    LPAREN          shift and go to state 116
+
+
+state 101
+
+    (92) sequential -> ID EQUAL SEQUENTIAL . LPAREN LBRACKET layers sequentialp
+
+    LPAREN          shift and go to state 117
+
+
+state 102
+
+    (96) fit -> ID EQUAL sequential . DOT FIT LPAREN array COMMA array COMMA EPOCHS EQUAL INT COMMA VERBOSE EQUAL fitp
+    (99) predict -> ID EQUAL sequential . DOT PREDICT LPAREN LBRACKET predictp
+
+    DOT             shift and go to state 118
+
+
+state 103
+
+    (53) print -> PRINT LPAREN printp .
+
+    $end            reduce using rule 53 (print -> PRINT LPAREN printp .)
+    SEMICOLON       reduce using rule 53 (print -> PRINT LPAREN printp .)
+    FUNCTION        reduce using rule 53 (print -> PRINT LPAREN printp .)
+    ID              reduce using rule 53 (print -> PRINT LPAREN printp .)
+    READ            reduce using rule 53 (print -> PRINT LPAREN printp .)
+    PRINT           reduce using rule 53 (print -> PRINT LPAREN printp .)
+    IF              reduce using rule 53 (print -> PRINT LPAREN printp .)
+    WHILE           reduce using rule 53 (print -> PRINT LPAREN printp .)
+    FOR             reduce using rule 53 (print -> PRINT LPAREN printp .)
+    MEAN            reduce using rule 53 (print -> PRINT LPAREN printp .)
+    VAR             reduce using rule 53 (print -> PRINT LPAREN printp .)
+    RBRACE          reduce using rule 53 (print -> PRINT LPAREN printp .)
+    RBRACKET        reduce using rule 53 (print -> PRINT LPAREN printp .)
+
+
+state 104
+
+    (54) printp -> exp . RPAREN
+    (55) printp -> exp . COMMA printp
+
+    RPAREN          shift and go to state 119
+    COMMA           shift and go to state 120
+
+
+state 105
+
+    (66) while -> WHILE LPAREN saveJumps . exp RPAREN quadsWhile statements jumpsWhile whilep
+    (20) exp -> . texp
+    (21) exp -> . texp OR exp
+    (22) texp -> . gexp
+    (23) texp -> . gexp AND texp
+    (24) gexp -> . mexp
+    (25) gexp -> . mexp gexpp mexp
+    (30) mexp -> . t
+    (31) mexp -> . t PLUS mexp
+    (32) mexp -> . t MINUS mexp
+    (33) t -> . f
+    (34) t -> . f MULT t
+    (35) t -> . f DIV t
+    (36) f -> . LPAREN exp RPAREN
+    (37) f -> . CTI
+    (38) f -> . CTF
+    (39) f -> . var
+    (40) f -> . call
+    (56) var -> . ID
+    (57) call -> . ID LPAREN callp RPAREN
+
+    LPAREN          shift and go to state 8
+    CTI             shift and go to state 15
+    CTF             shift and go to state 16
+    ID              shift and go to state 19
+
+    exp                            shift and go to state 121
+    texp                           shift and go to state 10
+    gexp                           shift and go to state 11
+    mexp                           shift and go to state 12
+    t                              shift and go to state 13
+    f                              shift and go to state 14
+    var                            shift and go to state 17
+    call                           shift and go to state 18
+
+state 106
+
+    (72) for -> FOR LPAREN var . SEMICOLON exp SEMICOLON exp RPAREN LBRACKET statements forp
+
+    SEMICOLON       shift and go to state 122
+
+
+state 107
+
+    (102) getweights -> layers DOT GETWEIGHTS . LPAREN RPAREN
+
+    LPAREN          shift and go to state 123
+
+
+state 108
+
+    (95) compile -> sequential DOT COMPILE . LPAREN RPAREN
+
+    LPAREN          shift and go to state 124
+
+
+state 109
+
+    (90) mean -> MEAN LPAREN array . RPAREN
+
+    RPAREN          shift and go to state 125
+
+
+state 110
+
+    (84) array -> ID . EQUAL ARRAY LPAREN var arrayp
+
+    EQUAL           shift and go to state 126
+
+
+state 111
+
+    (9) function -> FUNCTION type ID LPAREN . param RPAREN body
+    (16) param -> .
+    (17) param -> . type paramp
+    (7) type -> . INT
+    (8) type -> . FLOAT
+
+    RPAREN          reduce using rule 16 (param -> .)
+    INT             shift and go to state 83
+    FLOAT           shift and go to state 84
+
+    type                           shift and go to state 127
+    param                          shift and go to state 128
+
+state 112
+
+    (10) voidfunction -> FUNCTION VOID ID LPAREN . param RPAREN body
+    (16) param -> .
+    (17) param -> . type paramp
+    (7) type -> . INT
+    (8) type -> . FLOAT
+
+    RPAREN          reduce using rule 16 (param -> .)
+    INT             shift and go to state 83
+    FLOAT           shift and go to state 84
+
+    param                          shift and go to state 129
+    type                           shift and go to state 127
+
+state 113
+
+    (92) sequential -> ID EQUAL . SEQUENTIAL LPAREN LBRACKET layers sequentialp
+
+    SEQUENTIAL      shift and go to state 101
+
+
+state 114
+
+    (84) array -> ID EQUAL ARRAY LPAREN . var arrayp
+    (56) var -> . ID
+
+    ID              shift and go to state 87
+
+    var                            shift and go to state 130
+
+state 115
+
+    (87) matrix -> ID EQUAL MATRIX LPAREN . array matrixp
+    (84) array -> . ID EQUAL ARRAY LPAREN var arrayp
+
+    ID              shift and go to state 110
+
+    array                          shift and go to state 131
+
+state 116
+
+    (91) layers -> ID EQUAL LAYERS LPAREN . UNITS EQUAL INT RPAREN
+
+    UNITS           shift and go to state 132
+
+
+state 117
+
+    (92) sequential -> ID EQUAL SEQUENTIAL LPAREN . LBRACKET layers sequentialp
+
+    LBRACKET        shift and go to state 133
+
+
+state 118
+
+    (96) fit -> ID EQUAL sequential DOT . FIT LPAREN array COMMA array COMMA EPOCHS EQUAL INT COMMA VERBOSE EQUAL fitp
+    (99) predict -> ID EQUAL sequential DOT . PREDICT LPAREN LBRACKET predictp
+
+    FIT             shift and go to state 134
+    PREDICT         shift and go to state 135
+
+
+state 119
+
+    (54) printp -> exp RPAREN .
+
+    $end            reduce using rule 54 (printp -> exp RPAREN .)
+    SEMICOLON       reduce using rule 54 (printp -> exp RPAREN .)
+    FUNCTION        reduce using rule 54 (printp -> exp RPAREN .)
+    ID              reduce using rule 54 (printp -> exp RPAREN .)
+    READ            reduce using rule 54 (printp -> exp RPAREN .)
+    PRINT           reduce using rule 54 (printp -> exp RPAREN .)
+    IF              reduce using rule 54 (printp -> exp RPAREN .)
+    WHILE           reduce using rule 54 (printp -> exp RPAREN .)
+    FOR             reduce using rule 54 (printp -> exp RPAREN .)
+    MEAN            reduce using rule 54 (printp -> exp RPAREN .)
+    VAR             reduce using rule 54 (printp -> exp RPAREN .)
+    RBRACE          reduce using rule 54 (printp -> exp RPAREN .)
+    RBRACKET        reduce using rule 54 (printp -> exp RPAREN .)
+
+
+state 120
+
+    (55) printp -> exp COMMA . printp
+    (54) printp -> . exp RPAREN
+    (55) printp -> . exp COMMA printp
+    (20) exp -> . texp
+    (21) exp -> . texp OR exp
+    (22) texp -> . gexp
+    (23) texp -> . gexp AND texp
+    (24) gexp -> . mexp
+    (25) gexp -> . mexp gexpp mexp
+    (30) mexp -> . t
+    (31) mexp -> . t PLUS mexp
+    (32) mexp -> . t MINUS mexp
+    (33) t -> . f
+    (34) t -> . f MULT t
+    (35) t -> . f DIV t
+    (36) f -> . LPAREN exp RPAREN
+    (37) f -> . CTI
+    (38) f -> . CTF
+    (39) f -> . var
+    (40) f -> . call
+    (56) var -> . ID
+    (57) call -> . ID LPAREN callp RPAREN
+
+    LPAREN          shift and go to state 8
+    CTI             shift and go to state 15
+    CTF             shift and go to state 16
+    ID              shift and go to state 19
+
+    exp                            shift and go to state 104
+    printp                         shift and go to state 136
+    texp                           shift and go to state 10
+    gexp                           shift and go to state 11
+    mexp                           shift and go to state 12
+    t                              shift and go to state 13
+    f                              shift and go to state 14
+    var                            shift and go to state 17
+    call                           shift and go to state 18
+
+state 121
+
+    (66) while -> WHILE LPAREN saveJumps exp . RPAREN quadsWhile statements jumpsWhile whilep
+
+    RPAREN          shift and go to state 137
+
+
+state 122
+
+    (72) for -> FOR LPAREN var SEMICOLON . exp SEMICOLON exp RPAREN LBRACKET statements forp
+    (20) exp -> . texp
+    (21) exp -> . texp OR exp
+    (22) texp -> . gexp
+    (23) texp -> . gexp AND texp
+    (24) gexp -> . mexp
+    (25) gexp -> . mexp gexpp mexp
+    (30) mexp -> . t
+    (31) mexp -> . t PLUS mexp
+    (32) mexp -> . t MINUS mexp
+    (33) t -> . f
+    (34) t -> . f MULT t
+    (35) t -> . f DIV t
+    (36) f -> . LPAREN exp RPAREN
+    (37) f -> . CTI
+    (38) f -> . CTF
+    (39) f -> . var
+    (40) f -> . call
+    (56) var -> . ID
+    (57) call -> . ID LPAREN callp RPAREN
+
+    LPAREN          shift and go to state 8
+    CTI             shift and go to state 15
+    CTF             shift and go to state 16
+    ID              shift and go to state 19
+
+    var                            shift and go to state 17
+    exp                            shift and go to state 138
+    texp                           shift and go to state 10
+    gexp                           shift and go to state 11
+    mexp                           shift and go to state 12
+    t                              shift and go to state 13
+    f                              shift and go to state 14
+    call                           shift and go to state 18
+
+state 123
+
+    (102) getweights -> layers DOT GETWEIGHTS LPAREN . RPAREN
+
+    RPAREN          shift and go to state 139
+
+
+state 124
+
+    (95) compile -> sequential DOT COMPILE LPAREN . RPAREN
+
+    RPAREN          shift and go to state 140
+
+
+state 125
+
+    (90) mean -> MEAN LPAREN array RPAREN .
+
+    $end            reduce using rule 90 (mean -> MEAN LPAREN array RPAREN .)
+    SEMICOLON       reduce using rule 90 (mean -> MEAN LPAREN array RPAREN .)
+    FUNCTION        reduce using rule 90 (mean -> MEAN LPAREN array RPAREN .)
+    ID              reduce using rule 90 (mean -> MEAN LPAREN array RPAREN .)
+    READ            reduce using rule 90 (mean -> MEAN LPAREN array RPAREN .)
+    PRINT           reduce using rule 90 (mean -> MEAN LPAREN array RPAREN .)
+    IF              reduce using rule 90 (mean -> MEAN LPAREN array RPAREN .)
+    WHILE           reduce using rule 90 (mean -> MEAN LPAREN array RPAREN .)
+    FOR             reduce using rule 90 (mean -> MEAN LPAREN array RPAREN .)
+    MEAN            reduce using rule 90 (mean -> MEAN LPAREN array RPAREN .)
+    VAR             reduce using rule 90 (mean -> MEAN LPAREN array RPAREN .)
+    RBRACE          reduce using rule 90 (mean -> MEAN LPAREN array RPAREN .)
+    RBRACKET        reduce using rule 90 (mean -> MEAN LPAREN array RPAREN .)
+
+
+state 126
+
+    (84) array -> ID EQUAL . ARRAY LPAREN var arrayp
+
+    ARRAY           shift and go to state 98
+
+
+state 127
+
+    (17) param -> type . paramp
+    (18) paramp -> . ID
+    (19) paramp -> . ID COMMA param
+
+    ID              shift and go to state 142
+
+    paramp                         shift and go to state 141
+
+state 128
+
+    (9) function -> FUNCTION type ID LPAREN param . RPAREN body
+
+    RPAREN          shift and go to state 143
+
+
+state 129
+
+    (10) voidfunction -> FUNCTION VOID ID LPAREN param . RPAREN body
+
+    RPAREN          shift and go to state 144
+
+
+state 130
+
+    (84) array -> ID EQUAL ARRAY LPAREN var . arrayp
+    (85) arrayp -> . RPAREN
+    (86) arrayp -> . COMMA var RPAREN
+
+    RPAREN          shift and go to state 146
+    COMMA           shift and go to state 147
+
+    arrayp                         shift and go to state 145
+
+state 131
+
+    (87) matrix -> ID EQUAL MATRIX LPAREN array . matrixp
+    (88) matrixp -> . RPAREN
+    (89) matrixp -> . COMMA array RPAREN
+
+    RPAREN          shift and go to state 149
+    COMMA           shift and go to state 150
+
+    matrixp                        shift and go to state 148
+
+state 132
+
+    (91) layers -> ID EQUAL LAYERS LPAREN UNITS . EQUAL INT RPAREN
+
+    EQUAL           shift and go to state 151
+
+
+state 133
+
+    (92) sequential -> ID EQUAL SEQUENTIAL LPAREN LBRACKET . layers sequentialp
+    (91) layers -> . ID EQUAL LAYERS LPAREN UNITS EQUAL INT RPAREN
+
+    ID              shift and go to state 152
+
+    layers                         shift and go to state 153
+
+state 134
+
+    (96) fit -> ID EQUAL sequential DOT FIT . LPAREN array COMMA array COMMA EPOCHS EQUAL INT COMMA VERBOSE EQUAL fitp
+
+    LPAREN          shift and go to state 154
+
+
+state 135
+
+    (99) predict -> ID EQUAL sequential DOT PREDICT . LPAREN LBRACKET predictp
+
+    LPAREN          shift and go to state 155
+
+
+state 136
+
+    (55) printp -> exp COMMA printp .
+
+    $end            reduce using rule 55 (printp -> exp COMMA printp .)
+    SEMICOLON       reduce using rule 55 (printp -> exp COMMA printp .)
+    FUNCTION        reduce using rule 55 (printp -> exp COMMA printp .)
+    ID              reduce using rule 55 (printp -> exp COMMA printp .)
+    READ            reduce using rule 55 (printp -> exp COMMA printp .)
+    PRINT           reduce using rule 55 (printp -> exp COMMA printp .)
+    IF              reduce using rule 55 (printp -> exp COMMA printp .)
+    WHILE           reduce using rule 55 (printp -> exp COMMA printp .)
+    FOR             reduce using rule 55 (printp -> exp COMMA printp .)
+    MEAN            reduce using rule 55 (printp -> exp COMMA printp .)
+    VAR             reduce using rule 55 (printp -> exp COMMA printp .)
+    RBRACE          reduce using rule 55 (printp -> exp COMMA printp .)
+    RBRACKET        reduce using rule 55 (printp -> exp COMMA printp .)
+
+
+state 137
+
+    (66) while -> WHILE LPAREN saveJumps exp RPAREN . quadsWhile statements jumpsWhile whilep
+    (70) quadsWhile -> .
+
+    FUNCTION        reduce using rule 70 (quadsWhile -> .)
+    ID              reduce using rule 70 (quadsWhile -> .)
+    READ            reduce using rule 70 (quadsWhile -> .)
+    PRINT           reduce using rule 70 (quadsWhile -> .)
+    IF              reduce using rule 70 (quadsWhile -> .)
+    WHILE           reduce using rule 70 (quadsWhile -> .)
+    FOR             reduce using rule 70 (quadsWhile -> .)
+    MEAN            reduce using rule 70 (quadsWhile -> .)
+
+    quadsWhile                     shift and go to state 156
+
+state 138
+
+    (72) for -> FOR LPAREN var SEMICOLON exp . SEMICOLON exp RPAREN LBRACKET statements forp
+
+    SEMICOLON       shift and go to state 157
+
+
+state 139
+
+    (102) getweights -> layers DOT GETWEIGHTS LPAREN RPAREN .
+
+    $end            reduce using rule 102 (getweights -> layers DOT GETWEIGHTS LPAREN RPAREN .)
+    SEMICOLON       reduce using rule 102 (getweights -> layers DOT GETWEIGHTS LPAREN RPAREN .)
+    FUNCTION        reduce using rule 102 (getweights -> layers DOT GETWEIGHTS LPAREN RPAREN .)
+    ID              reduce using rule 102 (getweights -> layers DOT GETWEIGHTS LPAREN RPAREN .)
+    READ            reduce using rule 102 (getweights -> layers DOT GETWEIGHTS LPAREN RPAREN .)
+    PRINT           reduce using rule 102 (getweights -> layers DOT GETWEIGHTS LPAREN RPAREN .)
+    IF              reduce using rule 102 (getweights -> layers DOT GETWEIGHTS LPAREN RPAREN .)
+    WHILE           reduce using rule 102 (getweights -> layers DOT GETWEIGHTS LPAREN RPAREN .)
+    FOR             reduce using rule 102 (getweights -> layers DOT GETWEIGHTS LPAREN RPAREN .)
+    MEAN            reduce using rule 102 (getweights -> layers DOT GETWEIGHTS LPAREN RPAREN .)
+    VAR             reduce using rule 102 (getweights -> layers DOT GETWEIGHTS LPAREN RPAREN .)
+    RBRACE          reduce using rule 102 (getweights -> layers DOT GETWEIGHTS LPAREN RPAREN .)
+    RBRACKET        reduce using rule 102 (getweights -> layers DOT GETWEIGHTS LPAREN RPAREN .)
+
+
+state 140
+
+    (95) compile -> sequential DOT COMPILE LPAREN RPAREN .
+
+    $end            reduce using rule 95 (compile -> sequential DOT COMPILE LPAREN RPAREN .)
+    SEMICOLON       reduce using rule 95 (compile -> sequential DOT COMPILE LPAREN RPAREN .)
+    FUNCTION        reduce using rule 95 (compile -> sequential DOT COMPILE LPAREN RPAREN .)
+    ID              reduce using rule 95 (compile -> sequential DOT COMPILE LPAREN RPAREN .)
+    READ            reduce using rule 95 (compile -> sequential DOT COMPILE LPAREN RPAREN .)
+    PRINT           reduce using rule 95 (compile -> sequential DOT COMPILE LPAREN RPAREN .)
+    IF              reduce using rule 95 (compile -> sequential DOT COMPILE LPAREN RPAREN .)
+    WHILE           reduce using rule 95 (compile -> sequential DOT COMPILE LPAREN RPAREN .)
+    FOR             reduce using rule 95 (compile -> sequential DOT COMPILE LPAREN RPAREN .)
+    MEAN            reduce using rule 95 (compile -> sequential DOT COMPILE LPAREN RPAREN .)
+    VAR             reduce using rule 95 (compile -> sequential DOT COMPILE LPAREN RPAREN .)
+    RBRACE          reduce using rule 95 (compile -> sequential DOT COMPILE LPAREN RPAREN .)
+    RBRACKET        reduce using rule 95 (compile -> sequential DOT COMPILE LPAREN RPAREN .)
+
+
+state 141
+
+    (17) param -> type paramp .
+
+    RPAREN          reduce using rule 17 (param -> type paramp .)
+
+
+state 142
+
+    (18) paramp -> ID .
+    (19) paramp -> ID . COMMA param
+
+    RPAREN          reduce using rule 18 (paramp -> ID .)
+    COMMA           shift and go to state 158
+
+
+state 143
+
+    (9) function -> FUNCTION type ID LPAREN param RPAREN . body
+    (11) body -> . LBRACE bodyp RBRACE
+
+    LBRACE          shift and go to state 160
+
+    body                           shift and go to state 159
+
+state 144
+
+    (10) voidfunction -> FUNCTION VOID ID LPAREN param RPAREN . body
+    (11) body -> . LBRACE bodyp RBRACE
+
+    LBRACE          shift and go to state 160
+
+    body                           shift and go to state 161
+
+state 145
+
+    (84) array -> ID EQUAL ARRAY LPAREN var arrayp .
+
+    $end            reduce using rule 84 (array -> ID EQUAL ARRAY LPAREN var arrayp .)
+    SEMICOLON       reduce using rule 84 (array -> ID EQUAL ARRAY LPAREN var arrayp .)
+    FUNCTION        reduce using rule 84 (array -> ID EQUAL ARRAY LPAREN var arrayp .)
+    ID              reduce using rule 84 (array -> ID EQUAL ARRAY LPAREN var arrayp .)
+    READ            reduce using rule 84 (array -> ID EQUAL ARRAY LPAREN var arrayp .)
+    PRINT           reduce using rule 84 (array -> ID EQUAL ARRAY LPAREN var arrayp .)
+    IF              reduce using rule 84 (array -> ID EQUAL ARRAY LPAREN var arrayp .)
+    WHILE           reduce using rule 84 (array -> ID EQUAL ARRAY LPAREN var arrayp .)
+    FOR             reduce using rule 84 (array -> ID EQUAL ARRAY LPAREN var arrayp .)
+    MEAN            reduce using rule 84 (array -> ID EQUAL ARRAY LPAREN var arrayp .)
+    VAR             reduce using rule 84 (array -> ID EQUAL ARRAY LPAREN var arrayp .)
+    RBRACE          reduce using rule 84 (array -> ID EQUAL ARRAY LPAREN var arrayp .)
+    RBRACKET        reduce using rule 84 (array -> ID EQUAL ARRAY LPAREN var arrayp .)
+    RPAREN          reduce using rule 84 (array -> ID EQUAL ARRAY LPAREN var arrayp .)
+    COMMA           reduce using rule 84 (array -> ID EQUAL ARRAY LPAREN var arrayp .)
+
+
+state 146
+
+    (85) arrayp -> RPAREN .
+
+    $end            reduce using rule 85 (arrayp -> RPAREN .)
+    SEMICOLON       reduce using rule 85 (arrayp -> RPAREN .)
+    FUNCTION        reduce using rule 85 (arrayp -> RPAREN .)
+    ID              reduce using rule 85 (arrayp -> RPAREN .)
+    READ            reduce using rule 85 (arrayp -> RPAREN .)
+    PRINT           reduce using rule 85 (arrayp -> RPAREN .)
+    IF              reduce using rule 85 (arrayp -> RPAREN .)
+    WHILE           reduce using rule 85 (arrayp -> RPAREN .)
+    FOR             reduce using rule 85 (arrayp -> RPAREN .)
+    MEAN            reduce using rule 85 (arrayp -> RPAREN .)
+    VAR             reduce using rule 85 (arrayp -> RPAREN .)
+    RBRACE          reduce using rule 85 (arrayp -> RPAREN .)
+    RBRACKET        reduce using rule 85 (arrayp -> RPAREN .)
+    RPAREN          reduce using rule 85 (arrayp -> RPAREN .)
+    COMMA           reduce using rule 85 (arrayp -> RPAREN .)
+
+
+state 147
+
+    (86) arrayp -> COMMA . var RPAREN
+    (56) var -> . ID
+
+    ID              shift and go to state 87
+
+    var                            shift and go to state 162
+
+state 148
+
+    (87) matrix -> ID EQUAL MATRIX LPAREN array matrixp .
+
+    $end            reduce using rule 87 (matrix -> ID EQUAL MATRIX LPAREN array matrixp .)
+    SEMICOLON       reduce using rule 87 (matrix -> ID EQUAL MATRIX LPAREN array matrixp .)
+    FUNCTION        reduce using rule 87 (matrix -> ID EQUAL MATRIX LPAREN array matrixp .)
+    ID              reduce using rule 87 (matrix -> ID EQUAL MATRIX LPAREN array matrixp .)
+    READ            reduce using rule 87 (matrix -> ID EQUAL MATRIX LPAREN array matrixp .)
+    PRINT           reduce using rule 87 (matrix -> ID EQUAL MATRIX LPAREN array matrixp .)
+    IF              reduce using rule 87 (matrix -> ID EQUAL MATRIX LPAREN array matrixp .)
+    WHILE           reduce using rule 87 (matrix -> ID EQUAL MATRIX LPAREN array matrixp .)
+    FOR             reduce using rule 87 (matrix -> ID EQUAL MATRIX LPAREN array matrixp .)
+    MEAN            reduce using rule 87 (matrix -> ID EQUAL MATRIX LPAREN array matrixp .)
+    VAR             reduce using rule 87 (matrix -> ID EQUAL MATRIX LPAREN array matrixp .)
+    RBRACE          reduce using rule 87 (matrix -> ID EQUAL MATRIX LPAREN array matrixp .)
+    RBRACKET        reduce using rule 87 (matrix -> ID EQUAL MATRIX LPAREN array matrixp .)
+
+
+state 149
+
+    (88) matrixp -> RPAREN .
+
+    $end            reduce using rule 88 (matrixp -> RPAREN .)
+    SEMICOLON       reduce using rule 88 (matrixp -> RPAREN .)
+    FUNCTION        reduce using rule 88 (matrixp -> RPAREN .)
+    ID              reduce using rule 88 (matrixp -> RPAREN .)
+    READ            reduce using rule 88 (matrixp -> RPAREN .)
+    PRINT           reduce using rule 88 (matrixp -> RPAREN .)
+    IF              reduce using rule 88 (matrixp -> RPAREN .)
+    WHILE           reduce using rule 88 (matrixp -> RPAREN .)
+    FOR             reduce using rule 88 (matrixp -> RPAREN .)
+    MEAN            reduce using rule 88 (matrixp -> RPAREN .)
+    VAR             reduce using rule 88 (matrixp -> RPAREN .)
+    RBRACE          reduce using rule 88 (matrixp -> RPAREN .)
+    RBRACKET        reduce using rule 88 (matrixp -> RPAREN .)
+
+
+state 150
+
+    (89) matrixp -> COMMA . array RPAREN
+    (84) array -> . ID EQUAL ARRAY LPAREN var arrayp
+
+    ID              shift and go to state 110
+
+    array                          shift and go to state 163
+
+state 151
+
+    (91) layers -> ID EQUAL LAYERS LPAREN UNITS EQUAL . INT RPAREN
+
+    INT             shift and go to state 164
+
+
+state 152
+
+    (91) layers -> ID . EQUAL LAYERS LPAREN UNITS EQUAL INT RPAREN
+
+    EQUAL           shift and go to state 165
+
+
+state 153
+
+    (92) sequential -> ID EQUAL SEQUENTIAL LPAREN LBRACKET layers . sequentialp
+    (93) sequentialp -> . RBRACKET RPAREN
+    (94) sequentialp -> . COMMA layers sequentialp
+
+    RBRACKET        shift and go to state 167
+    COMMA           shift and go to state 168
+
+    sequentialp                    shift and go to state 166
+
+state 154
+
+    (96) fit -> ID EQUAL sequential DOT FIT LPAREN . array COMMA array COMMA EPOCHS EQUAL INT COMMA VERBOSE EQUAL fitp
+    (84) array -> . ID EQUAL ARRAY LPAREN var arrayp
+
+    ID              shift and go to state 110
+
+    array                          shift and go to state 169
+
+state 155
+
+    (99) predict -> ID EQUAL sequential DOT PREDICT LPAREN . LBRACKET predictp
+
+    LBRACKET        shift and go to state 170
+
+
+state 156
+
+    (66) while -> WHILE LPAREN saveJumps exp RPAREN quadsWhile . statements jumpsWhile whilep
+    (41) statements -> . assign
+    (42) statements -> . function
+    (43) statements -> . voidfunction
+    (44) statements -> . call
+    (45) statements -> . read
+    (46) statements -> . print
+    (47) statements -> . if
+    (48) statements -> . while
+    (49) statements -> . for
+    (50) statements -> . funcesp
+    (51) assign -> . var EQUAL exp
+    (9) function -> . FUNCTION type ID LPAREN param RPAREN body
+    (10) voidfunction -> . FUNCTION VOID ID LPAREN param RPAREN body
+    (57) call -> . ID LPAREN callp RPAREN
+    (52) read -> . READ var
+    (53) print -> . PRINT LPAREN printp
+    (60) if -> . IF LPAREN exp RPAREN quadsIf ifelse jumpsIf
+    (66) while -> . WHILE LPAREN saveJumps exp RPAREN quadsWhile statements jumpsWhile whilep
+    (72) for -> . FOR LPAREN var SEMICOLON exp SEMICOLON exp RPAREN LBRACKET statements forp
+    (75) funcesp -> . array
+    (76) funcesp -> . matrix
+    (77) funcesp -> . mean
+    (78) funcesp -> . layers
+    (79) funcesp -> . sequential
+    (80) funcesp -> . compile
+    (81) funcesp -> . fit
+    (82) funcesp -> . predict
+    (83) funcesp -> . getweights
+    (56) var -> . ID
+    (84) array -> . ID EQUAL ARRAY LPAREN var arrayp
+    (87) matrix -> . ID EQUAL MATRIX LPAREN array matrixp
+    (90) mean -> . MEAN LPAREN array RPAREN
+    (91) layers -> . ID EQUAL LAYERS LPAREN UNITS EQUAL INT RPAREN
+    (92) sequential -> . ID EQUAL SEQUENTIAL LPAREN LBRACKET layers sequentialp
+    (95) compile -> . sequential DOT COMPILE LPAREN RPAREN
+    (96) fit -> . ID EQUAL sequential DOT FIT LPAREN array COMMA array COMMA EPOCHS EQUAL INT COMMA VERBOSE EQUAL fitp
+    (99) predict -> . ID EQUAL sequential DOT PREDICT LPAREN LBRACKET predictp
+    (102) getweights -> . layers DOT GETWEIGHTS LPAREN RPAREN
+
+    FUNCTION        shift and go to state 64
+    ID              shift and go to state 65
+    READ            shift and go to state 66
+    PRINT           shift and go to state 67
+    IF              shift and go to state 6
+    WHILE           shift and go to state 68
+    FOR             shift and go to state 69
+    MEAN            shift and go to state 79
+
+    statements                     shift and go to state 171
+    assign                         shift and go to state 53
+    function                       shift and go to state 54
+    voidfunction                   shift and go to state 55
+    call                           shift and go to state 56
+    read                           shift and go to state 57
+    print                          shift and go to state 58
+    if                             shift and go to state 59
+    while                          shift and go to state 60
+    for                            shift and go to state 61
+    funcesp                        shift and go to state 62
+    var                            shift and go to state 63
+    array                          shift and go to state 70
+    matrix                         shift and go to state 71
+    mean                           shift and go to state 72
+    layers                         shift and go to state 73
+    sequential                     shift and go to state 74
+    compile                        shift and go to state 75
+    fit                            shift and go to state 76
+    predict                        shift and go to state 77
+    getweights                     shift and go to state 78
+
+state 157
+
+    (72) for -> FOR LPAREN var SEMICOLON exp SEMICOLON . exp RPAREN LBRACKET statements forp
+    (20) exp -> . texp
+    (21) exp -> . texp OR exp
+    (22) texp -> . gexp
+    (23) texp -> . gexp AND texp
+    (24) gexp -> . mexp
+    (25) gexp -> . mexp gexpp mexp
+    (30) mexp -> . t
+    (31) mexp -> . t PLUS mexp
+    (32) mexp -> . t MINUS mexp
+    (33) t -> . f
+    (34) t -> . f MULT t
+    (35) t -> . f DIV t
+    (36) f -> . LPAREN exp RPAREN
+    (37) f -> . CTI
+    (38) f -> . CTF
+    (39) f -> . var
+    (40) f -> . call
+    (56) var -> . ID
+    (57) call -> . ID LPAREN callp RPAREN
+
+    LPAREN          shift and go to state 8
+    CTI             shift and go to state 15
+    CTF             shift and go to state 16
+    ID              shift and go to state 19
+
+    var                            shift and go to state 17
+    exp                            shift and go to state 172
+    texp                           shift and go to state 10
+    gexp                           shift and go to state 11
+    mexp                           shift and go to state 12
+    t                              shift and go to state 13
+    f                              shift and go to state 14
+    call                           shift and go to state 18
+
+state 158
+
+    (19) paramp -> ID COMMA . param
+    (16) param -> .
+    (17) param -> . type paramp
+    (7) type -> . INT
+    (8) type -> . FLOAT
+
+    RPAREN          reduce using rule 16 (param -> .)
+    INT             shift and go to state 83
+    FLOAT           shift and go to state 84
+
+    param                          shift and go to state 173
+    type                           shift and go to state 127
+
+state 159
+
+    (9) function -> FUNCTION type ID LPAREN param RPAREN body .
+
+    $end            reduce using rule 9 (function -> FUNCTION type ID LPAREN param RPAREN body .)
+    SEMICOLON       reduce using rule 9 (function -> FUNCTION type ID LPAREN param RPAREN body .)
+    FUNCTION        reduce using rule 9 (function -> FUNCTION type ID LPAREN param RPAREN body .)
+    ID              reduce using rule 9 (function -> FUNCTION type ID LPAREN param RPAREN body .)
+    READ            reduce using rule 9 (function -> FUNCTION type ID LPAREN param RPAREN body .)
+    PRINT           reduce using rule 9 (function -> FUNCTION type ID LPAREN param RPAREN body .)
+    IF              reduce using rule 9 (function -> FUNCTION type ID LPAREN param RPAREN body .)
+    WHILE           reduce using rule 9 (function -> FUNCTION type ID LPAREN param RPAREN body .)
+    FOR             reduce using rule 9 (function -> FUNCTION type ID LPAREN param RPAREN body .)
+    MEAN            reduce using rule 9 (function -> FUNCTION type ID LPAREN param RPAREN body .)
+    VAR             reduce using rule 9 (function -> FUNCTION type ID LPAREN param RPAREN body .)
+    RBRACE          reduce using rule 9 (function -> FUNCTION type ID LPAREN param RPAREN body .)
+    RBRACKET        reduce using rule 9 (function -> FUNCTION type ID LPAREN param RPAREN body .)
+
+
+state 160
+
+    (11) body -> LBRACE . bodyp RBRACE
+    (12) bodyp -> . decvar statements bodyp
+    (13) bodyp -> . statements bodyp
+    (14) bodyp -> . decvar
+    (15) bodyp -> .
+    (2) decvar -> . VAR decvarp
+    (3) decvar -> . VAR decvarp decvar
+    (41) statements -> . assign
+    (42) statements -> . function
+    (43) statements -> . voidfunction
+    (44) statements -> . call
+    (45) statements -> . read
+    (46) statements -> . print
+    (47) statements -> . if
+    (48) statements -> . while
+    (49) statements -> . for
+    (50) statements -> . funcesp
+    (51) assign -> . var EQUAL exp
+    (9) function -> . FUNCTION type ID LPAREN param RPAREN body
+    (10) voidfunction -> . FUNCTION VOID ID LPAREN param RPAREN body
+    (57) call -> . ID LPAREN callp RPAREN
+    (52) read -> . READ var
+    (53) print -> . PRINT LPAREN printp
+    (60) if -> . IF LPAREN exp RPAREN quadsIf ifelse jumpsIf
+    (66) while -> . WHILE LPAREN saveJumps exp RPAREN quadsWhile statements jumpsWhile whilep
+    (72) for -> . FOR LPAREN var SEMICOLON exp SEMICOLON exp RPAREN LBRACKET statements forp
+    (75) funcesp -> . array
+    (76) funcesp -> . matrix
+    (77) funcesp -> . mean
+    (78) funcesp -> . layers
+    (79) funcesp -> . sequential
+    (80) funcesp -> . compile
+    (81) funcesp -> . fit
+    (82) funcesp -> . predict
+    (83) funcesp -> . getweights
+    (56) var -> . ID
+    (84) array -> . ID EQUAL ARRAY LPAREN var arrayp
+    (87) matrix -> . ID EQUAL MATRIX LPAREN array matrixp
+    (90) mean -> . MEAN LPAREN array RPAREN
+    (91) layers -> . ID EQUAL LAYERS LPAREN UNITS EQUAL INT RPAREN
+    (92) sequential -> . ID EQUAL SEQUENTIAL LPAREN LBRACKET layers sequentialp
+    (95) compile -> . sequential DOT COMPILE LPAREN RPAREN
+    (96) fit -> . ID EQUAL sequential DOT FIT LPAREN array COMMA array COMMA EPOCHS EQUAL INT COMMA VERBOSE EQUAL fitp
+    (99) predict -> . ID EQUAL sequential DOT PREDICT LPAREN LBRACKET predictp
+    (102) getweights -> . layers DOT GETWEIGHTS LPAREN RPAREN
+
+    RBRACE          reduce using rule 15 (bodyp -> .)
+    VAR             shift and go to state 177
+    FUNCTION        shift and go to state 64
+    ID              shift and go to state 65
+    READ            shift and go to state 66
+    PRINT           shift and go to state 67
+    IF              shift and go to state 6
+    WHILE           shift and go to state 68
+    FOR             shift and go to state 69
+    MEAN            shift and go to state 79
+
+    bodyp                          shift and go to state 174
+    decvar                         shift and go to state 175
+    statements                     shift and go to state 176
+    assign                         shift and go to state 53
+    function                       shift and go to state 54
+    voidfunction                   shift and go to state 55
+    call                           shift and go to state 56
+    read                           shift and go to state 57
+    print                          shift and go to state 58
+    if                             shift and go to state 59
+    while                          shift and go to state 60
+    for                            shift and go to state 61
+    funcesp                        shift and go to state 62
+    var                            shift and go to state 63
+    array                          shift and go to state 70
+    matrix                         shift and go to state 71
+    mean                           shift and go to state 72
+    layers                         shift and go to state 73
+    sequential                     shift and go to state 74
+    compile                        shift and go to state 75
+    fit                            shift and go to state 76
+    predict                        shift and go to state 77
+    getweights                     shift and go to state 78
+
+state 161
+
+    (10) voidfunction -> FUNCTION VOID ID LPAREN param RPAREN body .
+
+    $end            reduce using rule 10 (voidfunction -> FUNCTION VOID ID LPAREN param RPAREN body .)
+    SEMICOLON       reduce using rule 10 (voidfunction -> FUNCTION VOID ID LPAREN param RPAREN body .)
+    FUNCTION        reduce using rule 10 (voidfunction -> FUNCTION VOID ID LPAREN param RPAREN body .)
+    ID              reduce using rule 10 (voidfunction -> FUNCTION VOID ID LPAREN param RPAREN body .)
+    READ            reduce using rule 10 (voidfunction -> FUNCTION VOID ID LPAREN param RPAREN body .)
+    PRINT           reduce using rule 10 (voidfunction -> FUNCTION VOID ID LPAREN param RPAREN body .)
+    IF              reduce using rule 10 (voidfunction -> FUNCTION VOID ID LPAREN param RPAREN body .)
+    WHILE           reduce using rule 10 (voidfunction -> FUNCTION VOID ID LPAREN param RPAREN body .)
+    FOR             reduce using rule 10 (voidfunction -> FUNCTION VOID ID LPAREN param RPAREN body .)
+    MEAN            reduce using rule 10 (voidfunction -> FUNCTION VOID ID LPAREN param RPAREN body .)
+    VAR             reduce using rule 10 (voidfunction -> FUNCTION VOID ID LPAREN param RPAREN body .)
+    RBRACE          reduce using rule 10 (voidfunction -> FUNCTION VOID ID LPAREN param RPAREN body .)
+    RBRACKET        reduce using rule 10 (voidfunction -> FUNCTION VOID ID LPAREN param RPAREN body .)
+
+
+state 162
+
+    (86) arrayp -> COMMA var . RPAREN
+
+    RPAREN          shift and go to state 178
+
+
+state 163
+
+    (89) matrixp -> COMMA array . RPAREN
+
+    RPAREN          shift and go to state 179
+
+
+state 164
+
+    (91) layers -> ID EQUAL LAYERS LPAREN UNITS EQUAL INT . RPAREN
+
+    RPAREN          shift and go to state 180
+
+
+state 165
+
+    (91) layers -> ID EQUAL . LAYERS LPAREN UNITS EQUAL INT RPAREN
+
+    LAYERS          shift and go to state 100
+
+
+state 166
+
+    (92) sequential -> ID EQUAL SEQUENTIAL LPAREN LBRACKET layers sequentialp .
+
+    DOT             reduce using rule 92 (sequential -> ID EQUAL SEQUENTIAL LPAREN LBRACKET layers sequentialp .)
+    $end            reduce using rule 92 (sequential -> ID EQUAL SEQUENTIAL LPAREN LBRACKET layers sequentialp .)
+    SEMICOLON       reduce using rule 92 (sequential -> ID EQUAL SEQUENTIAL LPAREN LBRACKET layers sequentialp .)
+    FUNCTION        reduce using rule 92 (sequential -> ID EQUAL SEQUENTIAL LPAREN LBRACKET layers sequentialp .)
+    ID              reduce using rule 92 (sequential -> ID EQUAL SEQUENTIAL LPAREN LBRACKET layers sequentialp .)
+    READ            reduce using rule 92 (sequential -> ID EQUAL SEQUENTIAL LPAREN LBRACKET layers sequentialp .)
+    PRINT           reduce using rule 92 (sequential -> ID EQUAL SEQUENTIAL LPAREN LBRACKET layers sequentialp .)
+    IF              reduce using rule 92 (sequential -> ID EQUAL SEQUENTIAL LPAREN LBRACKET layers sequentialp .)
+    WHILE           reduce using rule 92 (sequential -> ID EQUAL SEQUENTIAL LPAREN LBRACKET layers sequentialp .)
+    FOR             reduce using rule 92 (sequential -> ID EQUAL SEQUENTIAL LPAREN LBRACKET layers sequentialp .)
+    MEAN            reduce using rule 92 (sequential -> ID EQUAL SEQUENTIAL LPAREN LBRACKET layers sequentialp .)
+    VAR             reduce using rule 92 (sequential -> ID EQUAL SEQUENTIAL LPAREN LBRACKET layers sequentialp .)
+    RBRACE          reduce using rule 92 (sequential -> ID EQUAL SEQUENTIAL LPAREN LBRACKET layers sequentialp .)
+    RBRACKET        reduce using rule 92 (sequential -> ID EQUAL SEQUENTIAL LPAREN LBRACKET layers sequentialp .)
+
+
+state 167
+
+    (93) sequentialp -> RBRACKET . RPAREN
+
+    RPAREN          shift and go to state 181
+
+
+state 168
+
+    (94) sequentialp -> COMMA . layers sequentialp
+    (91) layers -> . ID EQUAL LAYERS LPAREN UNITS EQUAL INT RPAREN
+
+    ID              shift and go to state 152
+
+    layers                         shift and go to state 182
+
+state 169
+
+    (96) fit -> ID EQUAL sequential DOT FIT LPAREN array . COMMA array COMMA EPOCHS EQUAL INT COMMA VERBOSE EQUAL fitp
+
+    COMMA           shift and go to state 183
+
+
+state 170
+
+    (99) predict -> ID EQUAL sequential DOT PREDICT LPAREN LBRACKET . predictp
+    (100) predictp -> . INT RBRACKET RPAREN
+    (101) predictp -> . FLOAT RBRACKET RPAREN
+
+    INT             shift and go to state 185
+    FLOAT           shift and go to state 186
+
+    predictp                       shift and go to state 184
+
+state 171
+
+    (66) while -> WHILE LPAREN saveJumps exp RPAREN quadsWhile statements . jumpsWhile whilep
+    (71) jumpsWhile -> .
+
+    SEMICOLON       reduce using rule 71 (jumpsWhile -> .)
+    FUNCTION        reduce using rule 71 (jumpsWhile -> .)
+    ID              reduce using rule 71 (jumpsWhile -> .)
+    READ            reduce using rule 71 (jumpsWhile -> .)
+    PRINT           reduce using rule 71 (jumpsWhile -> .)
+    IF              reduce using rule 71 (jumpsWhile -> .)
+    WHILE           reduce using rule 71 (jumpsWhile -> .)
+    FOR             reduce using rule 71 (jumpsWhile -> .)
+    MEAN            reduce using rule 71 (jumpsWhile -> .)
+
+    jumpsWhile                     shift and go to state 187
+
+state 172
+
+    (72) for -> FOR LPAREN var SEMICOLON exp SEMICOLON exp . RPAREN LBRACKET statements forp
+
+    RPAREN          shift and go to state 188
+
+
+state 173
+
+    (19) paramp -> ID COMMA param .
+
+    RPAREN          reduce using rule 19 (paramp -> ID COMMA param .)
+
+
+state 174
+
+    (11) body -> LBRACE bodyp . RBRACE
+
+    RBRACE          shift and go to state 189
+
+
+state 175
+
+    (12) bodyp -> decvar . statements bodyp
+    (14) bodyp -> decvar .
+    (41) statements -> . assign
+    (42) statements -> . function
+    (43) statements -> . voidfunction
+    (44) statements -> . call
+    (45) statements -> . read
+    (46) statements -> . print
+    (47) statements -> . if
+    (48) statements -> . while
+    (49) statements -> . for
+    (50) statements -> . funcesp
+    (51) assign -> . var EQUAL exp
+    (9) function -> . FUNCTION type ID LPAREN param RPAREN body
+    (10) voidfunction -> . FUNCTION VOID ID LPAREN param RPAREN body
+    (57) call -> . ID LPAREN callp RPAREN
+    (52) read -> . READ var
+    (53) print -> . PRINT LPAREN printp
+    (60) if -> . IF LPAREN exp RPAREN quadsIf ifelse jumpsIf
+    (66) while -> . WHILE LPAREN saveJumps exp RPAREN quadsWhile statements jumpsWhile whilep
+    (72) for -> . FOR LPAREN var SEMICOLON exp SEMICOLON exp RPAREN LBRACKET statements forp
+    (75) funcesp -> . array
+    (76) funcesp -> . matrix
+    (77) funcesp -> . mean
+    (78) funcesp -> . layers
+    (79) funcesp -> . sequential
+    (80) funcesp -> . compile
+    (81) funcesp -> . fit
+    (82) funcesp -> . predict
+    (83) funcesp -> . getweights
+    (56) var -> . ID
+    (84) array -> . ID EQUAL ARRAY LPAREN var arrayp
+    (87) matrix -> . ID EQUAL MATRIX LPAREN array matrixp
+    (90) mean -> . MEAN LPAREN array RPAREN
+    (91) layers -> . ID EQUAL LAYERS LPAREN UNITS EQUAL INT RPAREN
+    (92) sequential -> . ID EQUAL SEQUENTIAL LPAREN LBRACKET layers sequentialp
+    (95) compile -> . sequential DOT COMPILE LPAREN RPAREN
+    (96) fit -> . ID EQUAL sequential DOT FIT LPAREN array COMMA array COMMA EPOCHS EQUAL INT COMMA VERBOSE EQUAL fitp
+    (99) predict -> . ID EQUAL sequential DOT PREDICT LPAREN LBRACKET predictp
+    (102) getweights -> . layers DOT GETWEIGHTS LPAREN RPAREN
+
+    RBRACE          reduce using rule 14 (bodyp -> decvar .)
+    FUNCTION        shift and go to state 64
+    ID              shift and go to state 65
+    READ            shift and go to state 66
+    PRINT           shift and go to state 67
+    IF              shift and go to state 6
+    WHILE           shift and go to state 68
+    FOR             shift and go to state 69
+    MEAN            shift and go to state 79
+
+    statements                     shift and go to state 190
+    assign                         shift and go to state 53
+    function                       shift and go to state 54
+    voidfunction                   shift and go to state 55
+    call                           shift and go to state 56
+    read                           shift and go to state 57
+    print                          shift and go to state 58
+    if                             shift and go to state 59
+    while                          shift and go to state 60
+    for                            shift and go to state 61
+    funcesp                        shift and go to state 62
+    var                            shift and go to state 63
+    array                          shift and go to state 70
+    matrix                         shift and go to state 71
+    mean                           shift and go to state 72
+    layers                         shift and go to state 73
+    sequential                     shift and go to state 74
+    compile                        shift and go to state 75
+    fit                            shift and go to state 76
+    predict                        shift and go to state 77
+    getweights                     shift and go to state 78
+
+state 176
+
+    (13) bodyp -> statements . bodyp
+    (12) bodyp -> . decvar statements bodyp
+    (13) bodyp -> . statements bodyp
+    (14) bodyp -> . decvar
+    (15) bodyp -> .
+    (2) decvar -> . VAR decvarp
+    (3) decvar -> . VAR decvarp decvar
+    (41) statements -> . assign
+    (42) statements -> . function
+    (43) statements -> . voidfunction
+    (44) statements -> . call
+    (45) statements -> . read
+    (46) statements -> . print
+    (47) statements -> . if
+    (48) statements -> . while
+    (49) statements -> . for
+    (50) statements -> . funcesp
+    (51) assign -> . var EQUAL exp
+    (9) function -> . FUNCTION type ID LPAREN param RPAREN body
+    (10) voidfunction -> . FUNCTION VOID ID LPAREN param RPAREN body
+    (57) call -> . ID LPAREN callp RPAREN
+    (52) read -> . READ var
+    (53) print -> . PRINT LPAREN printp
+    (60) if -> . IF LPAREN exp RPAREN quadsIf ifelse jumpsIf
+    (66) while -> . WHILE LPAREN saveJumps exp RPAREN quadsWhile statements jumpsWhile whilep
+    (72) for -> . FOR LPAREN var SEMICOLON exp SEMICOLON exp RPAREN LBRACKET statements forp
+    (75) funcesp -> . array
+    (76) funcesp -> . matrix
+    (77) funcesp -> . mean
+    (78) funcesp -> . layers
+    (79) funcesp -> . sequential
+    (80) funcesp -> . compile
+    (81) funcesp -> . fit
+    (82) funcesp -> . predict
+    (83) funcesp -> . getweights
+    (56) var -> . ID
+    (84) array -> . ID EQUAL ARRAY LPAREN var arrayp
+    (87) matrix -> . ID EQUAL MATRIX LPAREN array matrixp
+    (90) mean -> . MEAN LPAREN array RPAREN
+    (91) layers -> . ID EQUAL LAYERS LPAREN UNITS EQUAL INT RPAREN
+    (92) sequential -> . ID EQUAL SEQUENTIAL LPAREN LBRACKET layers sequentialp
+    (95) compile -> . sequential DOT COMPILE LPAREN RPAREN
+    (96) fit -> . ID EQUAL sequential DOT FIT LPAREN array COMMA array COMMA EPOCHS EQUAL INT COMMA VERBOSE EQUAL fitp
+    (99) predict -> . ID EQUAL sequential DOT PREDICT LPAREN LBRACKET predictp
+    (102) getweights -> . layers DOT GETWEIGHTS LPAREN RPAREN
+
+    RBRACE          reduce using rule 15 (bodyp -> .)
+    VAR             shift and go to state 177
+    FUNCTION        shift and go to state 64
+    ID              shift and go to state 65
+    READ            shift and go to state 66
+    PRINT           shift and go to state 67
+    IF              shift and go to state 6
+    WHILE           shift and go to state 68
+    FOR             shift and go to state 69
+    MEAN            shift and go to state 79
+
+    statements                     shift and go to state 176
+    bodyp                          shift and go to state 191
+    decvar                         shift and go to state 175
+    assign                         shift and go to state 53
+    function                       shift and go to state 54
+    voidfunction                   shift and go to state 55
+    call                           shift and go to state 56
+    read                           shift and go to state 57
+    print                          shift and go to state 58
+    if                             shift and go to state 59
+    while                          shift and go to state 60
+    for                            shift and go to state 61
+    funcesp                        shift and go to state 62
+    var                            shift and go to state 63
+    array                          shift and go to state 70
+    matrix                         shift and go to state 71
+    mean                           shift and go to state 72
+    layers                         shift and go to state 73
+    sequential                     shift and go to state 74
+    compile                        shift and go to state 75
+    fit                            shift and go to state 76
+    predict                        shift and go to state 77
+    getweights                     shift and go to state 78
+
+state 177
+
+    (2) decvar -> VAR . decvarp
+    (3) decvar -> VAR . decvarp decvar
+    (4) decvarp -> . type decvarpp SEMICOLON
+    (7) type -> . INT
+    (8) type -> . FLOAT
+
+    INT             shift and go to state 83
+    FLOAT           shift and go to state 84
+
+    decvarp                        shift and go to state 192
+    type                           shift and go to state 193
+
+state 178
+
+    (86) arrayp -> COMMA var RPAREN .
+
+    $end            reduce using rule 86 (arrayp -> COMMA var RPAREN .)
+    SEMICOLON       reduce using rule 86 (arrayp -> COMMA var RPAREN .)
+    FUNCTION        reduce using rule 86 (arrayp -> COMMA var RPAREN .)
+    ID              reduce using rule 86 (arrayp -> COMMA var RPAREN .)
+    READ            reduce using rule 86 (arrayp -> COMMA var RPAREN .)
+    PRINT           reduce using rule 86 (arrayp -> COMMA var RPAREN .)
+    IF              reduce using rule 86 (arrayp -> COMMA var RPAREN .)
+    WHILE           reduce using rule 86 (arrayp -> COMMA var RPAREN .)
+    FOR             reduce using rule 86 (arrayp -> COMMA var RPAREN .)
+    MEAN            reduce using rule 86 (arrayp -> COMMA var RPAREN .)
+    VAR             reduce using rule 86 (arrayp -> COMMA var RPAREN .)
+    RBRACE          reduce using rule 86 (arrayp -> COMMA var RPAREN .)
+    RBRACKET        reduce using rule 86 (arrayp -> COMMA var RPAREN .)
+    RPAREN          reduce using rule 86 (arrayp -> COMMA var RPAREN .)
+    COMMA           reduce using rule 86 (arrayp -> COMMA var RPAREN .)
+
+
+state 179
+
+    (89) matrixp -> COMMA array RPAREN .
+
+    $end            reduce using rule 89 (matrixp -> COMMA array RPAREN .)
+    SEMICOLON       reduce using rule 89 (matrixp -> COMMA array RPAREN .)
+    FUNCTION        reduce using rule 89 (matrixp -> COMMA array RPAREN .)
+    ID              reduce using rule 89 (matrixp -> COMMA array RPAREN .)
+    READ            reduce using rule 89 (matrixp -> COMMA array RPAREN .)
+    PRINT           reduce using rule 89 (matrixp -> COMMA array RPAREN .)
+    IF              reduce using rule 89 (matrixp -> COMMA array RPAREN .)
+    WHILE           reduce using rule 89 (matrixp -> COMMA array RPAREN .)
+    FOR             reduce using rule 89 (matrixp -> COMMA array RPAREN .)
+    MEAN            reduce using rule 89 (matrixp -> COMMA array RPAREN .)
+    VAR             reduce using rule 89 (matrixp -> COMMA array RPAREN .)
+    RBRACE          reduce using rule 89 (matrixp -> COMMA array RPAREN .)
+    RBRACKET        reduce using rule 89 (matrixp -> COMMA array RPAREN .)
+
+
+state 180
+
+    (91) layers -> ID EQUAL LAYERS LPAREN UNITS EQUAL INT RPAREN .
+
+    DOT             reduce using rule 91 (layers -> ID EQUAL LAYERS LPAREN UNITS EQUAL INT RPAREN .)
+    $end            reduce using rule 91 (layers -> ID EQUAL LAYERS LPAREN UNITS EQUAL INT RPAREN .)
+    SEMICOLON       reduce using rule 91 (layers -> ID EQUAL LAYERS LPAREN UNITS EQUAL INT RPAREN .)
+    FUNCTION        reduce using rule 91 (layers -> ID EQUAL LAYERS LPAREN UNITS EQUAL INT RPAREN .)
+    ID              reduce using rule 91 (layers -> ID EQUAL LAYERS LPAREN UNITS EQUAL INT RPAREN .)
+    READ            reduce using rule 91 (layers -> ID EQUAL LAYERS LPAREN UNITS EQUAL INT RPAREN .)
+    PRINT           reduce using rule 91 (layers -> ID EQUAL LAYERS LPAREN UNITS EQUAL INT RPAREN .)
+    IF              reduce using rule 91 (layers -> ID EQUAL LAYERS LPAREN UNITS EQUAL INT RPAREN .)
+    WHILE           reduce using rule 91 (layers -> ID EQUAL LAYERS LPAREN UNITS EQUAL INT RPAREN .)
+    FOR             reduce using rule 91 (layers -> ID EQUAL LAYERS LPAREN UNITS EQUAL INT RPAREN .)
+    MEAN            reduce using rule 91 (layers -> ID EQUAL LAYERS LPAREN UNITS EQUAL INT RPAREN .)
+    VAR             reduce using rule 91 (layers -> ID EQUAL LAYERS LPAREN UNITS EQUAL INT RPAREN .)
+    RBRACE          reduce using rule 91 (layers -> ID EQUAL LAYERS LPAREN UNITS EQUAL INT RPAREN .)
+    RBRACKET        reduce using rule 91 (layers -> ID EQUAL LAYERS LPAREN UNITS EQUAL INT RPAREN .)
+    COMMA           reduce using rule 91 (layers -> ID EQUAL LAYERS LPAREN UNITS EQUAL INT RPAREN .)
+
+
+state 181
+
+    (93) sequentialp -> RBRACKET RPAREN .
+
+    DOT             reduce using rule 93 (sequentialp -> RBRACKET RPAREN .)
+    $end            reduce using rule 93 (sequentialp -> RBRACKET RPAREN .)
+    SEMICOLON       reduce using rule 93 (sequentialp -> RBRACKET RPAREN .)
+    FUNCTION        reduce using rule 93 (sequentialp -> RBRACKET RPAREN .)
+    ID              reduce using rule 93 (sequentialp -> RBRACKET RPAREN .)
+    READ            reduce using rule 93 (sequentialp -> RBRACKET RPAREN .)
+    PRINT           reduce using rule 93 (sequentialp -> RBRACKET RPAREN .)
+    IF              reduce using rule 93 (sequentialp -> RBRACKET RPAREN .)
+    WHILE           reduce using rule 93 (sequentialp -> RBRACKET RPAREN .)
+    FOR             reduce using rule 93 (sequentialp -> RBRACKET RPAREN .)
+    MEAN            reduce using rule 93 (sequentialp -> RBRACKET RPAREN .)
+    VAR             reduce using rule 93 (sequentialp -> RBRACKET RPAREN .)
+    RBRACE          reduce using rule 93 (sequentialp -> RBRACKET RPAREN .)
+    RBRACKET        reduce using rule 93 (sequentialp -> RBRACKET RPAREN .)
+
+
+state 182
+
+    (94) sequentialp -> COMMA layers . sequentialp
+    (93) sequentialp -> . RBRACKET RPAREN
+    (94) sequentialp -> . COMMA layers sequentialp
+
+    RBRACKET        shift and go to state 167
+    COMMA           shift and go to state 168
+
+    sequentialp                    shift and go to state 194
+
+state 183
+
+    (96) fit -> ID EQUAL sequential DOT FIT LPAREN array COMMA . array COMMA EPOCHS EQUAL INT COMMA VERBOSE EQUAL fitp
+    (84) array -> . ID EQUAL ARRAY LPAREN var arrayp
+
+    ID              shift and go to state 110
+
+    array                          shift and go to state 195
+
+state 184
+
+    (99) predict -> ID EQUAL sequential DOT PREDICT LPAREN LBRACKET predictp .
+
+    $end            reduce using rule 99 (predict -> ID EQUAL sequential DOT PREDICT LPAREN LBRACKET predictp .)
+    SEMICOLON       reduce using rule 99 (predict -> ID EQUAL sequential DOT PREDICT LPAREN LBRACKET predictp .)
+    FUNCTION        reduce using rule 99 (predict -> ID EQUAL sequential DOT PREDICT LPAREN LBRACKET predictp .)
+    ID              reduce using rule 99 (predict -> ID EQUAL sequential DOT PREDICT LPAREN LBRACKET predictp .)
+    READ            reduce using rule 99 (predict -> ID EQUAL sequential DOT PREDICT LPAREN LBRACKET predictp .)
+    PRINT           reduce using rule 99 (predict -> ID EQUAL sequential DOT PREDICT LPAREN LBRACKET predictp .)
+    IF              reduce using rule 99 (predict -> ID EQUAL sequential DOT PREDICT LPAREN LBRACKET predictp .)
+    WHILE           reduce using rule 99 (predict -> ID EQUAL sequential DOT PREDICT LPAREN LBRACKET predictp .)
+    FOR             reduce using rule 99 (predict -> ID EQUAL sequential DOT PREDICT LPAREN LBRACKET predictp .)
+    MEAN            reduce using rule 99 (predict -> ID EQUAL sequential DOT PREDICT LPAREN LBRACKET predictp .)
+    VAR             reduce using rule 99 (predict -> ID EQUAL sequential DOT PREDICT LPAREN LBRACKET predictp .)
+    RBRACE          reduce using rule 99 (predict -> ID EQUAL sequential DOT PREDICT LPAREN LBRACKET predictp .)
+    RBRACKET        reduce using rule 99 (predict -> ID EQUAL sequential DOT PREDICT LPAREN LBRACKET predictp .)
+
+
+state 185
+
+    (100) predictp -> INT . RBRACKET RPAREN
+
+    RBRACKET        shift and go to state 196
+
+
+state 186
+
+    (101) predictp -> FLOAT . RBRACKET RPAREN
+
+    RBRACKET        shift and go to state 197
+
+
+state 187
+
+    (66) while -> WHILE LPAREN saveJumps exp RPAREN quadsWhile statements jumpsWhile . whilep
+    (67) whilep -> . SEMICOLON
+    (68) whilep -> . statements whilep
+    (41) statements -> . assign
+    (42) statements -> . function
+    (43) statements -> . voidfunction
+    (44) statements -> . call
+    (45) statements -> . read
+    (46) statements -> . print
+    (47) statements -> . if
+    (48) statements -> . while
+    (49) statements -> . for
+    (50) statements -> . funcesp
+    (51) assign -> . var EQUAL exp
+    (9) function -> . FUNCTION type ID LPAREN param RPAREN body
+    (10) voidfunction -> . FUNCTION VOID ID LPAREN param RPAREN body
+    (57) call -> . ID LPAREN callp RPAREN
+    (52) read -> . READ var
+    (53) print -> . PRINT LPAREN printp
+    (60) if -> . IF LPAREN exp RPAREN quadsIf ifelse jumpsIf
+    (66) while -> . WHILE LPAREN saveJumps exp RPAREN quadsWhile statements jumpsWhile whilep
+    (72) for -> . FOR LPAREN var SEMICOLON exp SEMICOLON exp RPAREN LBRACKET statements forp
+    (75) funcesp -> . array
+    (76) funcesp -> . matrix
+    (77) funcesp -> . mean
+    (78) funcesp -> . layers
+    (79) funcesp -> . sequential
+    (80) funcesp -> . compile
+    (81) funcesp -> . fit
+    (82) funcesp -> . predict
+    (83) funcesp -> . getweights
+    (56) var -> . ID
+    (84) array -> . ID EQUAL ARRAY LPAREN var arrayp
+    (87) matrix -> . ID EQUAL MATRIX LPAREN array matrixp
+    (90) mean -> . MEAN LPAREN array RPAREN
+    (91) layers -> . ID EQUAL LAYERS LPAREN UNITS EQUAL INT RPAREN
+    (92) sequential -> . ID EQUAL SEQUENTIAL LPAREN LBRACKET layers sequentialp
+    (95) compile -> . sequential DOT COMPILE LPAREN RPAREN
+    (96) fit -> . ID EQUAL sequential DOT FIT LPAREN array COMMA array COMMA EPOCHS EQUAL INT COMMA VERBOSE EQUAL fitp
+    (99) predict -> . ID EQUAL sequential DOT PREDICT LPAREN LBRACKET predictp
+    (102) getweights -> . layers DOT GETWEIGHTS LPAREN RPAREN
+
+    SEMICOLON       shift and go to state 200
+    FUNCTION        shift and go to state 64
+    ID              shift and go to state 65
+    READ            shift and go to state 66
+    PRINT           shift and go to state 67
+    IF              shift and go to state 6
+    WHILE           shift and go to state 68
+    FOR             shift and go to state 69
+    MEAN            shift and go to state 79
+
+    statements                     shift and go to state 198
+    whilep                         shift and go to state 199
+    assign                         shift and go to state 53
+    function                       shift and go to state 54
+    voidfunction                   shift and go to state 55
+    call                           shift and go to state 56
+    read                           shift and go to state 57
+    print                          shift and go to state 58
+    if                             shift and go to state 59
+    while                          shift and go to state 60
+    for                            shift and go to state 61
+    funcesp                        shift and go to state 62
+    var                            shift and go to state 63
+    array                          shift and go to state 70
+    matrix                         shift and go to state 71
+    mean                           shift and go to state 72
+    layers                         shift and go to state 73
+    sequential                     shift and go to state 74
+    compile                        shift and go to state 75
+    fit                            shift and go to state 76
+    predict                        shift and go to state 77
+    getweights                     shift and go to state 78
+
+state 188
+
+    (72) for -> FOR LPAREN var SEMICOLON exp SEMICOLON exp RPAREN . LBRACKET statements forp
+
+    LBRACKET        shift and go to state 201
+
+
+state 189
+
+    (11) body -> LBRACE bodyp RBRACE .
+
+    $end            reduce using rule 11 (body -> LBRACE bodyp RBRACE .)
+    SEMICOLON       reduce using rule 11 (body -> LBRACE bodyp RBRACE .)
+    FUNCTION        reduce using rule 11 (body -> LBRACE bodyp RBRACE .)
+    ID              reduce using rule 11 (body -> LBRACE bodyp RBRACE .)
+    READ            reduce using rule 11 (body -> LBRACE bodyp RBRACE .)
+    PRINT           reduce using rule 11 (body -> LBRACE bodyp RBRACE .)
+    IF              reduce using rule 11 (body -> LBRACE bodyp RBRACE .)
+    WHILE           reduce using rule 11 (body -> LBRACE bodyp RBRACE .)
+    FOR             reduce using rule 11 (body -> LBRACE bodyp RBRACE .)
+    MEAN            reduce using rule 11 (body -> LBRACE bodyp RBRACE .)
+    VAR             reduce using rule 11 (body -> LBRACE bodyp RBRACE .)
+    RBRACE          reduce using rule 11 (body -> LBRACE bodyp RBRACE .)
+    RBRACKET        reduce using rule 11 (body -> LBRACE bodyp RBRACE .)
+
+
+state 190
+
+    (12) bodyp -> decvar statements . bodyp
+    (12) bodyp -> . decvar statements bodyp
+    (13) bodyp -> . statements bodyp
+    (14) bodyp -> . decvar
+    (15) bodyp -> .
+    (2) decvar -> . VAR decvarp
+    (3) decvar -> . VAR decvarp decvar
+    (41) statements -> . assign
+    (42) statements -> . function
+    (43) statements -> . voidfunction
+    (44) statements -> . call
+    (45) statements -> . read
+    (46) statements -> . print
+    (47) statements -> . if
+    (48) statements -> . while
+    (49) statements -> . for
+    (50) statements -> . funcesp
+    (51) assign -> . var EQUAL exp
+    (9) function -> . FUNCTION type ID LPAREN param RPAREN body
+    (10) voidfunction -> . FUNCTION VOID ID LPAREN param RPAREN body
+    (57) call -> . ID LPAREN callp RPAREN
+    (52) read -> . READ var
+    (53) print -> . PRINT LPAREN printp
+    (60) if -> . IF LPAREN exp RPAREN quadsIf ifelse jumpsIf
+    (66) while -> . WHILE LPAREN saveJumps exp RPAREN quadsWhile statements jumpsWhile whilep
+    (72) for -> . FOR LPAREN var SEMICOLON exp SEMICOLON exp RPAREN LBRACKET statements forp
+    (75) funcesp -> . array
+    (76) funcesp -> . matrix
+    (77) funcesp -> . mean
+    (78) funcesp -> . layers
+    (79) funcesp -> . sequential
+    (80) funcesp -> . compile
+    (81) funcesp -> . fit
+    (82) funcesp -> . predict
+    (83) funcesp -> . getweights
+    (56) var -> . ID
+    (84) array -> . ID EQUAL ARRAY LPAREN var arrayp
+    (87) matrix -> . ID EQUAL MATRIX LPAREN array matrixp
+    (90) mean -> . MEAN LPAREN array RPAREN
+    (91) layers -> . ID EQUAL LAYERS LPAREN UNITS EQUAL INT RPAREN
+    (92) sequential -> . ID EQUAL SEQUENTIAL LPAREN LBRACKET layers sequentialp
+    (95) compile -> . sequential DOT COMPILE LPAREN RPAREN
+    (96) fit -> . ID EQUAL sequential DOT FIT LPAREN array COMMA array COMMA EPOCHS EQUAL INT COMMA VERBOSE EQUAL fitp
+    (99) predict -> . ID EQUAL sequential DOT PREDICT LPAREN LBRACKET predictp
+    (102) getweights -> . layers DOT GETWEIGHTS LPAREN RPAREN
+
+    RBRACE          reduce using rule 15 (bodyp -> .)
+    VAR             shift and go to state 177
+    FUNCTION        shift and go to state 64
+    ID              shift and go to state 65
+    READ            shift and go to state 66
+    PRINT           shift and go to state 67
+    IF              shift and go to state 6
+    WHILE           shift and go to state 68
+    FOR             shift and go to state 69
+    MEAN            shift and go to state 79
+
+    decvar                         shift and go to state 175
+    statements                     shift and go to state 176
+    bodyp                          shift and go to state 202
+    assign                         shift and go to state 53
+    function                       shift and go to state 54
+    voidfunction                   shift and go to state 55
+    call                           shift and go to state 56
+    read                           shift and go to state 57
+    print                          shift and go to state 58
+    if                             shift and go to state 59
+    while                          shift and go to state 60
+    for                            shift and go to state 61
+    funcesp                        shift and go to state 62
+    var                            shift and go to state 63
+    array                          shift and go to state 70
+    matrix                         shift and go to state 71
+    mean                           shift and go to state 72
+    layers                         shift and go to state 73
+    sequential                     shift and go to state 74
+    compile                        shift and go to state 75
+    fit                            shift and go to state 76
+    predict                        shift and go to state 77
+    getweights                     shift and go to state 78
+
+state 191
+
+    (13) bodyp -> statements bodyp .
+
+    RBRACE          reduce using rule 13 (bodyp -> statements bodyp .)
+
+
+state 192
+
+    (2) decvar -> VAR decvarp .
+    (3) decvar -> VAR decvarp . decvar
+    (2) decvar -> . VAR decvarp
+    (3) decvar -> . VAR decvarp decvar
+
+    FUNCTION        reduce using rule 2 (decvar -> VAR decvarp .)
+    ID              reduce using rule 2 (decvar -> VAR decvarp .)
+    READ            reduce using rule 2 (decvar -> VAR decvarp .)
+    PRINT           reduce using rule 2 (decvar -> VAR decvarp .)
+    IF              reduce using rule 2 (decvar -> VAR decvarp .)
+    WHILE           reduce using rule 2 (decvar -> VAR decvarp .)
+    FOR             reduce using rule 2 (decvar -> VAR decvarp .)
+    MEAN            reduce using rule 2 (decvar -> VAR decvarp .)
+    RBRACE          reduce using rule 2 (decvar -> VAR decvarp .)
+    VAR             shift and go to state 177
+
+    decvar                         shift and go to state 203
+
+state 193
+
+    (4) decvarp -> type . decvarpp SEMICOLON
+    (5) decvarpp -> . ID COMMA decvarpp
+    (6) decvarpp -> . ID
+
+    ID              shift and go to state 205
+
+    decvarpp                       shift and go to state 204
+
+state 194
+
+    (94) sequentialp -> COMMA layers sequentialp .
+
+    DOT             reduce using rule 94 (sequentialp -> COMMA layers sequentialp .)
+    $end            reduce using rule 94 (sequentialp -> COMMA layers sequentialp .)
+    SEMICOLON       reduce using rule 94 (sequentialp -> COMMA layers sequentialp .)
+    FUNCTION        reduce using rule 94 (sequentialp -> COMMA layers sequentialp .)
+    ID              reduce using rule 94 (sequentialp -> COMMA layers sequentialp .)
+    READ            reduce using rule 94 (sequentialp -> COMMA layers sequentialp .)
+    PRINT           reduce using rule 94 (sequentialp -> COMMA layers sequentialp .)
+    IF              reduce using rule 94 (sequentialp -> COMMA layers sequentialp .)
+    WHILE           reduce using rule 94 (sequentialp -> COMMA layers sequentialp .)
+    FOR             reduce using rule 94 (sequentialp -> COMMA layers sequentialp .)
+    MEAN            reduce using rule 94 (sequentialp -> COMMA layers sequentialp .)
+    VAR             reduce using rule 94 (sequentialp -> COMMA layers sequentialp .)
+    RBRACE          reduce using rule 94 (sequentialp -> COMMA layers sequentialp .)
+    RBRACKET        reduce using rule 94 (sequentialp -> COMMA layers sequentialp .)
+
+
+state 195
+
+    (96) fit -> ID EQUAL sequential DOT FIT LPAREN array COMMA array . COMMA EPOCHS EQUAL INT COMMA VERBOSE EQUAL fitp
+
+    COMMA           shift and go to state 206
+
+
+state 196
+
+    (100) predictp -> INT RBRACKET . RPAREN
+
+    RPAREN          shift and go to state 207
+
+
+state 197
+
+    (101) predictp -> FLOAT RBRACKET . RPAREN
+
+    RPAREN          shift and go to state 208
+
+
+state 198
+
+    (68) whilep -> statements . whilep
+    (67) whilep -> . SEMICOLON
+    (68) whilep -> . statements whilep
+    (41) statements -> . assign
+    (42) statements -> . function
+    (43) statements -> . voidfunction
+    (44) statements -> . call
+    (45) statements -> . read
+    (46) statements -> . print
+    (47) statements -> . if
+    (48) statements -> . while
+    (49) statements -> . for
+    (50) statements -> . funcesp
+    (51) assign -> . var EQUAL exp
+    (9) function -> . FUNCTION type ID LPAREN param RPAREN body
+    (10) voidfunction -> . FUNCTION VOID ID LPAREN param RPAREN body
+    (57) call -> . ID LPAREN callp RPAREN
+    (52) read -> . READ var
+    (53) print -> . PRINT LPAREN printp
+    (60) if -> . IF LPAREN exp RPAREN quadsIf ifelse jumpsIf
+    (66) while -> . WHILE LPAREN saveJumps exp RPAREN quadsWhile statements jumpsWhile whilep
+    (72) for -> . FOR LPAREN var SEMICOLON exp SEMICOLON exp RPAREN LBRACKET statements forp
+    (75) funcesp -> . array
+    (76) funcesp -> . matrix
+    (77) funcesp -> . mean
+    (78) funcesp -> . layers
+    (79) funcesp -> . sequential
+    (80) funcesp -> . compile
+    (81) funcesp -> . fit
+    (82) funcesp -> . predict
+    (83) funcesp -> . getweights
+    (56) var -> . ID
+    (84) array -> . ID EQUAL ARRAY LPAREN var arrayp
+    (87) matrix -> . ID EQUAL MATRIX LPAREN array matrixp
+    (90) mean -> . MEAN LPAREN array RPAREN
+    (91) layers -> . ID EQUAL LAYERS LPAREN UNITS EQUAL INT RPAREN
+    (92) sequential -> . ID EQUAL SEQUENTIAL LPAREN LBRACKET layers sequentialp
+    (95) compile -> . sequential DOT COMPILE LPAREN RPAREN
+    (96) fit -> . ID EQUAL sequential DOT FIT LPAREN array COMMA array COMMA EPOCHS EQUAL INT COMMA VERBOSE EQUAL fitp
+    (99) predict -> . ID EQUAL sequential DOT PREDICT LPAREN LBRACKET predictp
+    (102) getweights -> . layers DOT GETWEIGHTS LPAREN RPAREN
+
+    SEMICOLON       shift and go to state 200
+    FUNCTION        shift and go to state 64
+    ID              shift and go to state 65
+    READ            shift and go to state 66
+    PRINT           shift and go to state 67
+    IF              shift and go to state 6
+    WHILE           shift and go to state 68
+    FOR             shift and go to state 69
+    MEAN            shift and go to state 79
+
+    statements                     shift and go to state 198
+    whilep                         shift and go to state 209
+    assign                         shift and go to state 53
+    function                       shift and go to state 54
+    voidfunction                   shift and go to state 55
+    call                           shift and go to state 56
+    read                           shift and go to state 57
+    print                          shift and go to state 58
+    if                             shift and go to state 59
+    while                          shift and go to state 60
+    for                            shift and go to state 61
+    funcesp                        shift and go to state 62
+    var                            shift and go to state 63
+    array                          shift and go to state 70
+    matrix                         shift and go to state 71
+    mean                           shift and go to state 72
+    layers                         shift and go to state 73
+    sequential                     shift and go to state 74
+    compile                        shift and go to state 75
+    fit                            shift and go to state 76
+    predict                        shift and go to state 77
+    getweights                     shift and go to state 78
+
+state 199
+
+    (66) while -> WHILE LPAREN saveJumps exp RPAREN quadsWhile statements jumpsWhile whilep .
+
+    $end            reduce using rule 66 (while -> WHILE LPAREN saveJumps exp RPAREN quadsWhile statements jumpsWhile whilep .)
+    SEMICOLON       reduce using rule 66 (while -> WHILE LPAREN saveJumps exp RPAREN quadsWhile statements jumpsWhile whilep .)
+    FUNCTION        reduce using rule 66 (while -> WHILE LPAREN saveJumps exp RPAREN quadsWhile statements jumpsWhile whilep .)
+    ID              reduce using rule 66 (while -> WHILE LPAREN saveJumps exp RPAREN quadsWhile statements jumpsWhile whilep .)
+    READ            reduce using rule 66 (while -> WHILE LPAREN saveJumps exp RPAREN quadsWhile statements jumpsWhile whilep .)
+    PRINT           reduce using rule 66 (while -> WHILE LPAREN saveJumps exp RPAREN quadsWhile statements jumpsWhile whilep .)
+    IF              reduce using rule 66 (while -> WHILE LPAREN saveJumps exp RPAREN quadsWhile statements jumpsWhile whilep .)
+    WHILE           reduce using rule 66 (while -> WHILE LPAREN saveJumps exp RPAREN quadsWhile statements jumpsWhile whilep .)
+    FOR             reduce using rule 66 (while -> WHILE LPAREN saveJumps exp RPAREN quadsWhile statements jumpsWhile whilep .)
+    MEAN            reduce using rule 66 (while -> WHILE LPAREN saveJumps exp RPAREN quadsWhile statements jumpsWhile whilep .)
+    VAR             reduce using rule 66 (while -> WHILE LPAREN saveJumps exp RPAREN quadsWhile statements jumpsWhile whilep .)
+    RBRACE          reduce using rule 66 (while -> WHILE LPAREN saveJumps exp RPAREN quadsWhile statements jumpsWhile whilep .)
+    RBRACKET        reduce using rule 66 (while -> WHILE LPAREN saveJumps exp RPAREN quadsWhile statements jumpsWhile whilep .)
+
+
+state 200
+
+    (67) whilep -> SEMICOLON .
+
+    $end            reduce using rule 67 (whilep -> SEMICOLON .)
+    SEMICOLON       reduce using rule 67 (whilep -> SEMICOLON .)
+    FUNCTION        reduce using rule 67 (whilep -> SEMICOLON .)
+    ID              reduce using rule 67 (whilep -> SEMICOLON .)
+    READ            reduce using rule 67 (whilep -> SEMICOLON .)
+    PRINT           reduce using rule 67 (whilep -> SEMICOLON .)
+    IF              reduce using rule 67 (whilep -> SEMICOLON .)
+    WHILE           reduce using rule 67 (whilep -> SEMICOLON .)
+    FOR             reduce using rule 67 (whilep -> SEMICOLON .)
+    MEAN            reduce using rule 67 (whilep -> SEMICOLON .)
+    VAR             reduce using rule 67 (whilep -> SEMICOLON .)
+    RBRACE          reduce using rule 67 (whilep -> SEMICOLON .)
+    RBRACKET        reduce using rule 67 (whilep -> SEMICOLON .)
+
+
+state 201
+
+    (72) for -> FOR LPAREN var SEMICOLON exp SEMICOLON exp RPAREN LBRACKET . statements forp
+    (41) statements -> . assign
+    (42) statements -> . function
+    (43) statements -> . voidfunction
+    (44) statements -> . call
+    (45) statements -> . read
+    (46) statements -> . print
+    (47) statements -> . if
+    (48) statements -> . while
+    (49) statements -> . for
+    (50) statements -> . funcesp
+    (51) assign -> . var EQUAL exp
+    (9) function -> . FUNCTION type ID LPAREN param RPAREN body
+    (10) voidfunction -> . FUNCTION VOID ID LPAREN param RPAREN body
+    (57) call -> . ID LPAREN callp RPAREN
+    (52) read -> . READ var
+    (53) print -> . PRINT LPAREN printp
+    (60) if -> . IF LPAREN exp RPAREN quadsIf ifelse jumpsIf
+    (66) while -> . WHILE LPAREN saveJumps exp RPAREN quadsWhile statements jumpsWhile whilep
+    (72) for -> . FOR LPAREN var SEMICOLON exp SEMICOLON exp RPAREN LBRACKET statements forp
+    (75) funcesp -> . array
+    (76) funcesp -> . matrix
+    (77) funcesp -> . mean
+    (78) funcesp -> . layers
+    (79) funcesp -> . sequential
+    (80) funcesp -> . compile
+    (81) funcesp -> . fit
+    (82) funcesp -> . predict
+    (83) funcesp -> . getweights
+    (56) var -> . ID
+    (84) array -> . ID EQUAL ARRAY LPAREN var arrayp
+    (87) matrix -> . ID EQUAL MATRIX LPAREN array matrixp
+    (90) mean -> . MEAN LPAREN array RPAREN
+    (91) layers -> . ID EQUAL LAYERS LPAREN UNITS EQUAL INT RPAREN
+    (92) sequential -> . ID EQUAL SEQUENTIAL LPAREN LBRACKET layers sequentialp
+    (95) compile -> . sequential DOT COMPILE LPAREN RPAREN
+    (96) fit -> . ID EQUAL sequential DOT FIT LPAREN array COMMA array COMMA EPOCHS EQUAL INT COMMA VERBOSE EQUAL fitp
+    (99) predict -> . ID EQUAL sequential DOT PREDICT LPAREN LBRACKET predictp
+    (102) getweights -> . layers DOT GETWEIGHTS LPAREN RPAREN
+
+    FUNCTION        shift and go to state 64
+    ID              shift and go to state 65
+    READ            shift and go to state 66
+    PRINT           shift and go to state 67
+    IF              shift and go to state 6
+    WHILE           shift and go to state 68
+    FOR             shift and go to state 69
+    MEAN            shift and go to state 79
+
+    var                            shift and go to state 63
+    statements                     shift and go to state 210
+    assign                         shift and go to state 53
+    function                       shift and go to state 54
+    voidfunction                   shift and go to state 55
+    call                           shift and go to state 56
+    read                           shift and go to state 57
+    print                          shift and go to state 58
+    if                             shift and go to state 59
+    while                          shift and go to state 60
+    for                            shift and go to state 61
+    funcesp                        shift and go to state 62
+    array                          shift and go to state 70
+    matrix                         shift and go to state 71
+    mean                           shift and go to state 72
+    layers                         shift and go to state 73
+    sequential                     shift and go to state 74
+    compile                        shift and go to state 75
+    fit                            shift and go to state 76
+    predict                        shift and go to state 77
+    getweights                     shift and go to state 78
+
+state 202
+
+    (12) bodyp -> decvar statements bodyp .
+
+    RBRACE          reduce using rule 12 (bodyp -> decvar statements bodyp .)
+
+
+state 203
+
+    (3) decvar -> VAR decvarp decvar .
+
+    FUNCTION        reduce using rule 3 (decvar -> VAR decvarp decvar .)
+    ID              reduce using rule 3 (decvar -> VAR decvarp decvar .)
+    READ            reduce using rule 3 (decvar -> VAR decvarp decvar .)
+    PRINT           reduce using rule 3 (decvar -> VAR decvarp decvar .)
+    IF              reduce using rule 3 (decvar -> VAR decvarp decvar .)
+    WHILE           reduce using rule 3 (decvar -> VAR decvarp decvar .)
+    FOR             reduce using rule 3 (decvar -> VAR decvarp decvar .)
+    MEAN            reduce using rule 3 (decvar -> VAR decvarp decvar .)
+    RBRACE          reduce using rule 3 (decvar -> VAR decvarp decvar .)
+
+
+state 204
+
+    (4) decvarp -> type decvarpp . SEMICOLON
+
+    SEMICOLON       shift and go to state 211
+
+
+state 205
+
+    (5) decvarpp -> ID . COMMA decvarpp
+    (6) decvarpp -> ID .
+
+    COMMA           shift and go to state 212
+    SEMICOLON       reduce using rule 6 (decvarpp -> ID .)
+
+
+state 206
+
+    (96) fit -> ID EQUAL sequential DOT FIT LPAREN array COMMA array COMMA . EPOCHS EQUAL INT COMMA VERBOSE EQUAL fitp
+
+    EPOCHS          shift and go to state 213
+
+
+state 207
+
+    (100) predictp -> INT RBRACKET RPAREN .
+
+    $end            reduce using rule 100 (predictp -> INT RBRACKET RPAREN .)
+    SEMICOLON       reduce using rule 100 (predictp -> INT RBRACKET RPAREN .)
+    FUNCTION        reduce using rule 100 (predictp -> INT RBRACKET RPAREN .)
+    ID              reduce using rule 100 (predictp -> INT RBRACKET RPAREN .)
+    READ            reduce using rule 100 (predictp -> INT RBRACKET RPAREN .)
+    PRINT           reduce using rule 100 (predictp -> INT RBRACKET RPAREN .)
+    IF              reduce using rule 100 (predictp -> INT RBRACKET RPAREN .)
+    WHILE           reduce using rule 100 (predictp -> INT RBRACKET RPAREN .)
+    FOR             reduce using rule 100 (predictp -> INT RBRACKET RPAREN .)
+    MEAN            reduce using rule 100 (predictp -> INT RBRACKET RPAREN .)
+    VAR             reduce using rule 100 (predictp -> INT RBRACKET RPAREN .)
+    RBRACE          reduce using rule 100 (predictp -> INT RBRACKET RPAREN .)
+    RBRACKET        reduce using rule 100 (predictp -> INT RBRACKET RPAREN .)
+
+
+state 208
+
+    (101) predictp -> FLOAT RBRACKET RPAREN .
+
+    $end            reduce using rule 101 (predictp -> FLOAT RBRACKET RPAREN .)
+    SEMICOLON       reduce using rule 101 (predictp -> FLOAT RBRACKET RPAREN .)
+    FUNCTION        reduce using rule 101 (predictp -> FLOAT RBRACKET RPAREN .)
+    ID              reduce using rule 101 (predictp -> FLOAT RBRACKET RPAREN .)
+    READ            reduce using rule 101 (predictp -> FLOAT RBRACKET RPAREN .)
+    PRINT           reduce using rule 101 (predictp -> FLOAT RBRACKET RPAREN .)
+    IF              reduce using rule 101 (predictp -> FLOAT RBRACKET RPAREN .)
+    WHILE           reduce using rule 101 (predictp -> FLOAT RBRACKET RPAREN .)
+    FOR             reduce using rule 101 (predictp -> FLOAT RBRACKET RPAREN .)
+    MEAN            reduce using rule 101 (predictp -> FLOAT RBRACKET RPAREN .)
+    VAR             reduce using rule 101 (predictp -> FLOAT RBRACKET RPAREN .)
+    RBRACE          reduce using rule 101 (predictp -> FLOAT RBRACKET RPAREN .)
+    RBRACKET        reduce using rule 101 (predictp -> FLOAT RBRACKET RPAREN .)
+
+
+state 209
+
+    (68) whilep -> statements whilep .
+
+    $end            reduce using rule 68 (whilep -> statements whilep .)
+    SEMICOLON       reduce using rule 68 (whilep -> statements whilep .)
+    FUNCTION        reduce using rule 68 (whilep -> statements whilep .)
+    ID              reduce using rule 68 (whilep -> statements whilep .)
+    READ            reduce using rule 68 (whilep -> statements whilep .)
+    PRINT           reduce using rule 68 (whilep -> statements whilep .)
+    IF              reduce using rule 68 (whilep -> statements whilep .)
+    WHILE           reduce using rule 68 (whilep -> statements whilep .)
+    FOR             reduce using rule 68 (whilep -> statements whilep .)
+    MEAN            reduce using rule 68 (whilep -> statements whilep .)
+    VAR             reduce using rule 68 (whilep -> statements whilep .)
+    RBRACE          reduce using rule 68 (whilep -> statements whilep .)
+    RBRACKET        reduce using rule 68 (whilep -> statements whilep .)
+
+
+state 210
+
+    (72) for -> FOR LPAREN var SEMICOLON exp SEMICOLON exp RPAREN LBRACKET statements . forp
+    (73) forp -> . RBRACKET
+    (74) forp -> . statements forp
+    (41) statements -> . assign
+    (42) statements -> . function
+    (43) statements -> . voidfunction
+    (44) statements -> . call
+    (45) statements -> . read
+    (46) statements -> . print
+    (47) statements -> . if
+    (48) statements -> . while
+    (49) statements -> . for
+    (50) statements -> . funcesp
+    (51) assign -> . var EQUAL exp
+    (9) function -> . FUNCTION type ID LPAREN param RPAREN body
+    (10) voidfunction -> . FUNCTION VOID ID LPAREN param RPAREN body
+    (57) call -> . ID LPAREN callp RPAREN
+    (52) read -> . READ var
+    (53) print -> . PRINT LPAREN printp
+    (60) if -> . IF LPAREN exp RPAREN quadsIf ifelse jumpsIf
+    (66) while -> . WHILE LPAREN saveJumps exp RPAREN quadsWhile statements jumpsWhile whilep
+    (72) for -> . FOR LPAREN var SEMICOLON exp SEMICOLON exp RPAREN LBRACKET statements forp
+    (75) funcesp -> . array
+    (76) funcesp -> . matrix
+    (77) funcesp -> . mean
+    (78) funcesp -> . layers
+    (79) funcesp -> . sequential
+    (80) funcesp -> . compile
+    (81) funcesp -> . fit
+    (82) funcesp -> . predict
+    (83) funcesp -> . getweights
+    (56) var -> . ID
+    (84) array -> . ID EQUAL ARRAY LPAREN var arrayp
+    (87) matrix -> . ID EQUAL MATRIX LPAREN array matrixp
+    (90) mean -> . MEAN LPAREN array RPAREN
+    (91) layers -> . ID EQUAL LAYERS LPAREN UNITS EQUAL INT RPAREN
+    (92) sequential -> . ID EQUAL SEQUENTIAL LPAREN LBRACKET layers sequentialp
+    (95) compile -> . sequential DOT COMPILE LPAREN RPAREN
+    (96) fit -> . ID EQUAL sequential DOT FIT LPAREN array COMMA array COMMA EPOCHS EQUAL INT COMMA VERBOSE EQUAL fitp
+    (99) predict -> . ID EQUAL sequential DOT PREDICT LPAREN LBRACKET predictp
+    (102) getweights -> . layers DOT GETWEIGHTS LPAREN RPAREN
+
+    RBRACKET        shift and go to state 216
+    FUNCTION        shift and go to state 64
+    ID              shift and go to state 65
+    READ            shift and go to state 66
+    PRINT           shift and go to state 67
+    IF              shift and go to state 6
+    WHILE           shift and go to state 68
+    FOR             shift and go to state 69
+    MEAN            shift and go to state 79
+
+    var                            shift and go to state 63
+    statements                     shift and go to state 214
+    forp                           shift and go to state 215
+    assign                         shift and go to state 53
+    function                       shift and go to state 54
+    voidfunction                   shift and go to state 55
+    call                           shift and go to state 56
+    read                           shift and go to state 57
+    print                          shift and go to state 58
+    if                             shift and go to state 59
+    while                          shift and go to state 60
+    for                            shift and go to state 61
+    funcesp                        shift and go to state 62
+    array                          shift and go to state 70
+    matrix                         shift and go to state 71
+    mean                           shift and go to state 72
+    layers                         shift and go to state 73
+    sequential                     shift and go to state 74
+    compile                        shift and go to state 75
+    fit                            shift and go to state 76
+    predict                        shift and go to state 77
+    getweights                     shift and go to state 78
+
+state 211
+
+    (4) decvarp -> type decvarpp SEMICOLON .
+
+    VAR             reduce using rule 4 (decvarp -> type decvarpp SEMICOLON .)
+    FUNCTION        reduce using rule 4 (decvarp -> type decvarpp SEMICOLON .)
+    ID              reduce using rule 4 (decvarp -> type decvarpp SEMICOLON .)
+    READ            reduce using rule 4 (decvarp -> type decvarpp SEMICOLON .)
+    PRINT           reduce using rule 4 (decvarp -> type decvarpp SEMICOLON .)
+    IF              reduce using rule 4 (decvarp -> type decvarpp SEMICOLON .)
+    WHILE           reduce using rule 4 (decvarp -> type decvarpp SEMICOLON .)
+    FOR             reduce using rule 4 (decvarp -> type decvarpp SEMICOLON .)
+    MEAN            reduce using rule 4 (decvarp -> type decvarpp SEMICOLON .)
+    RBRACE          reduce using rule 4 (decvarp -> type decvarpp SEMICOLON .)
+
+
+state 212
+
+    (5) decvarpp -> ID COMMA . decvarpp
+    (5) decvarpp -> . ID COMMA decvarpp
+    (6) decvarpp -> . ID
+
+    ID              shift and go to state 205
+
+    decvarpp                       shift and go to state 217
+
+state 213
+
+    (96) fit -> ID EQUAL sequential DOT FIT LPAREN array COMMA array COMMA EPOCHS . EQUAL INT COMMA VERBOSE EQUAL fitp
+
+    EQUAL           shift and go to state 218
+
+
+state 214
+
+    (74) forp -> statements . forp
+    (73) forp -> . RBRACKET
+    (74) forp -> . statements forp
+    (41) statements -> . assign
+    (42) statements -> . function
+    (43) statements -> . voidfunction
+    (44) statements -> . call
+    (45) statements -> . read
+    (46) statements -> . print
+    (47) statements -> . if
+    (48) statements -> . while
+    (49) statements -> . for
+    (50) statements -> . funcesp
+    (51) assign -> . var EQUAL exp
+    (9) function -> . FUNCTION type ID LPAREN param RPAREN body
+    (10) voidfunction -> . FUNCTION VOID ID LPAREN param RPAREN body
+    (57) call -> . ID LPAREN callp RPAREN
+    (52) read -> . READ var
+    (53) print -> . PRINT LPAREN printp
+    (60) if -> . IF LPAREN exp RPAREN quadsIf ifelse jumpsIf
+    (66) while -> . WHILE LPAREN saveJumps exp RPAREN quadsWhile statements jumpsWhile whilep
+    (72) for -> . FOR LPAREN var SEMICOLON exp SEMICOLON exp RPAREN LBRACKET statements forp
+    (75) funcesp -> . array
+    (76) funcesp -> . matrix
+    (77) funcesp -> . mean
+    (78) funcesp -> . layers
+    (79) funcesp -> . sequential
+    (80) funcesp -> . compile
+    (81) funcesp -> . fit
+    (82) funcesp -> . predict
+    (83) funcesp -> . getweights
+    (56) var -> . ID
+    (84) array -> . ID EQUAL ARRAY LPAREN var arrayp
+    (87) matrix -> . ID EQUAL MATRIX LPAREN array matrixp
+    (90) mean -> . MEAN LPAREN array RPAREN
+    (91) layers -> . ID EQUAL LAYERS LPAREN UNITS EQUAL INT RPAREN
+    (92) sequential -> . ID EQUAL SEQUENTIAL LPAREN LBRACKET layers sequentialp
+    (95) compile -> . sequential DOT COMPILE LPAREN RPAREN
+    (96) fit -> . ID EQUAL sequential DOT FIT LPAREN array COMMA array COMMA EPOCHS EQUAL INT COMMA VERBOSE EQUAL fitp
+    (99) predict -> . ID EQUAL sequential DOT PREDICT LPAREN LBRACKET predictp
+    (102) getweights -> . layers DOT GETWEIGHTS LPAREN RPAREN
+
+    RBRACKET        shift and go to state 216
+    FUNCTION        shift and go to state 64
+    ID              shift and go to state 65
+    READ            shift and go to state 66
+    PRINT           shift and go to state 67
+    IF              shift and go to state 6
+    WHILE           shift and go to state 68
+    FOR             shift and go to state 69
+    MEAN            shift and go to state 79
+
+    statements                     shift and go to state 214
+    forp                           shift and go to state 219
+    assign                         shift and go to state 53
+    function                       shift and go to state 54
+    voidfunction                   shift and go to state 55
+    call                           shift and go to state 56
+    read                           shift and go to state 57
+    print                          shift and go to state 58
+    if                             shift and go to state 59
+    while                          shift and go to state 60
+    for                            shift and go to state 61
+    funcesp                        shift and go to state 62
+    var                            shift and go to state 63
+    array                          shift and go to state 70
+    matrix                         shift and go to state 71
+    mean                           shift and go to state 72
+    layers                         shift and go to state 73
+    sequential                     shift and go to state 74
+    compile                        shift and go to state 75
+    fit                            shift and go to state 76
+    predict                        shift and go to state 77
+    getweights                     shift and go to state 78
+
+state 215
+
+    (72) for -> FOR LPAREN var SEMICOLON exp SEMICOLON exp RPAREN LBRACKET statements forp .
+
+    $end            reduce using rule 72 (for -> FOR LPAREN var SEMICOLON exp SEMICOLON exp RPAREN LBRACKET statements forp .)
+    SEMICOLON       reduce using rule 72 (for -> FOR LPAREN var SEMICOLON exp SEMICOLON exp RPAREN LBRACKET statements forp .)
+    FUNCTION        reduce using rule 72 (for -> FOR LPAREN var SEMICOLON exp SEMICOLON exp RPAREN LBRACKET statements forp .)
+    ID              reduce using rule 72 (for -> FOR LPAREN var SEMICOLON exp SEMICOLON exp RPAREN LBRACKET statements forp .)
+    READ            reduce using rule 72 (for -> FOR LPAREN var SEMICOLON exp SEMICOLON exp RPAREN LBRACKET statements forp .)
+    PRINT           reduce using rule 72 (for -> FOR LPAREN var SEMICOLON exp SEMICOLON exp RPAREN LBRACKET statements forp .)
+    IF              reduce using rule 72 (for -> FOR LPAREN var SEMICOLON exp SEMICOLON exp RPAREN LBRACKET statements forp .)
+    WHILE           reduce using rule 72 (for -> FOR LPAREN var SEMICOLON exp SEMICOLON exp RPAREN LBRACKET statements forp .)
+    FOR             reduce using rule 72 (for -> FOR LPAREN var SEMICOLON exp SEMICOLON exp RPAREN LBRACKET statements forp .)
+    MEAN            reduce using rule 72 (for -> FOR LPAREN var SEMICOLON exp SEMICOLON exp RPAREN LBRACKET statements forp .)
+    VAR             reduce using rule 72 (for -> FOR LPAREN var SEMICOLON exp SEMICOLON exp RPAREN LBRACKET statements forp .)
+    RBRACE          reduce using rule 72 (for -> FOR LPAREN var SEMICOLON exp SEMICOLON exp RPAREN LBRACKET statements forp .)
+    RBRACKET        reduce using rule 72 (for -> FOR LPAREN var SEMICOLON exp SEMICOLON exp RPAREN LBRACKET statements forp .)
+
+
+state 216
+
+    (73) forp -> RBRACKET .
+
+    $end            reduce using rule 73 (forp -> RBRACKET .)
+    SEMICOLON       reduce using rule 73 (forp -> RBRACKET .)
+    FUNCTION        reduce using rule 73 (forp -> RBRACKET .)
+    ID              reduce using rule 73 (forp -> RBRACKET .)
+    READ            reduce using rule 73 (forp -> RBRACKET .)
+    PRINT           reduce using rule 73 (forp -> RBRACKET .)
+    IF              reduce using rule 73 (forp -> RBRACKET .)
+    WHILE           reduce using rule 73 (forp -> RBRACKET .)
+    FOR             reduce using rule 73 (forp -> RBRACKET .)
+    MEAN            reduce using rule 73 (forp -> RBRACKET .)
+    VAR             reduce using rule 73 (forp -> RBRACKET .)
+    RBRACE          reduce using rule 73 (forp -> RBRACKET .)
+    RBRACKET        reduce using rule 73 (forp -> RBRACKET .)
+
+
+state 217
+
+    (5) decvarpp -> ID COMMA decvarpp .
+
+    SEMICOLON       reduce using rule 5 (decvarpp -> ID COMMA decvarpp .)
+
+
+state 218
+
+    (96) fit -> ID EQUAL sequential DOT FIT LPAREN array COMMA array COMMA EPOCHS EQUAL . INT COMMA VERBOSE EQUAL fitp
+
+    INT             shift and go to state 220
+
+
+state 219
+
+    (74) forp -> statements forp .
+
+    $end            reduce using rule 74 (forp -> statements forp .)
+    SEMICOLON       reduce using rule 74 (forp -> statements forp .)
+    FUNCTION        reduce using rule 74 (forp -> statements forp .)
+    ID              reduce using rule 74 (forp -> statements forp .)
+    READ            reduce using rule 74 (forp -> statements forp .)
+    PRINT           reduce using rule 74 (forp -> statements forp .)
+    IF              reduce using rule 74 (forp -> statements forp .)
+    WHILE           reduce using rule 74 (forp -> statements forp .)
+    FOR             reduce using rule 74 (forp -> statements forp .)
+    MEAN            reduce using rule 74 (forp -> statements forp .)
+    VAR             reduce using rule 74 (forp -> statements forp .)
+    RBRACE          reduce using rule 74 (forp -> statements forp .)
+    RBRACKET        reduce using rule 74 (forp -> statements forp .)
+
+
+state 220
+
+    (96) fit -> ID EQUAL sequential DOT FIT LPAREN array COMMA array COMMA EPOCHS EQUAL INT . COMMA VERBOSE EQUAL fitp
+
+    COMMA           shift and go to state 221
+
+
+state 221
+
+    (96) fit -> ID EQUAL sequential DOT FIT LPAREN array COMMA array COMMA EPOCHS EQUAL INT COMMA . VERBOSE EQUAL fitp
+
+    VERBOSE         shift and go to state 222
+
+
+state 222
+
+    (96) fit -> ID EQUAL sequential DOT FIT LPAREN array COMMA array COMMA EPOCHS EQUAL INT COMMA VERBOSE . EQUAL fitp
+
+    EQUAL           shift and go to state 223
+
+
+state 223
+
+    (96) fit -> ID EQUAL sequential DOT FIT LPAREN array COMMA array COMMA EPOCHS EQUAL INT COMMA VERBOSE EQUAL . fitp
+    (97) fitp -> . TRUE RPAREN
+    (98) fitp -> . FALSE RPAREN
+
+    TRUE            shift and go to state 225
+    FALSE           shift and go to state 226
+
+    fitp                           shift and go to state 224
+
+state 224
+
+    (96) fit -> ID EQUAL sequential DOT FIT LPAREN array COMMA array COMMA EPOCHS EQUAL INT COMMA VERBOSE EQUAL fitp .
+
+    $end            reduce using rule 96 (fit -> ID EQUAL sequential DOT FIT LPAREN array COMMA array COMMA EPOCHS EQUAL INT COMMA VERBOSE EQUAL fitp .)
+    SEMICOLON       reduce using rule 96 (fit -> ID EQUAL sequential DOT FIT LPAREN array COMMA array COMMA EPOCHS EQUAL INT COMMA VERBOSE EQUAL fitp .)
+    FUNCTION        reduce using rule 96 (fit -> ID EQUAL sequential DOT FIT LPAREN array COMMA array COMMA EPOCHS EQUAL INT COMMA VERBOSE EQUAL fitp .)
+    ID              reduce using rule 96 (fit -> ID EQUAL sequential DOT FIT LPAREN array COMMA array COMMA EPOCHS EQUAL INT COMMA VERBOSE EQUAL fitp .)
+    READ            reduce using rule 96 (fit -> ID EQUAL sequential DOT FIT LPAREN array COMMA array COMMA EPOCHS EQUAL INT COMMA VERBOSE EQUAL fitp .)
+    PRINT           reduce using rule 96 (fit -> ID EQUAL sequential DOT FIT LPAREN array COMMA array COMMA EPOCHS EQUAL INT COMMA VERBOSE EQUAL fitp .)
+    IF              reduce using rule 96 (fit -> ID EQUAL sequential DOT FIT LPAREN array COMMA array COMMA EPOCHS EQUAL INT COMMA VERBOSE EQUAL fitp .)
+    WHILE           reduce using rule 96 (fit -> ID EQUAL sequential DOT FIT LPAREN array COMMA array COMMA EPOCHS EQUAL INT COMMA VERBOSE EQUAL fitp .)
+    FOR             reduce using rule 96 (fit -> ID EQUAL sequential DOT FIT LPAREN array COMMA array COMMA EPOCHS EQUAL INT COMMA VERBOSE EQUAL fitp .)
+    MEAN            reduce using rule 96 (fit -> ID EQUAL sequential DOT FIT LPAREN array COMMA array COMMA EPOCHS EQUAL INT COMMA VERBOSE EQUAL fitp .)
+    VAR             reduce using rule 96 (fit -> ID EQUAL sequential DOT FIT LPAREN array COMMA array COMMA EPOCHS EQUAL INT COMMA VERBOSE EQUAL fitp .)
+    RBRACE          reduce using rule 96 (fit -> ID EQUAL sequential DOT FIT LPAREN array COMMA array COMMA EPOCHS EQUAL INT COMMA VERBOSE EQUAL fitp .)
+    RBRACKET        reduce using rule 96 (fit -> ID EQUAL sequential DOT FIT LPAREN array COMMA array COMMA EPOCHS EQUAL INT COMMA VERBOSE EQUAL fitp .)
+
+
+state 225
+
+    (97) fitp -> TRUE . RPAREN
+
+    RPAREN          shift and go to state 227
+
+
+state 226
+
+    (98) fitp -> FALSE . RPAREN
+
+    RPAREN          shift and go to state 228
+
+
+state 227
+
+    (97) fitp -> TRUE RPAREN .
+
+    $end            reduce using rule 97 (fitp -> TRUE RPAREN .)
+    SEMICOLON       reduce using rule 97 (fitp -> TRUE RPAREN .)
+    FUNCTION        reduce using rule 97 (fitp -> TRUE RPAREN .)
+    ID              reduce using rule 97 (fitp -> TRUE RPAREN .)
+    READ            reduce using rule 97 (fitp -> TRUE RPAREN .)
+    PRINT           reduce using rule 97 (fitp -> TRUE RPAREN .)
+    IF              reduce using rule 97 (fitp -> TRUE RPAREN .)
+    WHILE           reduce using rule 97 (fitp -> TRUE RPAREN .)
+    FOR             reduce using rule 97 (fitp -> TRUE RPAREN .)
+    MEAN            reduce using rule 97 (fitp -> TRUE RPAREN .)
+    VAR             reduce using rule 97 (fitp -> TRUE RPAREN .)
+    RBRACE          reduce using rule 97 (fitp -> TRUE RPAREN .)
+    RBRACKET        reduce using rule 97 (fitp -> TRUE RPAREN .)
+
+
+state 228
+
+    (98) fitp -> FALSE RPAREN .
+
+    $end            reduce using rule 98 (fitp -> FALSE RPAREN .)
+    SEMICOLON       reduce using rule 98 (fitp -> FALSE RPAREN .)
+    FUNCTION        reduce using rule 98 (fitp -> FALSE RPAREN .)
+    ID              reduce using rule 98 (fitp -> FALSE RPAREN .)
+    READ            reduce using rule 98 (fitp -> FALSE RPAREN .)
+    PRINT           reduce using rule 98 (fitp -> FALSE RPAREN .)
+    IF              reduce using rule 98 (fitp -> FALSE RPAREN .)
+    WHILE           reduce using rule 98 (fitp -> FALSE RPAREN .)
+    FOR             reduce using rule 98 (fitp -> FALSE RPAREN .)
+    MEAN            reduce using rule 98 (fitp -> FALSE RPAREN .)
+    VAR             reduce using rule 98 (fitp -> FALSE RPAREN .)
+    RBRACE          reduce using rule 98 (fitp -> FALSE RPAREN .)
+    RBRACKET        reduce using rule 98 (fitp -> FALSE RPAREN .)
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for EQUAL in state 65 resolved as shift

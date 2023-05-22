@@ -456,7 +456,7 @@ def p_jumpsIf(p):
     print("AQUI CORRE EL JUMPIF")
     print("jumpsif")          
     end = sJumps.pop()
-    quadGen.quads[end].res = qCounter
+    #quadGen.quads[end].res = qCounter
 
 def p_quadsElse(p):
     '''quadsElse : '''   
@@ -466,7 +466,7 @@ def p_quadsElse(p):
     end = sJumps.pop()
     sJumps.append(qCounter)
     qCounter += 1
-    quadGen[end].res = qCounter
+    #quadGen[end].res = qCounter
 
 ###############################Quands while#############
 def p_while(p):
@@ -531,10 +531,10 @@ def p_jumpsWhile(p):
     ''' jumpsWhile :'''
     global sOperators, sOperands, sTypes, qCounter, sJumps
     end = sJumps.pop()
-    #return sJumps.pop()
-    quadGen.gen_quad("gotoF", len(sOperands)-1, None, temp)
+    endret = sJumps.pop()
+    quadGen.gen_quad("goto", len(sOperands)-1, None, endret)
     qCounter += 1
-
+    #quadGen[end].res = qCounter
     ##################################################################   
   
 def p_for(p):
