@@ -23,6 +23,7 @@ tokens = (
     'LTE',
     'EQUAL',
     'DIFF',
+    'IFEQUAL',
     'LPAREN',
     'RPAREN',
     'LBRACE',
