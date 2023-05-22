@@ -410,7 +410,6 @@ def p_quadsIf(p):
     arg2=sOperands.pop()
     arg1=sOperands.pop()
     operator=sOperators.pop()
-    #aqui meterle counter de temporales
     if operator not in ['ERA', 'GOSUB']:
         temp = "t" + str(tempCounter)
         quadGen.gen_quad(operator, arg1, arg2, temp)
@@ -489,12 +488,10 @@ def p_quadsWhile(p):
     arg2=sOperands.pop()
     arg1=sOperands.pop()
     operator=sOperators.pop()
-    #aqui meterle counter de temporales
     if operator not in ['ERA', 'GOSUB']:
         temp = "t" + str(tempCounter)
         quadGen.gen_quad(operator, arg1, arg2, temp)
         tempCounter += 1
-        print("el contador es", tempCounter)
     else:
         print("no entro el temp")
         quadGen.gen_quad(operator, arg1, arg2, None)
@@ -520,24 +517,21 @@ def p_quadsWhile(p):
         print("TOF ES: ",sOperands[len(sOperands)-1])
         if (toF == 0 or toF ==1):
             print("ENTRO AL IF")
-            temp = "t" + str(tempCounter)
-            print("TEMP ES",temp)
-            quadGen.gen_quad("gotoF", len(sOperands)-1, None, temp)
+            quadGen.gen_quad("gotoF", sOperands[len(sOperands)-1], None, None)
             qCounter += 1
             sJumps.append(qCounter)
-            print("QG ES 1: ",str(quadGen))
+            print("QG ES: ",str(quadGen))
             print(sJumps)
-            print("QG POS 0 ES>>> ",quadGen.quads)
     else: print("no es bool")
     
 def p_jumpsWhile(p):
     ''' jumpsWhile :'''
     global sOperators, sOperands, sTypes, qCounter, sJumps
-    end = sJumps.pop()
+    jumps = sJumps.pop()
     endret = sJumps.pop()
     quadGen.gen_quad("goto", len(sOperands)-1, None, endret)
     qCounter += 1
-    #quadGen[end].res = qCounter
+    quadGen.quads[jumps] = ("goto",None,None,qCounter)
     ##################################################################   
   
 def p_for(p):
