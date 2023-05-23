@@ -169,6 +169,7 @@ precedence = (
 def p_program(p):
     '''program : PROGRAM ID SEMICOLON decvar modules'''
     print("Nombre del programa:", p[2])
+    print("TABLA DE FUNCIONES", functions_table)
 
 
 def p_decvar(p):
@@ -237,16 +238,17 @@ def p_function(p):
     '''function : FUNCTION type decfunc LPAREN param RPAREN LBRACE body RBRACE'''
     global localArray, currFunc, qCounter, functions_table
     func_type=p[2]
-    if(len(localArray)!=0):
-        func_var_table=localArray.pop()
-    else: func_var_table=local_var_table
-    func_var_table_copy = copy.deepcopy(func_var_table)
-    #print("CURRENT FUNC",currFunc)
-    #print("LOCAL ARRAY ES EN FUNC: ",func_var_table_copy)
-    add_function(currFunc, func_type, qCounter, 0, 0, 0, 0, func_var_table_copy)
-    print("TABLA DE FUNCIONES", functions_table)
-    print("FIN")
-    #add_function(func_id, func_type, qCounter, varInt, varFloat, tempInt, tempFloat, tabla_local)
+    #Revisa si existe la función
+    if currFunc in functions_table: 
+        print("YA EXISTE ESA FUNCION")
+    else:
+        #Revisa que si haya algo en su tabla de variables locales
+        if(len(localArray)!=0):
+            func_var_table=localArray.pop()
+        else: func_var_table=local_var_table
+        func_var_table_copy = copy.deepcopy(func_var_table)
+        add_function(currFunc, func_type, qCounter, 0, 0, 0, 0, func_var_table_copy)
+        #print("TABLA DE FUNCIONES", functions_table)
 
 def p_decfunc(p):
     '''decfunc : ID'''
@@ -261,18 +263,17 @@ def p_voidfunction(p):
     '''voidfunction : FUNCTION VOID decfunc LPAREN param RPAREN LBRACE body RBRACE'''
     global localArray, currFunc, qCounter, functions_table
     func_type=p[2]
-    if(len(localArray)!=0):
-        func_var_table=localArray.pop()
-    else: func_var_table=local_var_table
-    func_var_table_copy = copy.deepcopy(func_var_table)
-    print("LA FUNC VAR TABLE ES:", func_var_table_copy)
-    print("CURRENT FUNC",currFunc)
-    print("LOCAL ARRAY ES EN FUNC: ",localArray)
-    add_function(currFunc, func_type, qCounter, 0, 0, 0, 0, func_var_table_copy)
-    print("HICE ADD FUNCTION CON ",currFunc, func_var_table)
-    print("TABLA DE FUNCIONES", functions_table)
-    print("FIN")
-    #add_function(func_id, func_type, qCounter, varInt, varFloat, tempInt, tempFloat, tabla_local)
+    #Revisa si existe la función
+    if currFunc in functions_table: 
+        print("YA EXISTE ESA FUNCION")
+    else:
+        #Revisa que si haya algo en su tabla de variables locales
+        if(len(localArray)!=0):
+            func_var_table=localArray.pop()
+        else: func_var_table=local_var_table
+        func_var_table_copy = copy.deepcopy(func_var_table)
+        add_function(currFunc, func_type, qCounter, 0, 0, 0, 0, func_var_table_copy)
+        #print("TABLA DE FUNCIONES", functions_table)
 
 def p_mainfunction(p):
     '''mainfunction : MAIN'''
