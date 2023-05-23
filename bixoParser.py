@@ -335,7 +335,8 @@ def p_gexpp(p):
              | EQUAL
              | DIFF'''
     p[0]=p[1]
-             
+#####################OPERATORS##################################   
+#ahorita solo hacen la suma y guardan, lo que queremos hacer es que haga el cuadruplo  con temporales y todo incluye qcounter tempcounter        
 def p_mexp(p):
     '''mexp : t
             | t PLUS mexp
@@ -360,7 +361,7 @@ def p_t(p):
             p[0] = p[1] * p[3]
         elif p[2]=="/":
             p[0] = p[1] / p[3]
-   
+###########################################################3   
 def p_f(p):
     '''f : LPAREN exp RPAREN
          | CTI
