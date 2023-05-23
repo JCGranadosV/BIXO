@@ -70,6 +70,15 @@ def add_var_global(name, type):
      var_table["global"]["variables"][type][name] = [var_mem]      
      sTypes.append(type)
 
+def copy_var_local():
+    print("pilatypes: ", sTypes)
+    local_var_table_copy = copy.deepcopy(local_var_table)
+    print ("var_table (local): ",local_var_table_copy)
+    global localArray
+    localArray.append(local_var_table_copy)
+    print("LOCAL ARRAY (LOCAL)",localArray)
+
+
 tokens=bixoLexer.tokens
 
 #almacena los tipos de variables
@@ -159,13 +168,14 @@ precedence = (
 
 
 def p_program(p):
-    '''program : PROGRAM ID SEMICOLON decvar modules mainfunction'''
+    '''program : PROGRAM ID SEMICOLON decvar modules'''
     print("Nombre del programa:", p[2])
 
 
 def p_decvar(p):
     '''decvar : VAR decvarp
-              | VAR decvarp decvar'''
+              | VAR decvarp decvar
+              |'''
     global scope
     scope="local"
     #p[0]=p[2]
@@ -179,7 +189,7 @@ def p_decvarp(p):
     var_name = p[2]
 
     if scope == "local":
-        print("pilavars: ", sVars)
+        #print("pilavars: ", sVars)
         for vars in sVars:
         #Revisa que la variable no exista ya en la tabla 
             if (vars in local_var_table["variables"]["int"]) or (vars in local_var_table["variables"]["float"]):
@@ -187,16 +197,10 @@ def p_decvarp(p):
                 print(vars,"ERROR YA EXISTE")
             else:
                 add_var_local(vars,var_type,currFunc) 
-
-        print("pilatypes: ", sTypes)
-        local_var_table_copy = copy.deepcopy(local_var_table)
-        print ("var_table (local): ",local_var_table_copy)
-        global localArray
-        localArray.append(local_var_table_copy)
-        print("LOCAL ARRAY (LOCAL)",localArray)
+        copy_var_local()
 
     if scope == "global":
-        print("pilavars: ", sVars)
+        #print("pilavars: ", sVars)
         #Revisa que la variable no exista ya en la tabla 
         for vars in sVars:
             if (vars in var_table["global"]["variables"]["int"]) or (vars in var_table["global"]["variables"]["float"]):
@@ -234,11 +238,14 @@ def p_function(p):
     '''function : FUNCTION type decfunc LPAREN param RPAREN LBRACE body RBRACE'''
     global localArray, currFunc, qCounter, functions_table
     func_type=p[2]
-    func_var_table=localArray.pop()
-    print("CURRENT FUNC",currFunc)
-    print("LOCAL ARRAY ES EN FUNC: ",func_var_table)
-    add_function(currFunc, func_type, qCounter, 0, 0, 0, 0, func_var_table)
-    print("TABLA DE FUNCIONES",currFunc,functions_table)
+    if(len(localArray)!=0):
+        func_var_table=localArray.pop()
+    else: func_var_table=local_var_table
+    func_var_table_copy = copy.deepcopy(func_var_table)
+    #print("CURRENT FUNC",currFunc)
+    #print("LOCAL ARRAY ES EN FUNC: ",func_var_table_copy)
+    add_function(currFunc, func_type, qCounter, 0, 0, 0, 0, func_var_table_copy)
+    print("TABLA DE FUNCIONES", functions_table)
     print("FIN")
     #add_function(func_id, func_type, qCounter, varInt, varFloat, tempInt, tempFloat, tabla_local)
 
@@ -247,17 +254,24 @@ def p_decfunc(p):
     limpiaDatos()
     global currFunc
     currFunc=p[1]
+    print("CURRENT FUNCCC", currFunc)
+    print("LOCAL VAR TABLE:",local_var_table)
 
     
 def p_voidfunction(p):
     '''voidfunction : FUNCTION VOID decfunc LPAREN param RPAREN LBRACE body RBRACE'''
     global localArray, currFunc, qCounter, functions_table
     func_type=p[2]
-    func_var_table=localArray.pop()
+    if(len(localArray)!=0):
+        func_var_table=localArray.pop()
+    else: func_var_table=local_var_table
+    func_var_table_copy = copy.deepcopy(func_var_table)
+    print("LA FUNC VAR TABLE ES:", func_var_table_copy)
     print("CURRENT FUNC",currFunc)
-    print("LOCAL ARRAY ES EN FUNC: ",func_var_table)
-    add_function(currFunc, func_type, qCounter, 0, 0, 0, 0, func_var_table)
-    print("TABLA DE FUNCIONES",currFunc,functions_table)
+    print("LOCAL ARRAY ES EN FUNC: ",localArray)
+    add_function(currFunc, func_type, qCounter, 0, 0, 0, 0, func_var_table_copy)
+    print("HICE ADD FUNCTION CON ",currFunc, func_var_table)
+    print("TABLA DE FUNCIONES", functions_table)
     print("FIN")
     #add_function(func_id, func_type, qCounter, varInt, varFloat, tempInt, tempFloat, tabla_local)
 
@@ -284,11 +298,13 @@ def p_body(p):
 #checar si se puede vacio o epsilon
 def p_param(p):
     '''param : type ID
-             | type ID COMMA param'''
+             | type ID COMMA param
+             |'''
     #sTypes.append(p[1])
     #sVars.append(p[2])
-    add_var_local(p[2],p[1],currFunc)
-
+    if len(p)==3:
+        add_var_local(p[2],p[1],currFunc) 
+    
 #AQUI FALTA EL DEL SEGUNDO     
 def p_exp(p):
     '''exp : texp 
@@ -364,7 +380,8 @@ def p_statements(p):
                  |  if
                  |  while
                  |  for
-                 |  funcesp'''
+                 |  funcesp
+                 |  '''
     p[0] = p[1]
     
 def p_assign(p):
@@ -567,7 +584,7 @@ parser = yacc.yacc()
 # Procesar cada línea con el parser
 
 
-fileName = "prueba3.txt"   
+fileName = "prueba.txt"   
 inputFile = open(fileName, 'r')
 inputCode = inputFile.read()
 inputFile.close()

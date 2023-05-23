@@ -1,5 +1,11 @@
 program id;
 var float col, que;
 var int pepe, rodrigo, juan;
-juan=3;
+function void abrir (int k){
+    var int prueb;
+}
+function void cerrar (float c){
+    var int l;
+}
+
 
