@@ -78,13 +78,13 @@ def add_var_global(name, type):
      sTypes.append(type)
 
 def copy_var_local():
-    print("pilatypes: ", sTypes)
     local_var_table_copy = copy.deepcopy(local_var_table)
-    print ("var_table (local): ",local_var_table_copy)
     global localArray
     localArray.append(local_var_table_copy)
-    print("LOCAL ARRAY (LOCAL)",localArray)
 
+def add_local_var(variable_type,direccion_memoria, var_assign):
+    local_var_table["values"][variable_type][direccion_memoria]=var_assign
+    print ("LOCAL VAR TABLE DESPUES:", local_var_table)
 
 tokens=bixoLexer.tokens
 
@@ -134,6 +134,9 @@ def limpiaDatos():
     local_var_table["variables"]["float"]={}
     local_var_table["counters"]["int"]=0
     local_var_table["counters"]["float"]=0
+    local_var_table["values"]["int"]={}
+    local_var_table["values"]["float"]={}
+    print("LOCAL VAR TABLE DESPUES DE EMPTY: ",local_var_table)
 
 def checkTable():
     return(local_var_table)
@@ -206,7 +209,7 @@ def p_decvarp(p):
                 print(vars,"ERROR YA EXISTE")
             else:
                 add_var_local(vars,var_type,currFunc) 
-        copy_var_local()
+        #copy_var_local()
 
     if scope == "global":
         #print("pilavars: ", sVars)
@@ -220,8 +223,6 @@ def p_decvarp(p):
                      add_var_global(vars,var_type)
                 elif var_type == "float":
                     add_var_global(vars,var_type)
-        print("pilatypes: ", sTypes)
-        print ("var_table (global): ",var_table["global"])
 
     sVars.clear()
     sTypes.clear()
@@ -247,6 +248,7 @@ def p_function(p):
     '''function : FUNCTION type decfunc LPAREN param RPAREN LBRACE body RBRACE'''
     global localArray, currFunc, qCounter, functions_table
     func_type=p[2]
+    copy_var_local()
     #Revisa si existe la función
     if currFunc in functions_table: 
         print("YA EXISTE ESA FUNCION")
@@ -256,6 +258,7 @@ def p_function(p):
             func_var_table=localArray.pop()
         else: func_var_table=local_var_table
         func_var_table_copy = copy.deepcopy(func_var_table)
+        print("FUNC VAR TABLE ES: ",func_var_table_copy)
         add_function(currFunc, func_type, qCounter, 0, 0, 0, 0, func_var_table_copy)
         #print("TABLA DE FUNCIONES", functions_table)
 
@@ -265,7 +268,6 @@ def p_decfunc(p):
     global currFunc
     currFunc=p[1]
     print("CURRENT FUNCCC", currFunc)
-    print("LOCAL VAR TABLE:",local_var_table)
 
     
 def p_voidfunction(p):
@@ -392,11 +394,10 @@ def p_statements(p):
     
 def p_assign(p):
     '''assign : var EQUAL exp SEMICOLON'''
-    global qCounter
+    global qCounter, local_var_table
     var_name=p[1]
     var_assign=p[3]
     estaenlocal=0
-    variable_type=''
     print("VARNAME A CHECAR ES", var_name)
     if (var_name in (var_table["global"]["variables"]["int"]) or (var_name in local_var_table["variables"]["int"])):
         variable_type="int"
@@ -417,16 +418,29 @@ def p_assign(p):
         #primero revisa si esta en el local
         if (var_name in (local_var_table["variables"]["int"]) or (var_name in local_var_table["variables"]["float"])):
             print("si existe en local")
+            #para encontrar y almacenar direccion de memoria
+            var_assign=p[3]
+            direccion_memoria = local_var_table.get("variables", {}).get(variable_type, {}).get(var_name)
+            direccion_memoria = direccion_memoria[0]
+            print("LA DIRECCION DE MEMORIA ES: ", direccion_memoria)
+            print("Y LE VOY A ASIGNAR EL VALOR DE: ", var_assign)
+            print("LOCAL VAR TABLE ES ANTES: ",local_var_table)
+            add_local_var(variable_type,direccion_memoria, var_assign)
+            #genera cuadruplo
             quadGen.gen_quad("=",var_assign,None,var_name)
+            #añade valor a tabla de constantes
+            qCounter+=1
             #switch para avisar que esta en local para que no revise en global
             estaenlocal=1
         elif ((var_name in (var_table["global"]["variables"]["int"]) or (var_name in var_table["global"]["variables"]["float"])) and estaenlocal==0):
             print("si existe en global")
+            #genera cuadruplo
             quadGen.gen_quad("=",var_assign,None,var_name)
+            qCounter+=1
+            #añade valor a tabla de constantes
         else:
             print("ERROR NO EXISTE")
 
-            
     print(quadGen.quads)
         
 

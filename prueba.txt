@@ -1,19 +1,18 @@
 program id;
 var float col, que;
 var int pepe, rodrigo, juan;
+
 function float abrir (int k){
     var int prueb;
 }
 function void cerrar (float c){
     var int l;
+    var float c;
     l = 3;
-}
-function void cerrar (float a){
-    var int k;
+    c = 5;
 }
 function int comer (float b){
-    var int m;
-}
-function int comer (float a){
-    var int o;
+    var float m,n,y;
+    m = 4;
+    y= 10;
 }
