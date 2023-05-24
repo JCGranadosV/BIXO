@@ -32,6 +32,10 @@ var_table = {
         "counters": {
             "int": 0,
             "float": 0
+        },
+        "values": {
+            "int": {},
+            "float": {}
         }
     }
 }
@@ -45,6 +49,10 @@ local_var_table = {
     "counters": {
         "int": 0,
         "float": 0
+    },
+    "values": {
+        "int": {},
+        "float": {}
     }
 }
 
@@ -170,6 +178,7 @@ def p_program(p):
     '''program : PROGRAM ID SEMICOLON decvar modules'''
     print("Nombre del programa:", p[2])
     print("TABLA DE FUNCIONES", functions_table)
+    print("Cuadruplos: ",str(quadGen))
 
 
 def p_decvar(p):
@@ -276,9 +285,7 @@ def p_voidfunction(p):
         #print("TABLA DE FUNCIONES", functions_table)
 
 def p_mainfunction(p):
-    '''mainfunction : MAIN'''
-    
-
+    '''mainfunction : MAIN LPAREN RPAREN body'''
 
 def p_modules(p):
     '''modules : function modules
@@ -370,6 +377,7 @@ def p_f(p):
     if len(p)==2:
         p[0]=p[1]
 
+#VOLVER A PONER FUNCESP
 def p_statements(p):
     '''statements : assign
                  |  function
@@ -379,29 +387,40 @@ def p_statements(p):
                  |  print
                  |  if
                  |  while
-                 |  for
-                 |  funcesp'''
+                 |  for'''
     p[0] = p[1]
     
 def p_assign(p):
     '''assign : var EQUAL exp SEMICOLON'''
+    global qCounter
     var_name=p[1]
     var_assign=p[3]
     estaenlocal=0
+    variable_type=''
+    print("VARNAME A CHECAR ES", var_name)
+    if (var_name in (var_table["global"]["variables"]["int"]) or (var_name in local_var_table["variables"]["int"])):
+        variable_type="int"
+    elif ((var_name in var_table["global"]["variables"]["float"]) or (var_name in local_var_table["variables"]["float"])):
+        variable_type="float"
+    print("LA VARIABLE ES DE TIPO::::", variable_type)
     if scope == "global":
-        if var_name in (var_table["global"]["variables"]["int"] or var_table["global"]["variables"]["float"]):
+        if (var_name in (var_table["global"]["variables"]["int"]) or (var_name in var_table["global"]["variables"]["float"])):
             print("si existe en global")
+            #genera cuadruplo
             quadGen.gen_quad("=",var_assign,None,var_name)
+            qCounter+=1
+            #añade valor a tabla de constantes
+
         else:
             print("ERROR NO EXISTE")
     elif scope == "local":
         #primero revisa si esta en el local
-        if var_name in (local_var_table["variables"]["int"] or local_var_table["variables"]["float"]):
+        if (var_name in (local_var_table["variables"]["int"]) or (var_name in local_var_table["variables"]["float"])):
             print("si existe en local")
             quadGen.gen_quad("=",var_assign,None,var_name)
             #switch para avisar que esta en local para que no revise en global
             estaenlocal=1
-        elif (var_name in (var_table["global"]["variables"]["int"] or var_table["global"]["variables"]["float"])) and estaenlocal==0:
+        elif ((var_name in (var_table["global"]["variables"]["int"]) or (var_name in var_table["global"]["variables"]["float"])) and estaenlocal==0):
             print("si existe en global")
             quadGen.gen_quad("=",var_assign,None,var_name)
         else:

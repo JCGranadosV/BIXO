@@ -6,6 +6,7 @@ function float abrir (int k){
 }
 function void cerrar (float c){
     var int l;
+    l = 3;
 }
 function void cerrar (float a){
     var int k;
