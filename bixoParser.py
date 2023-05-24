@@ -56,6 +56,7 @@ local_var_table = {
     }
 }
 
+#Funcion que agrega variable local a tabla y asigna memoria
 def add_var_local(name, type, currFunc):
      if(type=="int"):
         var_mem = local_var_table["counters"][type] + localInt
@@ -67,6 +68,7 @@ def add_var_local(name, type, currFunc):
      local_var_table["variables"][type][name] = [var_mem]      
      sTypes.append(type)
 
+#Funcion que agrega variable global a tabla y asigna memoria
 def add_var_global(name, type):
      if(type=="int"):
         var_mem = var_table["global"]["counters"][type] + globalInt
@@ -77,14 +79,15 @@ def add_var_global(name, type):
      var_table["global"]["variables"][type][name] = [var_mem]      
      sTypes.append(type)
 
+#Funcion que hace una copia de la tabla actual y la mete a el array de tablas locales
 def copy_var_local():
     local_var_table_copy = copy.deepcopy(local_var_table)
     global localArray
     localArray.append(local_var_table_copy)
 
-def add_local_var(variable_type,direccion_memoria, var_assign):
+#Funcion que agrega el valor de una variable y su espacio de memoria a la tabla
+def add_local_var_value(variable_type,direccion_memoria, var_assign):
     local_var_table["values"][variable_type][direccion_memoria]=var_assign
-    print ("LOCAL VAR TABLE DESPUES:", local_var_table)
 
 tokens=bixoLexer.tokens
 
@@ -178,12 +181,19 @@ precedence = (
 
 
 def p_program(p):
-    '''program : PROGRAM ID SEMICOLON decvar modules'''
+    '''program : PROGRAM gotomain ID SEMICOLON decvar modules'''
     print("Nombre del programa:", p[2])
     print("TABLA DE FUNCIONES", functions_table)
     print("Cuadruplos: ",str(quadGen))
     print("Counter de cuadruplos: ", qCounter)
 
+def p_gotomain(p):
+    '''gotomain : '''
+    global qCounter
+    #genera cuadruplo goto main
+    quadGen.gen_quad("GOTO","main",None,None)
+    #añade valor a tabla de constantes
+    qCounter+=1
 
 def p_decvar(p):
     '''decvar : VAR decvarp
@@ -399,12 +409,10 @@ def p_assign(p):
     var_name=p[1]
     var_assign=p[3]
     estaenlocal=0
-    print("VARNAME A CHECAR ES", var_name)
     if (var_name in (var_table["global"]["variables"]["int"]) or (var_name in local_var_table["variables"]["int"])):
         variable_type="int"
     elif ((var_name in var_table["global"]["variables"]["float"]) or (var_name in local_var_table["variables"]["float"])):
         variable_type="float"
-    print("LA VARIABLE ES DE TIPO::::", variable_type)
     if scope == "global":
         if (var_name in (var_table["global"]["variables"]["int"]) or (var_name in var_table["global"]["variables"]["float"])):
             print("si existe en global")
@@ -423,10 +431,7 @@ def p_assign(p):
             var_assign=p[3]
             direccion_memoria = local_var_table.get("variables", {}).get(variable_type, {}).get(var_name)
             direccion_memoria = direccion_memoria[0]
-            print("LA DIRECCION DE MEMORIA ES: ", direccion_memoria)
-            print("Y LE VOY A ASIGNAR EL VALOR DE: ", var_assign)
-            print("LOCAL VAR TABLE ES ANTES: ",local_var_table)
-            add_local_var(variable_type,direccion_memoria, var_assign)
+            add_local_var_value(variable_type,direccion_memoria, var_assign)
             #genera cuadruplo
             quadGen.gen_quad("=",var_assign,None,var_name)
             #añade valor a tabla de constantes
