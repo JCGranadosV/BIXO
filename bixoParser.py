@@ -182,6 +182,7 @@ def p_program(p):
     print("Nombre del programa:", p[2])
     print("TABLA DE FUNCIONES", functions_table)
     print("Cuadruplos: ",str(quadGen))
+    print("Counter de cuadruplos: ", qCounter)
 
 
 def p_decvar(p):
