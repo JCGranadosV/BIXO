@@ -1,6 +1,6 @@
 import ply.lex as lex
 
-tokens = (
+tokens = [
     'PROGRAM',
     'END',
     'MAIN',
@@ -64,7 +64,7 @@ tokens = (
     'ARRAY',
     'MATRIX',
     'MEAN'
-)
+]
 
 reserved = {
     'program' : 'PROGRAM',
@@ -92,8 +92,6 @@ reserved = {
 
 #REGEX TOKENS
 
-t_PLUS = r'\+'
-t_MINUS = r'\-'
 t_MULT = r'\*'
 t_DIV = r'\/'
 t_GT = r'\>'
@@ -179,6 +177,16 @@ def t_DIFF(t):
 
 def t_WHILE(t):
     r'while'
+    return t
+
+def t_PLUS(t):
+    r'\+'
+    print("Token PLUS")
+    return t
+
+def t_MINUS(t):
+    r'\-'
+    print("Token MINUS")
     return t
 
 def t_INT(t):

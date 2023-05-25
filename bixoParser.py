@@ -1,4 +1,5 @@
 import copy
+import re
 import ply.yacc as yacc
 import bixoLexer
 from bixoLexer import tokens
@@ -89,6 +90,14 @@ def copy_var_local():
 def add_local_var_value(variable_type,direccion_memoria, var_assign):
     local_var_table["values"][variable_type][direccion_memoria]=var_assign
 
+#Funcion que crea temporales
+def getTemp():
+    global tempCounter
+    temp = "t" + str(tempCounter)
+    tempCounter += 1
+    sTemp.append(temp)
+    return temp
+
 tokens=bixoLexer.tokens
 
 #almacena los tipos de variables
@@ -96,6 +105,9 @@ sTypes = []
 #pila saltos
 sJumps = []
 qCounter=0
+#counter y stack de temporales
+tempCounter=0
+sTemp=[]
 #pila operandos
 sOperands = []
 #pila operadores
@@ -112,6 +124,8 @@ currFunc="ejemplo1"
 localArray=[]
 localTypes=[]
 contLocal=-1
+regexInt=r'\d+'
+regexFloat=r'\d+\.\d+'
 
 functions_table = {}
 
@@ -161,7 +175,7 @@ consString = 40000
 
 
 precedence = (
-    #Checar que precences faltan (left o right)
+   #Checar que precences faltan (left o right)
     ('left','LT','LTE','GT','GTE'),
     ('left', 'PLUS', 'MINUS'),
     ('left', 'MULT', 'DIV'),
@@ -364,22 +378,39 @@ def p_mexp(p):
         p[0]=p[1]
     elif len(p)==4:
         if p[2]=="+":
-            p[0] = p[1] + p[3]
+            global qCounter
+            temp = getTemp()
+            print("temp es: ",temp)
+            quadGen.gen_quad("+", p[1], p[3], temp)
+            qCounter+=1
+            p[0]=temp
         elif p[2]=="-":
-            p[0] = p[1] - p[3]
+            temp = getTemp()
+            quadGen.gen_quad("-", p[1], p[3], temp)
+            qCounter+=1
+            p[0]=temp
     
 
 def p_t(p):
     '''t : f 
          | f MULT t
          | f DIV t'''
+    
     if len(p) == 2:
         p[0]=p[1]
     elif len(p)==4:
+        print ("ENTRO A T A HACER:", p[1], p[2],p[3])
+        global qCounter
         if p[2]=="*":
-            p[0] = p[1] * p[3]
+            temp = getTemp()
+            quadGen.gen_quad("*", p[1], p[3], temp)
+            qCounter+=1
+            p[0]=temp
         elif p[2]=="/":
-            p[0] = p[1] / p[3]
+            temp = getTemp()
+            quadGen.gen_quad("/", p[1],p[3], temp)
+            qCounter+=1
+            p[0]=temp
    
 def p_f(p):
     '''f : LPAREN exp RPAREN
@@ -387,8 +418,14 @@ def p_f(p):
          | CTF
          | var
          | call'''
+    global regexInt, regexFloat
     if len(p)==2:
+        #if re.match(regexFloat, str(p[1])):
+        #    print("CTF")
+        #elif re.match(regexInt, str(p[1])):
+        #    print("CTI")
         p[0]=p[1]
+        
 
 #VOLVER A PONER FUNCESP
 def p_statements(p):
@@ -704,7 +741,7 @@ parser = yacc.yacc()
 # Procesar cada línea con el parser
 
 
-fileName = "prueba.txt"   
+fileName = "prueba4.txt"   
 inputFile = open(fileName, 'r')
 inputCode = inputFile.read()
 inputFile.close()
