@@ -312,7 +312,8 @@ def p_voidfunction(p):
         #print("TABLA DE FUNCIONES", functions_table)
 
 def p_mainfunction(p):
-    '''mainfunction : MAIN LPAREN RPAREN body'''
+    '''mainfunction : MAIN LPAREN RPAREN LBRACE body RBRACE'''
+
 
 def p_modules(p):
     '''modules : function modules
@@ -330,14 +331,18 @@ def p_body(p):
             | '''
     
 #checar si se puede vacio o epsilon
-def p_param(p):
-    '''param : type ID
-             | type ID COMMA param
-             |'''
+#def p_param(p):
+#    '''param : type ID
+#             | type ID COMMA param
+#             |'''
     #sTypes.append(p[1])
     #sVars.append(p[2])
-    if len(p)==3:
-        add_var_local(p[2],p[1],currFunc) 
+#    if len(p)==3:
+#        add_var_local(p[2],p[1],currFunc) 
+
+def p_param(p):
+    '''param : decvar
+             |'''
     
 #AQUI FALTA EL DEL SEGUNDO     
 def p_exp(p):
@@ -741,7 +746,7 @@ parser = yacc.yacc()
 # Procesar cada línea con el parser
 
 
-fileName = "prueba4.txt"   
+fileName = "prueba3.txt"   
 inputFile = open(fileName, 'r')
 inputCode = inputFile.read()
 inputFile.close()

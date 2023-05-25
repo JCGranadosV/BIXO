@@ -1,6 +1,10 @@
 program id;
 var int i;
 function float abrir (int k){
+    var int a;
     var int prueb;
+    var int b;
+    b=5;
+    a=b+5+6;
     prueb = 3+5-6+7+8*7*9;
 }
