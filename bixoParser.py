@@ -16,7 +16,7 @@ class QuadGenerator:
     def __str__(self):
         result = ""
         for i, quad in enumerate(self.quads):
-            result += f"{i}: {QuadGenerator.format_quad(quad)}\n"
+            result += f"{i+1}: {QuadGenerator.format_quad(quad)}\n"
         return result
 
     @staticmethod
@@ -126,6 +126,7 @@ localTypes=[]
 contLocal=-1
 regexInt=r'\d+'
 regexFloat=r'\d+\.\d+'
+paramCounter=1
 
 functions_table = {}
 
@@ -523,11 +524,28 @@ def p_var(p):
     p[0]=p[1]
     
 def p_call(p):
-    '''call : ID LPAREN callp RPAREN'''
+    '''call : ID LPAREN callp RPAREN SEMICOLON'''
+    global qCounter, paramCounter, currFunc
+    funCall=p[1]
+    paramCounter=1
+    if ((funCall in functions_table) or (funCall == currFunc)): 
+        quadGen.gen_quad('ERA', None, None, funCall)
+        qCounter+=1
+    else:
+        print("ERROR NO EXISTE ESA FUNCION")
+        
 
 def p_callp(p):
-    '''callp : exp SEMICOLON callp
-             | exp'''
+    '''callp : exp COMMA callp
+             | exp
+             | '''
+    global paramCounter,qCounter
+    if len(p)>1:
+        param = "par" + str(paramCounter)
+        paramCounter += 1
+        quadGen.gen_quad('PARAM', p[1], None, param)
+        qCounter+=1
+
        
 ##################Quads if######################   
 #def p_if(p):
