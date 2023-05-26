@@ -12,6 +12,10 @@ function float comer(int m){
     var int a,b;
     var float ff;
     var float fa;
+    var int c;
+    c=a+b;
+    read(c);
+    print(a);
     ff=5.5*4*6*7+10/4-3/3+22;
     fa=ff;
 }

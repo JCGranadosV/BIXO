@@ -117,8 +117,6 @@ t_STRING = r'\".*?\"'
 t_TRUE = r'true'
 t_FALSE = r'false'
 t_FOR = r'for'
-t_PRINT = r'print'
-t_READ = r'read'
 t_ASSIGN = r'assign'
 t_FUNCESP = r'funcesp'
 #LIBRERIAS DE ML:
@@ -181,12 +179,18 @@ def t_WHILE(t):
 
 def t_PLUS(t):
     r'\+'
-    print("Token PLUS")
     return t
 
 def t_MINUS(t):
     r'\-'
-    print("Token MINUS")
+    return t
+
+def t_READ(t):
+    r'read'
+    return t
+
+def t_PRINT(t):
+    r'print'
     return t
 
 def t_INT(t):

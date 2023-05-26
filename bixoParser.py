@@ -291,6 +291,7 @@ def p_decfunc(p):
     '''decfunc : ID'''
     limpiaDatos()
     global currFunc
+    print(tempCounter)
     currFunc=p[1]
     print("CURRENT FUNCCC", currFunc)
 
@@ -490,16 +491,32 @@ def p_assign(p):
     print(quadGen.quads)
         
 
-
+#Genera cuadruplos de read
 def p_read(p):
-    '''read : READ var'''
-#checar si tenemos que agregar sting o no xq la eliminamos
-def p_print(p):
-    '''print : PRINT LPAREN printp'''
+    '''read : READ LPAREN var RPAREN SEMICOLON'''
+    global qCounter
+    temp=getTemp()
+    quadGen.gen_quad('read', None, None, temp)
+    quadGen.gen_quad('=', temp, None, p[3])
+    qCounter += 2
 
+
+def p_print(p):
+    '''print : PRINT LPAREN printp SEMICOLON'''
+
+#Genera cuadruplos de print, separado por comas recibe muchos parametros
 def p_printp(p):
     '''printp : exp RPAREN
               | exp COMMA printp'''
+    global qCounter
+    if len(p) == 3:
+        quadGen.gen_quad('print', None, None, p[1])
+        qCounter += 1
+        p[0] = p[1]
+    elif len(p) == 4:
+        quadGen.gen_quad('print', None, None, p[1])
+        qCounter += 1
+        p[0] = p[3]
 
 def p_var(p):
     '''var : ID '''
