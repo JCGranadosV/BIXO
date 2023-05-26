@@ -121,6 +121,7 @@ quadGen=QuadGenerator()
 #para imprimir cuadruplos : print(str(quadGen))
 #current function
 currFunc="ejemplo1"
+currFuncStartAddress=0
 localArray=[]
 localTypes=[]
 contLocal=-1
@@ -291,9 +292,10 @@ def p_function(p):
 def p_decfunc(p):
     '''decfunc : ID'''
     limpiaDatos()
-    global currFunc
+    global currFunc,currFuncStartAddress
     print(tempCounter)
     currFunc=p[1]
+    currFuncStartAddress=qCounter
     print("CURRENT FUNCCC", currFunc)
 
     
@@ -528,8 +530,18 @@ def p_call(p):
     global qCounter, paramCounter, currFunc
     funCall=p[1]
     paramCounter=1
-    if ((funCall in functions_table) or (funCall == currFunc)): 
+    if (funCall in functions_table):
         quadGen.gen_quad('ERA', None, None, funCall)
+        qCounter+=1
+        func_address = functions_table[funCall]["start_address"]
+        quadGen.gen_quad('GOSUB', None, None, func_address)
+        qCounter+=1
+    elif (funCall == currFunc): 
+        global currFuncStartAddress
+        quadGen.gen_quad('ERA', None, None, funCall)
+        qCounter+=1
+        func_address = currFuncStartAddress
+        quadGen.gen_quad('GOSUB', None, None, func_address)
         qCounter+=1
     else:
         print("ERROR NO EXISTE ESA FUNCION")
