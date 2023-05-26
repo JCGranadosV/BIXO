@@ -331,18 +331,19 @@ def p_body(p):
             | '''
     
 #checar si se puede vacio o epsilon
-#def p_param(p):
-#    '''param : type ID
-#             | type ID COMMA param
-#             |'''
-    #sTypes.append(p[1])
-    #sVars.append(p[2])
-#    if len(p)==3:
-#        add_var_local(p[2],p[1],currFunc) 
-
 def p_param(p):
-    '''param : decvar
+    '''param : type ID
+             | type ID COMMA param
              |'''
+    global sVars, sTypes
+    sTypes.append(p[1])
+    sVars.append(p[2])
+    if len(p)==3:
+        add_var_local(p[2],p[1],currFunc) 
+
+#def p_param(p):
+#    '''param : decvar
+#             |'''
     
 #AQUI FALTA EL DEL SEGUNDO     
 def p_exp(p):
@@ -377,8 +378,8 @@ def p_gexpp(p):
              
 def p_mexp(p):
     '''mexp : t
-            | t PLUS mexp
-            | t MINUS mexp'''
+            | mexp PLUS t
+            | mexp MINUS t'''
     if len(p) == 2:
         p[0]=p[1]
     elif len(p)==4:
@@ -398,8 +399,8 @@ def p_mexp(p):
 
 def p_t(p):
     '''t : f 
-         | f MULT t
-         | f DIV t'''
+         | t MULT f
+         | t DIV f'''
     
     if len(p) == 2:
         p[0]=p[1]

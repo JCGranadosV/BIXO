@@ -1,15 +1,16 @@
 program id;
 var float col, que;
 var int pepe, rodrigo, juan;
-function void abrir(var float k;){
+function void abrir(float k){
     var int carlitos;
 }
-function int cerrar(var int c; var int l;){
+function int cerrar(int c, int l, float ks){
     var int rodrigo;
     rodrigo=3;
 }
-function float comer(var int m;){
+function float comer(int m){
     var int a,b;
     var float ff;
-    ff=5.5;
+    ff=5.5*4*6*7+10/4-3/3+22;
+    fa=ff;
 }
