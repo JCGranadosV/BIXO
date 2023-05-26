@@ -341,10 +341,7 @@ def p_param(p):
     if len(p)==3:
         add_var_local(p[2],p[1],currFunc) 
 
-#def p_param(p):
-#    '''param : decvar
-#             |'''
-    
+
 #AQUI FALTA EL DEL SEGUNDO     
 def p_exp(p):
     '''exp : texp 

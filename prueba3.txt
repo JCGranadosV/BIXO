@@ -11,6 +11,7 @@ function int cerrar(int c, int l, float ks){
 function float comer(int m){
     var int a,b;
     var float ff;
+    var float fa;
     ff=5.5*4*6*7+10/4-3/3+22;
     fa=ff;
 }
