@@ -8,7 +8,7 @@ function float abrir (int k, float c){
     return b;
 }
 function int cerrar(){
-    var int c;
+    var float c;
     var int d;
     var float kl;
     c=3+4*4*6.3+6+7.7/3/4.4;
