@@ -122,7 +122,9 @@ quadGen=QuadGenerator()
 #para imprimir cuadruplos : print(str(quadGen))
 #current function
 currFunc="ejemplo1"
+##########################################################CounterInicioFunc y CurrFuncStartAddress son lo mismo 
 currFuncStartAddress=0
+mainStartAddress=0
 localArray=[]
 localTypes=[]
 contLocal=-1
@@ -206,17 +208,18 @@ precedence = (
 
 
 def p_program(p):
-    '''program : PROGRAM gotomain ID SEMICOLON decvar modules'''
+    '''program : PROGRAM gotomain ID SEMICOLON decvar modules mainfunction'''
     print("Nombre del programa:", p[2])
     print("TABLA DE FUNCIONES", functions_table)
     print("Cuadruplos: ",str(quadGen))
     print("Counter de cuadruplos: ", qCounter)
+    print("Tabla de variables globales", var_table)
 
 def p_gotomain(p):
     '''gotomain : '''
     global qCounter
     #genera cuadruplo goto main
-    quadGen.gen_quad("GOTO","main",None,None)
+    quadGen.gen_quad("GOTO",None,None,"main")
     #añade valor a tabla de constantes
     qCounter+=1
 
@@ -287,7 +290,7 @@ def p_function(p):
     copy_var_local()
     #Revisa si existe la función
     if currFunc in functions_table: 
-        print("YA EXISTE ESA FUNCION")
+        print("ERROR YA EXISTE ESA FUNCION")
     else:
         #Revisa que si haya algo en su tabla de variables locales
         if(len(localArray)!=0):
@@ -322,7 +325,7 @@ def p_voidfunction(p):
     func_type=p[2]
     #Revisa si existe la función
     if currFunc in functions_table: 
-        print("YA EXISTE ESA FUNCION")
+        print("ERROR YA EXISTE ESA FUNCION")
     else:
         #Revisa que si haya algo en su tabla de variables locales
         if(len(localArray)!=0):
@@ -337,8 +340,42 @@ def p_voidfunction(p):
         tempCounterInt=0
         #print("TABLA DE FUNCIONES", functions_table)
 
+
+
+def p_decfuncmain(p):
+    '''decfuncmain : '''
+    limpiaDatos()
+    global currFunc, tempCounter, sParams, mainStartAddress
+    currFunc="main"
+    mainStartAddress=qCounter+1
+    #reinicio pila de params y tempCounter para nueva funcion 
+    sParams=[]
+    tempCounter=1
+    #Relleno el quadruplo 1 con la localizacion del main
+    quadGen.quads[0] = ("GOTO",None,None, mainStartAddress)
+    print("CURRENT FUNCCC", currFunc)
+
+
 def p_mainfunction(p):
-    '''mainfunction : MAIN LPAREN RPAREN LBRACE body RBRACE'''
+    '''mainfunction : MAIN decfuncmain LPAREN RPAREN LBRACE body RBRACE'''
+    global localArray, currFunc, functions_table,mainStartAddress, tempCounterInt, tempCounterFloat
+    func_type="main"
+    #Revisa si existe la función
+    if currFunc in functions_table: 
+        print("ERROR YA EXISTE ESA FUNCION")
+    else:
+        #Revisa que si haya algo en su tabla de variables locales
+        if(len(localArray)!=0):
+            func_var_table=localArray.pop()
+        else: func_var_table=local_var_table
+        func_var_table_copy = copy.deepcopy(func_var_table)
+        varCounterFloat=func_var_table_copy['counters']['float']
+        varCounterInt=func_var_table_copy['counters']['int']
+        add_function(currFunc, func_type, (mainStartAddress), varCounterInt, varCounterFloat, tempCounterInt, tempCounterFloat, func_var_table_copy)
+        #Reseteo counters despues de guardar para usarlos en la prox funcion
+        tempCounterFloat=0
+        tempCounterInt=0
+        #print("TABLA DE FUNCIONES", functions_table)
 
 
 def p_modules(p):

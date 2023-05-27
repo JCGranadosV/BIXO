@@ -9,3 +9,8 @@ Actualmente trabajando en el FOR y empezaremos a crear los cuadruplos de nuestra
 
 INSTALACION DE LIBRERIAS:
 pip install ply
+
+
+
+NOTAS:
+-falta generar cuadruplo que guarda valor del return de func int o float

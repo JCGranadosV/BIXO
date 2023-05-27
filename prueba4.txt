@@ -11,3 +11,9 @@ function int cerrar(){
     var int d;
     c=3+4*4*6.3+6+7.7/3/4.4;
 }
+main(){
+    var int ma;
+    var float kle;
+    kle=3+4+5;
+    ma=kle*3;
+}
