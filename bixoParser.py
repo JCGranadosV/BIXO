@@ -2,6 +2,7 @@ import copy
 import re
 import ply.yacc as yacc
 import bixoLexer
+from cuboSemantico import semantic_cube
 from bixoLexer import tokens
 
 
@@ -130,6 +131,12 @@ regexFloat=r'\d+\.\d+'
 paramCounter=1
 sParams=[]
 counterInicioFunc=0
+#Counters de temporales
+tempCounterInt=0
+tempCounterFloat=0
+#pilatipos cubo semantico
+sTipos=[]
+
 
 functions_table = {}
 
@@ -275,7 +282,7 @@ def p_type(p):
             
 def p_function(p):
     '''function : FUNCTION type decfunc LPAREN param RPAREN LBRACE body RBRACE'''
-    global localArray, currFunc, functions_table, counterInicioFunc
+    global localArray, currFunc, functions_table, counterInicioFunc, tempCounterFloat, tempCounterInt
     func_type=p[2]
     copy_var_local()
     #Revisa si existe la función
@@ -288,7 +295,9 @@ def p_function(p):
         else: func_var_table=local_var_table
         func_var_table_copy = copy.deepcopy(func_var_table)
         print("FUNC VAR TABLE ES: ",func_var_table_copy)
-        add_function(currFunc, func_type, (counterInicioFunc+1), 0, 0, 0, 0, func_var_table_copy)
+        add_function(currFunc, func_type, (counterInicioFunc+1), 0, 0, tempCounterInt, tempCounterFloat, func_var_table_copy)
+        tempCounterFloat=0
+        tempCounterInt=0
         #print("TABLA DE FUNCIONES", functions_table)
 
 def p_decfunc(p):
@@ -304,7 +313,7 @@ def p_decfunc(p):
     
 def p_voidfunction(p):
     '''voidfunction : FUNCTION VOID decfunc LPAREN param RPAREN LBRACE body RBRACE'''
-    global localArray, currFunc, functions_table,counterInicioFunc
+    global localArray, currFunc, functions_table,counterInicioFunc, tempCounterInt, tempCounterFloat
     func_type=p[2]
     #Revisa si existe la función
     if currFunc in functions_table: 
@@ -315,7 +324,9 @@ def p_voidfunction(p):
             func_var_table=localArray.pop()
         else: func_var_table=local_var_table
         func_var_table_copy = copy.deepcopy(func_var_table)
-        add_function(currFunc, func_type, (counterInicioFunc+1), 0, 0, 0, 0, func_var_table_copy)
+        add_function(currFunc, func_type, (counterInicioFunc+1), 0, 0, tempCounterInt, tempCounterFloat, func_var_table_copy)
+        tempCounterFloat=0
+        tempCounterInt=0
         #print("TABLA DE FUNCIONES", functions_table)
 
 def p_mainfunction(p):
@@ -387,17 +398,22 @@ def p_mexp(p):
     if len(p) == 2:
         p[0]=p[1]
     elif len(p)==4:
+        global qCounter, tempCounterFloat, tempCounterInt
+        temp = getTemp()
+        tipo2=sTipos.pop()
+        tipo1=sTipos.pop()
+        tipo_resultado = semantic_cube[tipo1][p[2]][tipo2]
+        sTipos.append(tipo_resultado)
+        if (tipo_resultado=="int"):
+                tempCounterInt+=1
+        elif (tipo_resultado=="float"):
+                tempCounterFloat+=1
+        qCounter+=1
         if p[2]=="+":
-            global qCounter
-            temp = getTemp()
-            print("temp es: ",temp)
             quadGen.gen_quad("+", p[1], p[3], temp)
-            qCounter+=1
             p[0]=temp
         elif p[2]=="-":
-            temp = getTemp()
             quadGen.gen_quad("-", p[1], p[3], temp)
-            qCounter+=1
             p[0]=temp
     
 
@@ -409,17 +425,23 @@ def p_t(p):
     if len(p) == 2:
         p[0]=p[1]
     elif len(p)==4:
-        print ("ENTRO A T A HACER:", p[1], p[2],p[3])
-        global qCounter
+        global qCounter, tempCounterFloat, tempCounterInt
+        temp = getTemp()
+        tipo2=sTipos.pop()
+        tipo1=sTipos.pop()
+        tipo_resultado = semantic_cube[tipo1][p[2]][tipo2]
+        sTipos.append(tipo_resultado)
+        if (tipo_resultado=="int"):
+                tempCounterInt+=1
+        elif (tipo_resultado=="float"):
+                tempCounterFloat+=1
+        qCounter+=1
         if p[2]=="*":
-            temp = getTemp()
             quadGen.gen_quad("*", p[1], p[3], temp)
-            qCounter+=1
             p[0]=temp
         elif p[2]=="/":
             temp = getTemp()
             quadGen.gen_quad("/", p[1],p[3], temp)
-            qCounter+=1
             p[0]=temp
    
 def p_f(p):
@@ -428,12 +450,12 @@ def p_f(p):
          | CTF
          | var
          | call'''
-    global regexInt, regexFloat
+    global regexInt, regexFloat, sTipos
     if len(p)==2:
-        #if re.match(regexFloat, str(p[1])):
-        #    print("CTF")
-        #elif re.match(regexInt, str(p[1])):
-        #    print("CTI")
+        if re.match(regexFloat, str(p[1])):
+            sTipos.append("float")
+        elif re.match(regexInt, str(p[1])):
+            sTipos.append("int")
         p[0]=p[1]
         
 
@@ -805,7 +827,7 @@ parser = yacc.yacc()
 # Procesar cada línea con el parser
 
 
-fileName = "prueba3.txt"   
+fileName = "prueba4.txt"   
 inputFile = open(fileName, 'r')
 inputCode = inputFile.read()
 inputFile.close()

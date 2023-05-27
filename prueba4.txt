@@ -2,9 +2,12 @@ program id;
 var int i;
 function float abrir (int k){
     var int a;
-    var int prueb;
     var int b;
-    b=5;
-    a=b+5+6;
-    prueb = 3+5-6+7+8*7*9;
+    a=3+4-5+6.6+9+10-44.4;
+    b=2+3+4;
+}
+function int cerrar(){
+    var int c;
+    var int d;
+    c=3+4*4*6.3+6+7.7/3/4.4;
 }
