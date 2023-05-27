@@ -2,21 +2,24 @@ program id;
 var float col, que;
 var int pepe, rodrigo, juan;
 function void abrir(float k){
-    var int carlitos;
+    var float carlitos;
     var int n;
     var int v;
+    n=3;
+    v=5;
     carlitos=n+v+5;
 }
 function int cerrar(int c, int l, float ks){
     var int rodrigo;
     rodrigo=3;
+    return rodrigo+4+5;
 }
 function float comer(int m){
     var int a,b;
     var float ff;
     var float fa;
     var int c;
-    c=a+b;
+    var int ret;
     read(c);
     print(a);
     ff=5.5*4*6*7+10/4-3/3+22;
@@ -24,10 +27,15 @@ function float comer(int m){
     cerrar(a,b,c);
     comer(d,e);
     abrir();
+    return a;
 }
 function int mmm(){
     var int aa;
     aa=1+3;
     mmm();
     comer(aa);
+    return aa;
+}
+main(){
+    var int ma;
 }

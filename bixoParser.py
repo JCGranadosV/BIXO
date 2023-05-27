@@ -132,7 +132,7 @@ regexInt=r'\d+'
 regexFloat=r'\d+\.\d+'
 regexTemp = r't\d+'
 paramCounter=1
-sParams=[]
+sCallParams=[]
 counterInicioFunc=0
 #Counters de temporales
 tempCounterInt=0
@@ -143,9 +143,10 @@ sParams=[]
 
 functions_table = {}
 
-def add_function(name, return_type, start_address, varInt, varFloat, tempInt, tempFloat,local_table):
+def add_function(name, return_type, return_value, start_address, varInt, varFloat, tempInt, tempFloat,local_table):
     functions_table[name] = {
         "return_type": return_type,
+        "return_value": return_value,
         "start_address": start_address,
         "resources": {
             "varInt": varInt,
@@ -285,9 +286,10 @@ def p_type(p):
     p[0] = p[1]
             
 def p_function(p):
-    '''function : FUNCTION type decfunc LPAREN param RPAREN LBRACE body RBRACE'''
+    '''function : FUNCTION type decfunc LPAREN param RPAREN LBRACE body RETURN exp SEMICOLON RBRACE'''
     global localArray, currFunc, functions_table, counterInicioFunc, tempCounterFloat, tempCounterInt
     func_type=p[2]
+    return_value=p[10]
     copy_var_local()
     #Revisa si existe la función
     if currFunc in functions_table: 
@@ -301,7 +303,7 @@ def p_function(p):
         #print("FUNC VAR TABLE ES: ",func_var_table_copy)
         varCounterFloat=func_var_table_copy['counters']['float']
         varCounterInt=func_var_table_copy['counters']['int']
-        add_function(currFunc, func_type, (counterInicioFunc+1), varCounterInt,varCounterFloat, tempCounterInt, tempCounterFloat, func_var_table_copy)
+        add_function(currFunc, func_type, return_value,(counterInicioFunc+1), varCounterInt,varCounterFloat, tempCounterInt, tempCounterFloat, func_var_table_copy)
         #Reseteo counters despues de guardar para usarlos en la prox funcion
         tempCounterFloat=0
         tempCounterInt=0
@@ -310,12 +312,13 @@ def p_function(p):
 def p_decfunc(p):
     '''decfunc : ID'''
     limpiaDatos()
-    global currFunc,currFuncStartAddress,counterInicioFunc, sParams, tempCounter
+    global currFunc,currFuncStartAddress,counterInicioFunc, sParams, tempCounter, sCallParams
     currFunc=p[1]
     currFuncStartAddress=qCounter
     counterInicioFunc=qCounter
     #reinicio pila de params y tempCounter para nueva funcion 
     sParams=[]
+    sCallParams=[]
     tempCounter=1
     print("CURRENT FUNC", currFunc)
 
@@ -335,7 +338,7 @@ def p_voidfunction(p):
         func_var_table_copy = copy.deepcopy(func_var_table)
         varCounterFloat=func_var_table_copy['counters']['float']
         varCounterInt=func_var_table_copy['counters']['int']
-        add_function(currFunc, func_type, (counterInicioFunc+1), varCounterInt, varCounterFloat, tempCounterInt, tempCounterFloat, func_var_table_copy)
+        add_function(currFunc, func_type, None, (counterInicioFunc+1), varCounterInt, varCounterFloat, tempCounterInt, tempCounterFloat, func_var_table_copy)
         #Reseteo counters despues de guardar para usarlos en la prox funcion
         tempCounterFloat=0
         tempCounterInt=0
@@ -346,11 +349,12 @@ def p_voidfunction(p):
 def p_decfuncmain(p):
     '''decfuncmain : '''
     limpiaDatos()
-    global currFunc, tempCounter, sParams, mainStartAddress
+    global currFunc, tempCounter, sParams, mainStartAddress, sCallParams
     currFunc="main"
     mainStartAddress=qCounter+1
     #reinicio pila de params y tempCounter para nueva funcion 
     sParams=[]
+    sCallParams=[]
     tempCounter=1
     #Relleno el quadruplo 1 con la localizacion del main
     quadGen.quads[0] = ("GOTO",None,None, mainStartAddress)
@@ -372,7 +376,7 @@ def p_mainfunction(p):
         func_var_table_copy = copy.deepcopy(func_var_table)
         varCounterFloat=func_var_table_copy['counters']['float']
         varCounterInt=func_var_table_copy['counters']['int']
-        add_function(currFunc, func_type, (mainStartAddress), varCounterInt, varCounterFloat, tempCounterInt, tempCounterFloat, func_var_table_copy)
+        add_function(currFunc, func_type, None, (mainStartAddress), varCounterInt, varCounterFloat, tempCounterInt, tempCounterFloat, func_var_table_copy)
         #Reseteo counters despues de guardar para usarlos en la prox funcion
         tempCounterFloat=0
         tempCounterInt=0
@@ -448,7 +452,7 @@ def p_mexp(p):
     if len(p) == 2:
         p[0]=p[1]
     elif len(p)==4:
-        global qCounter, tempCounterFloat, tempCounterInt
+        global qCounter, tempCounterFloat, tempCounterInt, sTipos
         temp = getTemp()
         tipo2=sTipos.pop()
         tipo1=sTipos.pop()
@@ -475,7 +479,7 @@ def p_t(p):
     if len(p) == 2:
         p[0]=p[1]
     elif len(p)==4:
-        global qCounter, tempCounterFloat, tempCounterInt
+        global qCounter, tempCounterFloat, tempCounterInt, sTipos
         temp = getTemp()
         tipo2=sTipos.pop()
         tipo1=sTipos.pop()
@@ -501,7 +505,7 @@ def p_f(p):
          | var
          | call'''
     global regexInt, regexFloat, sTipos
-    if len(p)==2:
+    if len(p)==2:  
         if re.match(regexFloat, str(p[1])):
             sTipos.append("float")
         elif re.match(regexInt, str(p[1])):
@@ -620,17 +624,17 @@ def p_var(p):
     
 def p_call(p):
     '''call : ID LPAREN callp RPAREN SEMICOLON'''
-    global qCounter, paramCounter, currFunc, sParams
+    global qCounter, paramCounter, currFunc, sCallParams
     funCall=p[1]
     #Revisa si la funcion a llamar existe en la tabla de funciones
     if (funCall in functions_table):
         quadGen.gen_quad('ERA', None, None, funCall)
         qCounter+=1
         #Itera en la pila de parametros hasta que este vacia y genera el cuadruplo de cada param
-        while (sParams!=[]):
+        while (sCallParams!=[]):
             paramC = "par" + str(paramCounter)
             paramCounter += 1
-            quadGen.gen_quad('PARAM', sParams.pop(), None, paramC)
+            quadGen.gen_quad('PARAM', sCallParams.pop(), None, paramC)
         func_address = functions_table[funCall]["start_address"]
         quadGen.gen_quad('GOSUB', None, None, func_address)
         qCounter+=1
@@ -640,16 +644,16 @@ def p_call(p):
         quadGen.gen_quad('ERA', None, None, funCall)
         qCounter+=1
         #Itera en la pila de parametros hasta que este vacia y genera el cuadruplo de cada param
-        while (sParams!=[]):
+        while (sCallParams!=[]):
             paramC = "par" + str(paramCounter)
             paramCounter += 1
-            quadGen.gen_quad('PARAM', sParams.pop(), None, paramC)
+            quadGen.gen_quad('PARAM', sCallParams.pop(), None, paramC)
         func_address = currFuncStartAddress+1
         quadGen.gen_quad('GOSUB', None, None, func_address)
         qCounter+=1
     else:
         print("ERROR NO EXISTE ESA FUNCION")
-    sParams=[]
+    sCallParams=[]
     paramCounter=1
         
 
@@ -659,7 +663,7 @@ def p_callp(p):
              | '''
     global paramCounter,qCounter
     if len(p)>1:
-        sParams.append(p[1])
+        sCallParams.append(p[1])
         qCounter+=1
 
        
@@ -895,7 +899,7 @@ parser = yacc.yacc()
 # Procesar cada línea con el parser
 
 
-fileName = "prueba4.txt"   
+fileName = "prueba3.txt"   
 inputFile = open(fileName, 'r')
 inputCode = inputFile.read()
 inputFile.close()

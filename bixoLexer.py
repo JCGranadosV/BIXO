@@ -4,6 +4,7 @@ tokens = [
     'PROGRAM',
     'END',
     'MAIN',
+    'RETURN',
     'ID',
     'INT',
     'FLOAT',
@@ -68,6 +69,7 @@ tokens = [
 
 reserved = {
     'program' : 'PROGRAM',
+    'return' : 'RETURN',
     'end' : 'END',
     'main' : 'MAIN',
     'var' : 'VAR',
@@ -151,6 +153,10 @@ def t_END(t):
 
 def t_MAIN(t):
     r'main'
+    return t
+
+def t_RETURN(t):
+    r'return'
     return t
 
 def t_VAR(t):
