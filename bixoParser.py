@@ -388,6 +388,7 @@ def p_gexp(p):
         sOperands.append(p[1])
         sOperands.append(p[3])
         sOperators.append(p[2])
+        #Revisar porque no esta entrando aca
         #print("Pila operandos:", sOperands)
         #print("pila operadores:", sOperators)
 
