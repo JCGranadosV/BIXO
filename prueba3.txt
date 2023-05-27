@@ -3,6 +3,9 @@ var float col, que;
 var int pepe, rodrigo, juan;
 function void abrir(float k){
     var int carlitos;
+    var int n;
+    var int v;
+    carlitos=n+v+5;
 }
 function int cerrar(int c, int l, float ks){
     var int rodrigo;
@@ -21,4 +24,10 @@ function float comer(int m){
     cerrar(a,b,c);
     comer(d,e);
     abrir();
+}
+function int mmm(){
+    var int aa;
+    aa=1+3;
+    mmm();
+    comer(aa);
 }

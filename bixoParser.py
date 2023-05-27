@@ -129,6 +129,7 @@ regexInt=r'\d+'
 regexFloat=r'\d+\.\d+'
 paramCounter=1
 sParams=[]
+counterInicioFunc=0
 
 functions_table = {}
 
@@ -274,7 +275,7 @@ def p_type(p):
             
 def p_function(p):
     '''function : FUNCTION type decfunc LPAREN param RPAREN LBRACE body RBRACE'''
-    global localArray, currFunc, qCounter, functions_table
+    global localArray, currFunc, functions_table, counterInicioFunc
     func_type=p[2]
     copy_var_local()
     #Revisa si existe la función
@@ -287,22 +288,23 @@ def p_function(p):
         else: func_var_table=local_var_table
         func_var_table_copy = copy.deepcopy(func_var_table)
         print("FUNC VAR TABLE ES: ",func_var_table_copy)
-        add_function(currFunc, func_type, qCounter, 0, 0, 0, 0, func_var_table_copy)
+        add_function(currFunc, func_type, (counterInicioFunc+1), 0, 0, 0, 0, func_var_table_copy)
         #print("TABLA DE FUNCIONES", functions_table)
 
 def p_decfunc(p):
     '''decfunc : ID'''
     limpiaDatos()
-    global currFunc,currFuncStartAddress
+    global currFunc,currFuncStartAddress,counterInicioFunc
     print(tempCounter)
     currFunc=p[1]
     currFuncStartAddress=qCounter
+    counterInicioFunc=qCounter
     print("CURRENT FUNCCC", currFunc)
 
     
 def p_voidfunction(p):
     '''voidfunction : FUNCTION VOID decfunc LPAREN param RPAREN LBRACE body RBRACE'''
-    global localArray, currFunc, qCounter, functions_table
+    global localArray, currFunc, functions_table,counterInicioFunc
     func_type=p[2]
     #Revisa si existe la función
     if currFunc in functions_table: 
@@ -313,7 +315,7 @@ def p_voidfunction(p):
             func_var_table=localArray.pop()
         else: func_var_table=local_var_table
         func_var_table_copy = copy.deepcopy(func_var_table)
-        add_function(currFunc, func_type, qCounter, 0, 0, 0, 0, func_var_table_copy)
+        add_function(currFunc, func_type, (counterInicioFunc+1), 0, 0, 0, 0, func_var_table_copy)
         #print("TABLA DE FUNCIONES", functions_table)
 
 def p_mainfunction(p):
@@ -341,9 +343,9 @@ def p_param(p):
              | type ID COMMA param
              |'''
     global sVars, sTypes
-    sTypes.append(p[1])
-    sVars.append(p[2])
     if len(p)==3:
+        sTypes.append(p[1])
+        sVars.append(p[2])
         add_var_local(p[2],p[1],currFunc) 
 
 
@@ -552,7 +554,7 @@ def p_call(p):
             paramC = "par" + str(paramCounter)
             paramCounter += 1
             quadGen.gen_quad('PARAM', sParams.pop(), None, paramC)
-        func_address = currFuncStartAddress
+        func_address = currFuncStartAddress+1
         quadGen.gen_quad('GOSUB', None, None, func_address)
         qCounter+=1
     else:
