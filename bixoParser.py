@@ -137,7 +137,6 @@ tempCounterFloat=0
 #pilatipos cubo semantico
 sTipos=[]
 
-
 functions_table = {}
 
 def add_function(name, return_type, start_address, varInt, varFloat, tempInt, tempFloat,local_table):
@@ -230,7 +229,7 @@ def p_decvar(p):
 
 def p_decvarp(p):
     '''decvarp : type decvarpp SEMICOLON'''
-    
+
     print("EL SCOPE ES", scope)
 
     var_type = p[1]
@@ -295,7 +294,10 @@ def p_function(p):
         else: func_var_table=local_var_table
         func_var_table_copy = copy.deepcopy(func_var_table)
         print("FUNC VAR TABLE ES: ",func_var_table_copy)
-        add_function(currFunc, func_type, (counterInicioFunc+1), 0, 0, tempCounterInt, tempCounterFloat, func_var_table_copy)
+        varCounterFloat=func_var_table_copy['counters']['float']
+        varCounterInt=func_var_table_copy['counters']['int']
+        add_function(currFunc, func_type, (counterInicioFunc+1), varCounterInt,varCounterFloat, tempCounterInt, tempCounterFloat, func_var_table_copy)
+        #Reseteo counters despues de guardar para usarlos en la prox funcion
         tempCounterFloat=0
         tempCounterInt=0
         #print("TABLA DE FUNCIONES", functions_table)
@@ -324,7 +326,10 @@ def p_voidfunction(p):
             func_var_table=localArray.pop()
         else: func_var_table=local_var_table
         func_var_table_copy = copy.deepcopy(func_var_table)
-        add_function(currFunc, func_type, (counterInicioFunc+1), 0, 0, tempCounterInt, tempCounterFloat, func_var_table_copy)
+        varCounterFloat=func_var_table_copy['counters']['float']
+        varCounterInt=func_var_table_copy['counters']['int']
+        add_function(currFunc, func_type, (counterInicioFunc+1), varCounterInt, varCounterFloat, tempCounterInt, tempCounterFloat, func_var_table_copy)
+        #Reseteo counters despues de guardar para usarlos en la prox funcion
         tempCounterFloat=0
         tempCounterInt=0
         #print("TABLA DE FUNCIONES", functions_table)
@@ -379,10 +384,12 @@ def p_gexp(p):
             | mexp gexpp mexp'''
     if len(p) == 2:
         p[0]=p[1]
-    if len(p) == 4:
+    elif len(p) == 4:
         sOperands.append(p[1])
         sOperands.append(p[3])
         sOperators.append(p[2])
+        #print("Pila operandos:", sOperands)
+        #print("pila operadores:", sOperators)
 
 def p_gexpp(p):
     '''gexpp : LT
