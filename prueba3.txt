@@ -32,6 +32,7 @@ function float comer(int m){
     fa=ff;
     abrir(ff)
     c=cerrar(x,y,z);
+    fa=comer(x);
     return a;
 }
 main(){

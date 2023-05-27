@@ -177,7 +177,6 @@ def checkTable():
 
 def getFuncReturn(func_name):
     funcReturn = functions_table[func_name]["return_value"]
-    print("funcreturn",funcReturn)
     return funcReturn
 
     
@@ -297,7 +296,6 @@ def p_function(p):
     '''function : FUNCTION decfunctype decfunc LPAREN param RPAREN LBRACE body RETURN exp SEMICOLON RBRACE'''
     global localArray, currFunc, functions_table, counterInicioFunc, tempCounterFloat, tempCounterInt
     func_type=p[2]
-    print("FUNC TYPE",func_type)
     return_value=p[10]
     copy_var_local()
     #Revisa si existe la función
@@ -656,11 +654,13 @@ def p_call(p):
         quadGen.gen_quad('GOSUB', None, None, func_address)
         qCounter+=1
         #si la funcion a llamar es de tipo float o int, genera el cuadruplo de almacenarlo
-        print("RETURN TYPE", functions_table[funCall]["return_type"])
         if((functions_table[funCall]["return_type"]=="int") or (functions_table[funCall]["return_type"]=="float")):
-            print("ES UNA LLAMADA A TIPO FLOAT O INT")
-            sReturns.append(getFuncReturn(funCall))
-            p[0]=(sReturns.pop())
+            temp=getTemp()
+            quadGen.gen_quad('=', funCall, None, temp)
+            qCounter+=1
+            p[0]=temp
+            #sReturns.append(getFuncReturn(funCall))
+            #p[0]=(sReturns.pop())
     #Revisa si la funcion a llamar es la funcion actual
     elif (funCall == currFunc): 
         global currFuncStartAddress
@@ -676,6 +676,10 @@ def p_call(p):
         qCounter+=1
         #si la funcion a llamar es de tipo float o int, genera el cuadruplo de almacenarlo
         if(currFuncType=="int") or (currFuncType=="float"):
+            temp=getTemp()
+            quadGen.gen_quad('=', currFunc, None, temp)
+            qCounter+=1
+            p[0]=temp
             #print("ES UNA LLAMADA A TIPO FLOAT O INT A SI MISMO")
             #sReturns.append(getFuncReturn(funCall))
             #print(sReturns)
