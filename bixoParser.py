@@ -530,10 +530,11 @@ def p_call(p):
     '''call : ID LPAREN callp RPAREN SEMICOLON'''
     global qCounter, paramCounter, currFunc, sParams
     funCall=p[1]
-    
+    #Revisa si la funcion a llamar existe en la tabla de funciones
     if (funCall in functions_table):
         quadGen.gen_quad('ERA', None, None, funCall)
         qCounter+=1
+        #Itera en la pila de parametros hasta que este vacia y genera el cuadruplo de cada param
         while (sParams!=[]):
             paramC = "par" + str(paramCounter)
             paramCounter += 1
@@ -541,10 +542,12 @@ def p_call(p):
         func_address = functions_table[funCall]["start_address"]
         quadGen.gen_quad('GOSUB', None, None, func_address)
         qCounter+=1
+    #Revisa si la funcion a llamar es la funcion actual
     elif (funCall == currFunc): 
         global currFuncStartAddress
         quadGen.gen_quad('ERA', None, None, funCall)
         qCounter+=1
+        #Itera en la pila de parametros hasta que este vacia y genera el cuadruplo de cada param
         while (sParams!=[]):
             paramC = "par" + str(paramCounter)
             paramCounter += 1
