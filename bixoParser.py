@@ -130,6 +130,7 @@ localTypes=[]
 contLocal=-1
 regexInt=r'\d+'
 regexFloat=r'\d+\.\d+'
+regexTemp = r't\d+'
 paramCounter=1
 sParams=[]
 counterInicioFunc=0
@@ -166,7 +167,7 @@ def limpiaDatos():
     local_var_table["counters"]["float"]=0
     local_var_table["values"]["int"]={}
     local_var_table["values"]["float"]={}
-    print("LOCAL VAR TABLE DESPUES DE EMPTY: ",local_var_table)
+    #print("LOCAL VAR TABLE DESPUES DE EMPTY: ",local_var_table)
 
 def checkTable():
     return(local_var_table)
@@ -209,7 +210,7 @@ precedence = (
 
 def p_program(p):
     '''program : PROGRAM gotomain ID SEMICOLON decvar modules mainfunction'''
-    print("Nombre del programa:", p[2])
+    print("Nombre del programa:", p[3])
     print("TABLA DE FUNCIONES", functions_table)
     print("Cuadruplos: ",str(quadGen))
     print("Counter de cuadruplos: ", qCounter)
@@ -234,7 +235,7 @@ def p_decvar(p):
 def p_decvarp(p):
     '''decvarp : type decvarpp SEMICOLON'''
 
-    print("EL SCOPE ES", scope)
+    #print("EL SCOPE ES", scope)
 
     var_type = p[1]
     var_name = p[2]
@@ -297,7 +298,7 @@ def p_function(p):
             func_var_table=localArray.pop()
         else: func_var_table=local_var_table
         func_var_table_copy = copy.deepcopy(func_var_table)
-        print("FUNC VAR TABLE ES: ",func_var_table_copy)
+        #print("FUNC VAR TABLE ES: ",func_var_table_copy)
         varCounterFloat=func_var_table_copy['counters']['float']
         varCounterInt=func_var_table_copy['counters']['int']
         add_function(currFunc, func_type, (counterInicioFunc+1), varCounterInt,varCounterFloat, tempCounterInt, tempCounterFloat, func_var_table_copy)
@@ -316,7 +317,7 @@ def p_decfunc(p):
     #reinicio pila de params y tempCounter para nueva funcion 
     sParams=[]
     tempCounter=1
-    print("CURRENT FUNCCC", currFunc)
+    print("CURRENT FUNC", currFunc)
 
     
 def p_voidfunction(p):
@@ -353,7 +354,7 @@ def p_decfuncmain(p):
     tempCounter=1
     #Relleno el quadruplo 1 con la localizacion del main
     quadGen.quads[0] = ("GOTO",None,None, mainStartAddress)
-    print("CURRENT FUNCCC", currFunc)
+    print("CURRENT FUNC", currFunc)
 
 
 def p_mainfunction(p):
@@ -362,7 +363,7 @@ def p_mainfunction(p):
     func_type="main"
     #Revisa si existe la función
     if currFunc in functions_table: 
-        print("ERROR YA EXISTE ESA FUNCION")
+        print("ERROR YA EXISTE MAIN")
     else:
         #Revisa que si haya algo en su tabla de variables locales
         if(len(localArray)!=0):
@@ -523,15 +524,32 @@ def p_statements(p):
     
 def p_assign(p):
     '''assign : var EQUAL exp SEMICOLON'''
-    global qCounter, local_var_table
+    global qCounter, local_var_table, regexFloat, regexInt, regexTemp
     var_name=p[1]
     var_assign=p[3]
     estaenlocal=0
+    var_assign_type="var"
+    #Revisa si el que se le asignara es un numero int, float, un temp, o una variable
+    if re.match(regexFloat, str(p[3])):
+        var_assign_type="float"
+    elif re.match(regexInt, str(p[3])):
+        var_assign_type="int"
+    elif re.match(regexTemp, str(p[3])):
+        var_assign_type="temp"
     #Revisa si la variable es un int o un float
     if (var_name in (var_table["global"]["variables"]["int"]) or (var_name in local_var_table["variables"]["int"])):
         variable_type="int"
     elif ((var_name in var_table["global"]["variables"]["float"]) or (var_name in local_var_table["variables"]["float"])):
         variable_type="float"
+
+    #Revisa que a lo que se le esta asignando si exista
+    if (var_assign_type=="var"):
+         #print("variable a asignar es var", var_assign)
+         if((var_assign in (var_table["global"]["variables"]["int"]) or (var_assign in var_table["global"]["variables"]["float"])) or (var_assign in (local_var_table["variables"]["int"]) or (var_assign in local_var_table["variables"]["float"]))):
+             #print("la variable a asignar si existe", var_assign)
+             pass
+         else: print("ERROR LA VARIABLE A ASIGNAR",var_assign, "NO EXISTE")
+        
     #Ejecucion para scope global
     if scope == "global":
         if (var_name in (var_table["global"]["variables"]["int"]) or (var_name in var_table["global"]["variables"]["float"])):
@@ -567,7 +585,6 @@ def p_assign(p):
         else:
             print("ERROR NO EXISTE", var_name)
 
-    print(quadGen.quads)
         
 
 #Genera cuadruplos de read
