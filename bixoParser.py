@@ -128,6 +128,7 @@ contLocal=-1
 regexInt=r'\d+'
 regexFloat=r'\d+\.\d+'
 paramCounter=1
+sParams=[]
 
 functions_table = {}
 
@@ -527,12 +528,16 @@ def p_var(p):
     
 def p_call(p):
     '''call : ID LPAREN callp RPAREN SEMICOLON'''
-    global qCounter, paramCounter, currFunc
+    global qCounter, paramCounter, currFunc, sParams
     funCall=p[1]
-    paramCounter=1
+    
     if (funCall in functions_table):
         quadGen.gen_quad('ERA', None, None, funCall)
         qCounter+=1
+        while (sParams!=[]):
+            paramC = "par" + str(paramCounter)
+            paramCounter += 1
+            quadGen.gen_quad('PARAM', sParams.pop(), None, paramC)
         func_address = functions_table[funCall]["start_address"]
         quadGen.gen_quad('GOSUB', None, None, func_address)
         qCounter+=1
@@ -540,11 +545,17 @@ def p_call(p):
         global currFuncStartAddress
         quadGen.gen_quad('ERA', None, None, funCall)
         qCounter+=1
+        while (sParams!=[]):
+            paramC = "par" + str(paramCounter)
+            paramCounter += 1
+            quadGen.gen_quad('PARAM', sParams.pop(), None, paramC)
         func_address = currFuncStartAddress
         quadGen.gen_quad('GOSUB', None, None, func_address)
         qCounter+=1
     else:
         print("ERROR NO EXISTE ESA FUNCION")
+    sParams=[]
+    paramCounter=1
         
 
 def p_callp(p):
@@ -553,9 +564,7 @@ def p_callp(p):
              | '''
     global paramCounter,qCounter
     if len(p)>1:
-        param = "par" + str(paramCounter)
-        paramCounter += 1
-        quadGen.gen_quad('PARAM', p[1], None, param)
+        sParams.append(p[1])
         qCounter+=1
 
        
