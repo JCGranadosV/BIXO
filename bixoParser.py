@@ -107,7 +107,7 @@ sTypes = []
 sJumps = []
 qCounter=0
 #counter y stack de temporales
-tempCounter=0
+tempCounter=1
 sTemp=[]
 #pila operandos
 sOperands = []
@@ -136,6 +136,7 @@ tempCounterInt=0
 tempCounterFloat=0
 #pilatipos cubo semantico
 sTipos=[]
+sParams=[]
 
 functions_table = {}
 
@@ -223,7 +224,7 @@ def p_decvar(p):
     '''decvar : VAR decvarp
               | VAR decvarp decvar
               |'''
-    global scope
+    global scope,  sParams
     scope="local"
     #p[0]=p[2]
 
@@ -238,8 +239,8 @@ def p_decvarp(p):
     if scope == "local":
         #print("pilavars: ", sVars)
         for vars in sVars:
-        #Revisa que la variable no exista ya en la tabla 
-            if (vars in local_var_table["variables"]["int"]) or (vars in local_var_table["variables"]["float"]):
+        #Revisa que la variable no exista ya en la tabla y que no sea un parametro(porque solia marcar error para parametros)
+            if (((vars in local_var_table["variables"]["int"]) or (vars in local_var_table["variables"]["float"])) and (vars not in sParams)):
                 #antes de implementar este error checar la logica 
                 print(vars,"ERROR YA EXISTE")
             else:
@@ -305,11 +306,13 @@ def p_function(p):
 def p_decfunc(p):
     '''decfunc : ID'''
     limpiaDatos()
-    global currFunc,currFuncStartAddress,counterInicioFunc
-    print(tempCounter)
+    global currFunc,currFuncStartAddress,counterInicioFunc, sParams, tempCounter
     currFunc=p[1]
     currFuncStartAddress=qCounter
     counterInicioFunc=qCounter
+    #reinicio pila de params y tempCounter para nueva funcion 
+    sParams=[]
+    tempCounter=1
     print("CURRENT FUNCCC", currFunc)
 
     
@@ -362,6 +365,7 @@ def p_param(p):
     if len(p)==3:
         sTypes.append(p[1])
         sVars.append(p[2])
+        sParams.append(p[2])
         add_var_local(p[2],p[1],currFunc) 
 
 
@@ -486,10 +490,12 @@ def p_assign(p):
     var_name=p[1]
     var_assign=p[3]
     estaenlocal=0
+    #Revisa si la variable es un int o un float
     if (var_name in (var_table["global"]["variables"]["int"]) or (var_name in local_var_table["variables"]["int"])):
         variable_type="int"
     elif ((var_name in var_table["global"]["variables"]["float"]) or (var_name in local_var_table["variables"]["float"])):
         variable_type="float"
+    #Ejecucion para scope global
     if scope == "global":
         if (var_name in (var_table["global"]["variables"]["int"]) or (var_name in var_table["global"]["variables"]["float"])):
             print("si existe en global")
@@ -499,11 +505,11 @@ def p_assign(p):
             #añade valor a tabla de constantes
 
         else:
-            print("ERROR NO EXISTE")
+            print("ERROR NO EXISTE", var_name)
+    #Ejecucion para scope local
     elif scope == "local":
         #primero revisa si esta en el local
         if (var_name in (local_var_table["variables"]["int"]) or (var_name in local_var_table["variables"]["float"])):
-            print("si existe en local")
             #para encontrar y almacenar direccion de memoria
             var_assign=p[3]
             direccion_memoria = local_var_table.get("variables", {}).get(variable_type, {}).get(var_name)
@@ -522,7 +528,7 @@ def p_assign(p):
             qCounter+=1
             #añade valor a tabla de constantes
         else:
-            print("ERROR NO EXISTE")
+            print("ERROR NO EXISTE", var_name)
 
     print(quadGen.quads)
         

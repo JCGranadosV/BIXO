@@ -1,6 +1,6 @@
 program id;
 var int i;
-function float abrir (int k){
+function float abrir (int k, float c){
     var int a;
     var int b;
     a=3+4-5+6.6+9+10-44.4;
