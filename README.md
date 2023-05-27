@@ -13,4 +13,3 @@ pip install ply
 
 
 NOTAS:
--falta generar cuadruplo que guarda valor del return de func int o float
