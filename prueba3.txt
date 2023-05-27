@@ -19,23 +19,24 @@ function float comer(int m){
     var float ff;
     var float fa;
     var int c;
+    var int x, y;
+    var float z;
+    x=3;
+    y=7;
+    z=4.5*3;
+    b=3;
     var int ret;
     read(c);
     print(a);
     ff=5.5*4*6*7+10/4-3/3+22;
     fa=ff;
-    cerrar(a,b,c);
-    comer(d,e);
-    abrir();
+    abrir(ff)
+    c=cerrar(x,y,z);
     return a;
-}
-function int mmm(){
-    var int aa;
-    aa=1+3;
-    mmm();
-    comer(aa);
-    return aa;
 }
 main(){
     var int ma;
+    ma=3+4;
+    var float klop;
+    klop=3.3*4+ma;
 }

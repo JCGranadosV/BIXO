@@ -124,6 +124,7 @@ quadGen=QuadGenerator()
 currFunc="ejemplo1"
 ##########################################################CounterInicioFunc y CurrFuncStartAddress son lo mismo 
 currFuncStartAddress=0
+currFuncType=""
 mainStartAddress=0
 localArray=[]
 localTypes=[]
@@ -140,6 +141,7 @@ tempCounterFloat=0
 #pilatipos cubo semantico
 sTipos=[]
 sParams=[]
+sReturns=[]
 
 functions_table = {}
 
@@ -172,6 +174,12 @@ def limpiaDatos():
 
 def checkTable():
     return(local_var_table)
+
+def getFuncReturn(func_name):
+    funcReturn = functions_table[func_name]["return_value"]
+    print("funcreturn",funcReturn)
+    return funcReturn
+
     
 
 ########################--Rangos de memoria--############################
@@ -286,9 +294,10 @@ def p_type(p):
     p[0] = p[1]
             
 def p_function(p):
-    '''function : FUNCTION type decfunc LPAREN param RPAREN LBRACE body RETURN exp SEMICOLON RBRACE'''
+    '''function : FUNCTION decfunctype decfunc LPAREN param RPAREN LBRACE body RETURN exp SEMICOLON RBRACE'''
     global localArray, currFunc, functions_table, counterInicioFunc, tempCounterFloat, tempCounterInt
     func_type=p[2]
+    print("FUNC TYPE",func_type)
     return_value=p[10]
     copy_var_local()
     #Revisa si existe la función
@@ -308,6 +317,12 @@ def p_function(p):
         tempCounterFloat=0
         tempCounterInt=0
         #print("TABLA DE FUNCIONES", functions_table)
+
+def p_decfunctype(p):
+    '''decfunctype : type'''
+    global currFuncType
+    currFuncType=p[1]
+    p[0]=p[1]
 
 def p_decfunc(p):
     '''decfunc : ID'''
@@ -388,6 +403,8 @@ def p_modules(p):
                | voidfunction modules
                | function
                | voidfunction'''
+    global currFuncType
+    currFuncType=""
     if(len(p)==2):
         p[0]=p[1]
     
@@ -623,8 +640,8 @@ def p_var(p):
     p[0]=p[1]
     
 def p_call(p):
-    '''call : ID LPAREN callp RPAREN SEMICOLON'''
-    global qCounter, paramCounter, currFunc, sCallParams
+    '''call : ID LPAREN callp RPAREN'''
+    global qCounter, paramCounter, currFunc, sCallParams, sReturns
     funCall=p[1]
     #Revisa si la funcion a llamar existe en la tabla de funciones
     if (funCall in functions_table):
@@ -638,6 +655,12 @@ def p_call(p):
         func_address = functions_table[funCall]["start_address"]
         quadGen.gen_quad('GOSUB', None, None, func_address)
         qCounter+=1
+        #si la funcion a llamar es de tipo float o int, genera el cuadruplo de almacenarlo
+        print("RETURN TYPE", functions_table[funCall]["return_type"])
+        if((functions_table[funCall]["return_type"]=="int") or (functions_table[funCall]["return_type"]=="float")):
+            print("ES UNA LLAMADA A TIPO FLOAT O INT")
+            sReturns.append(getFuncReturn(funCall))
+            p[0]=(sReturns.pop())
     #Revisa si la funcion a llamar es la funcion actual
     elif (funCall == currFunc): 
         global currFuncStartAddress
@@ -651,6 +674,12 @@ def p_call(p):
         func_address = currFuncStartAddress+1
         quadGen.gen_quad('GOSUB', None, None, func_address)
         qCounter+=1
+        #si la funcion a llamar es de tipo float o int, genera el cuadruplo de almacenarlo
+        if(currFuncType=="int") or (currFuncType=="float"):
+            #print("ES UNA LLAMADA A TIPO FLOAT O INT A SI MISMO")
+            #sReturns.append(getFuncReturn(funCall))
+            #print(sReturns)
+            pass
     else:
         print("ERROR NO EXISTE ESA FUNCION")
     sCallParams=[]
