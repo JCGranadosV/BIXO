@@ -1,0 +1,29 @@
+program pruebaif;
+var int i;
+function float abrir (int k, float c){
+    var int a;
+    var int b;
+    a=3+4;
+    b=2+3+4;
+    if(3==4){
+    b=5-4+1;
+    };
+    b=1+1;
+    return b;
+}
+function int cerrar(){
+    var float c;
+    var int d;
+    var float kl;
+    c=3+4*4*6.3+6+7.7/3/4.4;
+    kl=c;
+    return kl; 
+}
+main(){
+    var int ma;
+    var float kle;
+    kle=3+4+5;
+    var int ce;
+    ce=cerrar();
+    kle=ma;
+}

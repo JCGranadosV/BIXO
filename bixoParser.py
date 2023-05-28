@@ -17,7 +17,7 @@ class QuadGenerator:
     def __str__(self):
         result = ""
         for i, quad in enumerate(self.quads):
-            result += f"{i+1}: {QuadGenerator.format_quad(quad)}\n"
+            result += f"{i}: {QuadGenerator.format_quad(quad)}\n"
         return result
 
     @staticmethod
@@ -364,7 +364,7 @@ def p_decfuncmain(p):
     limpiaDatos()
     global currFunc, tempCounter, sParams, mainStartAddress, sCallParams
     currFunc="main"
-    mainStartAddress=qCounter+1
+    mainStartAddress=qCounter
     #reinicio pila de params y tempCounter para nueva funcion 
     sParams=[]
     sCallParams=[]
@@ -456,7 +456,7 @@ def p_gexp(p):
 def p_gexpp(p):
     '''gexpp : LT
              | GT
-             | EQUAL
+             | IFEQUAL
              | DIFF'''
     p[0]=p[1]
              
@@ -490,7 +490,6 @@ def p_t(p):
     '''t : f 
          | t MULT f
          | t DIV f'''
-    
     if len(p) == 2:
         p[0]=p[1]
     elif len(p)==4:
@@ -704,13 +703,14 @@ def p_callp(p):
 #def p_if(p):
 #    '''if : IF LPAREN exp quadsIf RPAREN statements ifp jumpsIf'''    
 def p_if(p):
-    '''if : IF LPAREN exp RPAREN quadsIf statements ifelse jumpsIf'''
+    '''if : IF LPAREN exp RPAREN quadsIf LBRACE statements RBRACE ifelse jumpsIf SEMICOLON'''
     print("AQUI CORRE EL IF")
     print("QG ES: ",str(quadGen))    
     print("OPERANDS",sOperands)    
+
 def p_ifelse(p):
     ''' ifelse : 
-               | ELSE quadsElse statements'''
+               | ELSE quadsElse LBRACE statements RBRACE'''
     global hayElse
     if (len(p)>2):
         hayElse=1
@@ -763,14 +763,24 @@ def p_quadsIf(p):
 
 def p_jumpsIf(p):
     '''jumpsIf : '''  
+    global qCounter,sOperands,sOperators
     print("AQUI CORRE EL JUMPIF")
     print("jumpsif")          
     jumps = sJumps.pop()
     print("JUMPS ES: ",jumps)
+    print("QCCOUNER ES",qCounter)
+    print("QG ES: ",str(quadGen))
     if(hayElse):
         print("ENTRO ELSE")
         quadGen.quads[jumps] = ("goto",None,None,qCounter)
-    else: quadGen.quads[jumps] = ("gotoF",sOperands[len(sOperands)-1],None,qCounter)
+        qCounter+=1
+    else:
+        quadGen.quads[jumps] = ("gotoF",sOperands[len(sOperands)-1],None,qCounter+1)
+        qCounter+=1
+    #al final reseteamos todos nuestras pilas
+    sOperators=[]
+    sOperands=[]
+
 
 def p_quadsElse(p):
     '''quadsElse : '''   
@@ -780,7 +790,8 @@ def p_quadsElse(p):
     qCounter += 1
     jumps = sJumps.pop()
     sJumps.append(qCounter)
-    quadGen.quads[jumps] = ("gotoF",sOperands[len(sOperands)-1],None,qCounter)
+    quadGen.quads[jumps] = ("gotoF",sOperands[len(sOperands)-1],None,qCounter+1)
+    qCounter+=1
     print("QG ES: ",str(quadGen))
 
 ###############################Quands while#############
@@ -845,7 +856,7 @@ def p_jumpsWhile(p):
     endret = sJumps.pop()
     quadGen.gen_quad("goto", len(sOperands)-1, None, endret)
     qCounter += 1
-    quadGen.quads[jumps] = ("goto",None,None,qCounter)
+    quadGen.quads[jumps] = ("goto",None,None,qCounter+1)
     ##################################################################
 
 def p_for(p):
@@ -932,7 +943,7 @@ parser = yacc.yacc()
 # Procesar cada línea con el parser
 
 
-fileName = "prueba4.txt"   
+fileName = "pruebaif1.txt"   
 inputFile = open(fileName, 'r')
 inputCode = inputFile.read()
 inputFile.close()
