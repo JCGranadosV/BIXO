@@ -189,10 +189,10 @@ localInt = 12000
 localFloat = 16000
 tempInt = 20000
 tempFloat = 24000
-tempPointer = 28000
-consInt = 32000
-consFloat = 36000
-consString = 40000
+#tempPointer = 28000
+#consInt = 32000
+#consFloat = 36000
+#consString = 40000
 
 
 
@@ -310,7 +310,7 @@ def p_function(p):
         #print("FUNC VAR TABLE ES: ",func_var_table_copy)
         varCounterFloat=func_var_table_copy['counters']['float']
         varCounterInt=func_var_table_copy['counters']['int']
-        add_function(currFunc, func_type, return_value,(counterInicioFunc+1), varCounterInt,varCounterFloat, tempCounterInt, tempCounterFloat, func_var_table_copy)
+        add_function(currFunc, func_type, return_value,counterInicioFunc, varCounterInt,varCounterFloat, tempCounterInt, tempCounterFloat, func_var_table_copy)
         #Reseteo counters despues de guardar para usarlos en la prox funcion
         tempCounterFloat=0
         tempCounterInt=0
@@ -351,7 +351,7 @@ def p_voidfunction(p):
         func_var_table_copy = copy.deepcopy(func_var_table)
         varCounterFloat=func_var_table_copy['counters']['float']
         varCounterInt=func_var_table_copy['counters']['int']
-        add_function(currFunc, func_type, None, (counterInicioFunc+1), varCounterInt, varCounterFloat, tempCounterInt, tempCounterFloat, func_var_table_copy)
+        add_function(currFunc, func_type, None, counterInicioFunc, varCounterInt, varCounterFloat, tempCounterInt, tempCounterFloat, func_var_table_copy)
         #Reseteo counters despues de guardar para usarlos en la prox funcion
         tempCounterFloat=0
         tempCounterInt=0
@@ -940,7 +940,7 @@ parser = yacc.yacc()
 # Procesar cada línea con el parser
 
 
-fileName = "pruebaif1.txt"   
+fileName = "prueba4.txt"   
 inputFile = open(fileName, 'r')
 inputCode = inputFile.read()
 inputFile.close()
