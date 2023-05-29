@@ -418,12 +418,13 @@ def p_param(p):
     '''param : type ID
              | type ID COMMA param
              |'''
-    global sVars, sTypes
-    if len(p)==3:
+    global sVars, sTypes, local_var_table
+    if len(p)>1:
         sTypes.append(p[1])
-        sVars.append(p[2])
+        #sVars.append(p[2])
         sParams.append(p[2])
         add_var_local(p[2],p[1],currFunc) 
+        #print("LOCAL VAR TABLE",local_var_table)
 
 
 #AQUI FALTA EL DEL SEGUNDO     
@@ -773,10 +774,8 @@ def p_jumpsIf(p):
     if(hayElse):
         print("ENTRO ELSE")
         quadGen.quads[jumps] = ("goto",None,None,qCounter)
-        qCounter+=1
     else:
         quadGen.quads[jumps] = ("gotoF",sOperands[len(sOperands)-1],None,qCounter+1)
-        qCounter+=1
     #al final reseteamos todos nuestras pilas
     sOperators=[]
     sOperands=[]
