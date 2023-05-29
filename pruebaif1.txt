@@ -7,6 +7,8 @@ function float abrir (int k, float c){
     b=2+3+4;
     if(3==4){
     b=5-4+1;
+    }else {
+    b=3-3+22;
     };
     b=1+1;
     return b;
