@@ -726,9 +726,8 @@ def p_quadsIf(p):
     arg1=sOperands.pop()
     operator=sOperators.pop()
     if operator not in ['ERA', 'GOSUB']:
-        temp = "t" + str(tempCounter)
+        temp = getTemp()
         quadGen.gen_quad(operator, arg1, arg2, temp)
-        tempCounter += 1
     else:
         print("no entro el temp")
         quadGen.gen_quad(operator, arg1, arg2, None)
@@ -813,9 +812,8 @@ def p_quadsWhile(p):
     arg1=sOperands.pop()
     operator=sOperators.pop()
     if operator not in ['ERA', 'GOSUB']:
-        temp = "t" + str(tempCounter)
+        temp = getTemp()
         quadGen.gen_quad(operator, arg1, arg2, temp)
-        tempCounter += 1
     else:
         print("no entro el temp")
         quadGen.gen_quad(operator, arg1, arg2, None)
