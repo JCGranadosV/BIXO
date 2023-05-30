@@ -6,7 +6,7 @@ function float abrir (int k, float c){
     a=3+4-5+6.6+9+10-44.4;
     b=2+3+4;
     read(a);
-    print(a,b,c);
+    print(a,b,c,d);
     return b;
 }
 function int cerrar(){

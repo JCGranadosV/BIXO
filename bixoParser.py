@@ -1,4 +1,5 @@
 import copy
+import sys
 import re
 import ply.yacc as yacc
 import bixoLexer
@@ -111,6 +112,9 @@ def getTemp():
 
 tokens=bixoLexer.tokens
 
+#para if
+sBools=[]
+hayElse=0
 #almacena los tipos de variables
 sTypes = [] 
 #pila saltos
@@ -154,6 +158,10 @@ sParams=[]
 sReturns=[]
 tempIntMemory=20000
 tempFloatMemory=24000
+#para print
+sPrints=[]
+
+currBool=None
 
 functions_table = {}
 
@@ -205,6 +213,7 @@ localInt = 12000
 localFloat = 16000
 tempInt = 20000
 tempFloat = 24000
+tempBool = 28000
 #tempPointer = 28000
 #consInt = 32000
 #consFloat = 36000
@@ -464,15 +473,83 @@ def p_texp(p):
 def p_gexp(p):
     '''gexp : mexp 
             | mexp gexpp mexp'''
+    global qCounter, tempCounterInt, tempIntMemory, sTipos
     if len(p) == 2:
         p[0]=p[1]
     elif len(p) == 4:
-        sOperands.append(p[1])
-        sOperands.append(p[3])
-        sOperators.append(p[2])
-        #Revisar porque no esta entrando aca
-        #print("Pila operandos:", sOperands)
-        #print("pila operadores:", sOperators)
+        arg1=None
+        arg2=None
+        argfinal=None
+        tipo2=sTipos.pop()
+        tipo1=sTipos.pop()
+        #print(tipo1,tipo2)
+        comp=p[2]
+        sTipos.append("int")
+        #guardo el valor de su temp
+        temp=getTemp()
+        local_var_table["variables"]["tempInt"][temp]=tempIntMemory
+        tempIntMemory+=1
+        tempCounterInt+=1
+
+        #reviso si lo que recibi ya es un numero
+        if re.match(regexInt, str(p[1])):
+            arg1=p[1]
+
+        elif re.match(regexFloat, str(p[1])):
+            arg1=p[1]
+
+        if re.match(regexInt, str(p[3])):
+            arg2=p[3]
+
+        elif re.match(regexFloat, str(p[3])):
+            arg2=p[3]
+
+        #si no es un numero, busco el valor de su temp
+        if arg1==None:
+            if tipo1=="int":
+                memoria=local_var_table["variables"]["tempInt"][p[1]]
+                arg1=local_var_table["values"]["tempInt"][memoria]
+            elif tipo1=="float":
+                memoria=local_var_table["variables"]["tempFloat"][p[1]]
+                arg1=local_var_table["values"]["tempFloat"][memoria]
+
+        if arg2==None:
+            if tipo2=="int":
+                memoria=local_var_table["variables"]["tempInt"][p[3]]
+                arg2=local_var_table["values"]["tempInt"][memoria]
+            elif tipo2=="float":
+                memoria=local_var_table["variables"]["tempFloat"][p[3]]
+                arg2=local_var_table["values"]["tempFloat"][memoria]
+
+        memoria=local_var_table["variables"]["tempInt"][temp]
+        if comp=="<":
+            #primero agarro valor de primer argumento (si es que no es un numero)
+            argfinal = 1 if arg1 < arg2 else 0
+            local_var_table["values"]["tempInt"][memoria]=argfinal
+            quadGen.gen_quad("<", p[1], p[3], temp)
+            qCounter+=1
+            p[0]=temp
+        elif comp==">":
+            argfinal = 1 if arg1 > arg2 else 0
+            local_var_table["values"]["tempInt"][memoria]=argfinal
+            quadGen.gen_quad(">", p[1], p[3], temp)
+            qCounter+=1
+            p[0]=temp
+        elif comp=="==":
+            argfinal = 1 if arg1 == arg2 else 0
+            print(local_var_table)
+            local_var_table["values"]["tempInt"][memoria]=argfinal
+            quadGen.gen_quad("==", p[1], p[3], temp)
+            qCounter+=1
+            p[0]=temp
+        elif comp=="!=":
+            argfinal = 1 if arg1 != arg2 else 0
+            local_var_table["values"]["tempInt"][memoria]=argfinal
+            quadGen.gen_quad("!=", p[1], p[3], temp)
+            qCounter+=1
+            p[0]=temp
+        print ("EL RESULTADO DEL IF ES:", argfinal)
+        #print("p[0]:",temp)
 
 def p_gexpp(p):
     '''gexpp : LT
@@ -496,15 +573,15 @@ def p_mexp(p):
         res1=None
         res2=None
 
-        print("cuadruplo de ",p[1],p[2],p[3])
-        print("temp actual", temp)
+        #print("cuadruplo de ",p[1],p[2],p[3])
+        #print("temp actual", temp)
         
 
         #guardo el valor de su temp
-        print(temp)
+        #print(temp)
         tipo_resultado = semantic_cube[tipo1][p[2]][tipo2]
         sTipos.append(tipo_resultado)
-        print("tipo resultado:",tipo_resultado)
+        #print("tipo resultado:",tipo_resultado)
         if (tipo_resultado=="int"):
             local_var_table["variables"]["tempInt"][temp]=tempIntMemory
             tempIntMemory+=1
@@ -529,8 +606,8 @@ def p_mexp(p):
             res2=p[3]
 #########################################
 ##############Si no es un numero entonces buscan el valor del temp
-        print("res1",res1)
-        print("res2",res2)
+        #print("res1",res1)
+        #print("res2",res2)
         if res1==None:
             if tipo1=="int":
                 memoria=local_var_table["variables"]["tempInt"][p[1]]
@@ -548,7 +625,7 @@ def p_mexp(p):
                 res2=local_var_table["values"]["tempFloat"][memoria]
 ############################################
         
-        print("VOY A HACER ",res1,p[2],res2)
+        #print("VOY A HACER ",res1,p[2],res2)
         #Aqui hago la suma como tal y genero cuadruplos
         if tipo_resultado=="int":
             memoria=local_var_table["variables"]["tempInt"][temp]
@@ -580,8 +657,8 @@ def p_mexp(p):
                 quadGen.gen_quad("-", p[1], p[3], temp)
                 qCounter+=1
                 p[0]=temp
-        print("p[0]:",temp)        
-        print(local_var_table)
+        #print("p[0]:",temp)        
+        #print(local_var_table)
 
 
 
@@ -601,12 +678,12 @@ def p_t(p):
         res1=None
         res2=None
 
-        print("cuadruplo de ",p[1],p[2],p[3])
-        print("temp actual", temp)
+        #print("cuadruplo de ",p[1],p[2],p[3])
+        #print("temp actual", temp)
         
 
         #guardo el valor de su temp
-        print(temp)
+        #print(temp)
         tipo_resultado = semantic_cube[tipo1][p[2]][tipo2]
         sTipos.append(tipo_resultado)
         if (tipo_resultado=="int"):
@@ -650,7 +727,7 @@ def p_t(p):
                 res2=local_var_table["values"]["tempFloat"][memoria]
 ############################################
         
-        print("VOY A HACER ",res1,p[2],res2)
+        #print("VOY A HACER ",res1,p[2],res2)
         #Aqui hago la suma como tal y genero cuadruplos
         if tipo_resultado=="int":
             memoria=local_var_table["variables"]["tempInt"][temp]
@@ -682,8 +759,8 @@ def p_t(p):
                 quadGen.gen_quad("/", p[1], p[3], temp)
                 qCounter+=1
                 p[0]=temp
-        print("p[0]:",temp)       
-        print(local_var_table)
+        #print("p[0]:",temp)       
+        #print(local_var_table)
    
 def p_f(p):
     '''f : LPAREN exp RPAREN
@@ -784,28 +861,47 @@ def p_assign(p):
 #Genera cuadruplos de read
 def p_read(p):
     '''read : READ LPAREN var RPAREN SEMICOLON'''
-    global qCounter
+    global qCounter, tempCounterInt, tempIntMemory, tempCounterFloat, tempFloatMemory
     temp=getTemp()
-    quadGen.gen_quad('read', None, None, temp)
-    quadGen.gen_quad('=', temp, None, p[3])
-    qCounter += 2
-
+    var_name=p[3]
+    if(var_name in (local_var_table["variables"]["varInt"])):
+        local_var_table["variables"]["tempInt"][temp]=tempIntMemory
+        tempIntMemory+=1
+        tempCounterInt+=1
+        quadGen.gen_quad('read', None, None, temp)
+        quadGen.gen_quad('=', temp, None, p[3])
+        qCounter += 2
+    elif(var_name in (local_var_table["variables"]["varFloat"])):
+        local_var_table["variables"]["tempFloat"][temp]=tempFloatMemory
+        tempFloatMemory+=1
+        tempCounterFloat+=1
+        quadGen.gen_quad('read', None, None, temp)
+        quadGen.gen_quad('=', temp, None, p[3])
+        qCounter += 2
+    else: print("ERROR no existe la var")
+    
+    
 
 def p_print(p):
     '''print : PRINT LPAREN printp SEMICOLON'''
+    global sPrints, qCounter
+    while (len(sPrints)!=0):
+        quadGen.gen_quad('print',None, None, sPrints.pop())
+        qCounter+=1
 
 #Genera cuadruplos de print, separado por comas recibe muchos parametros
 def p_printp(p):
     '''printp : exp RPAREN
               | exp COMMA printp'''
-    global qCounter
+    global qCounter, sPrints
+    if((p[1] not in local_var_table["variables"]["varInt"]) and (p[1] not in local_var_table["variables"]["varFloat"])):
+        print("ERROR VARIABLE NO EXISTE", p[1])
+        sys.exit()
     if len(p) == 3:
-        quadGen.gen_quad('print', None, None, p[1])
-        qCounter += 1
+        sPrints.append(p[1])
         p[0] = p[1]
     elif len(p) == 4:
-        quadGen.gen_quad('print', None, None, p[1])
-        qCounter += 1
+        sPrints.append(p[1])
         p[0] = p[3]
 
 def p_var(p):
@@ -879,92 +975,74 @@ def p_callp(p):
 #def p_if(p):
 #    '''if : IF LPAREN exp quadsIf RPAREN statements ifp jumpsIf'''    
 def p_if(p):
-    '''if : IF LPAREN exp RPAREN quadsIf LBRACE statements RBRACE ifelse jumpsIf SEMICOLON'''
-    print("AQUI CORRE EL IF")
-    print("QG ES: ",str(quadGen))    
-    print("OPERANDS",sOperands)    
+    '''if : IF LPAREN ifexp RPAREN quadsIf LBRACE body RBRACE ifelse jumpsIf SEMICOLON'''
+    print("AQUI CORRE EL IF")    
+    print("QG ES: ",str(quadGen))
+
+def p_ifexp(p):
+    '''ifexp : exp '''
+    global sBools
+    print("p[1]",p[1])
+    sBools.append(p[1])
+    print("SBOOLS",sBools)
+    print("QG ES: ",str(quadGen))
 
 def p_ifelse(p):
     ''' ifelse : 
-               | ELSE quadsElse LBRACE statements RBRACE'''
+               | ELSE quadsElse LBRACE body RBRACE'''
+    print("ENTRO IFELSE")
     global hayElse
     if (len(p)>2):
         hayElse=1
     else: hayElse=0
+    print("hayelse", hayElse)
             
 
 def p_quadsIf(p):
     '''quadsIf : '''            
     print("AQUI CORRE EL QUADSIF")
-    global sOperators, sOperands, sTypes, qCounter, tempCounter
-    arg2=sOperands.pop()
-    arg1=sOperands.pop()
-    operator=sOperators.pop()
-    if operator not in ['ERA', 'GOSUB']:
-        temp = getTemp()
-        quadGen.gen_quad(operator, arg1, arg2, temp)
-    else:
-        print("no entro el temp")
-        quadGen.gen_quad(operator, arg1, arg2, None)
-    print(arg1,arg2,operator)
-    if(operator == ">"):
-        if(arg1>arg2):
-            sOperands.append(1)
-        else: sOperands.append(0)
-    elif(operator == "=="):
-        if(arg1==arg2):
-            sOperands.append(1)
-        else: sOperands.append(0)    
-    elif(operator == "<"):
-        if(arg1<arg2):
-            sOperands.append(1)
-        else: sOperands.append(0)    
-    elif(operator == "!="):
-        if(arg1!=arg2):
-            sOperands.append(1)
-        else: sOperands.append(0) 
-    toF = sOperands[len(sOperands)-1]
-    if (len(sOperands) != 0):
-        print("TOF ES: ",sOperands[len(sOperands)-1])
-        if (toF == 0 or toF ==1):
-            print("ENTRO AL IF")
-            quadGen.gen_quad("gotoF", sOperands[len(sOperands)-1], None, None)
-            qCounter += 1
-            sJumps.append(qCounter)
-            print("QG ES: ",str(quadGen))
-            print(sJumps)
-    else: print("no es bool")
+    global sBools, qCounter, tempCounter, currBool, sJumps
+    currBool=sBools.pop()
+    quadGen.gen_quad("gotoF", currBool, None, None)
+    sJumps.append(qCounter)
+    qCounter += 1
+    print(sJumps)
+    print(quadGen.quads)
+    print(qCounter)
     
 
 def p_jumpsIf(p):
     '''jumpsIf : '''  
-    global qCounter,sOperands,sOperators
-    print("AQUI CORRE EL JUMPIF")
-    print("jumpsif")          
+    print("ENTRO JUMPSIF")
+    global qCounter, currBool, sJumps, hayElse    
     jumps = sJumps.pop()
-    print("JUMPS ES: ",jumps)
     print("QCCOUNER ES",qCounter)
     print("QG ES: ",str(quadGen))
+    print("jumps en jumpsif es:",jumps)
+    print("sjumps en quadselse es:",sJumps)
     if(hayElse):
         print("ENTRO ELSE")
         quadGen.quads[jumps] = ("goto",None,None,qCounter)
     else:
-        quadGen.quads[jumps] = ("gotoF",sOperands[len(sOperands)-1],None,qCounter+1)
+        quadGen.quads[jumps] = ("gotoF",currBool ,None,qCounter)
+
+    print("QG ES DESPUES: ",str(quadGen))
     #al final reseteamos todos nuestras pilas
-    sOperators=[]
-    sOperands=[]
+    sBools=[]
+    sJumps=[]
 
 
 def p_quadsElse(p):
     '''quadsElse : '''   
     print("AQUI CORRE EL QUADSELSE") 
-    global sOperators, sOperands, sTypes, qCounter
+    global sOperators, sOperands, qCounter, currBool, sJumps
     quadGen.gen_quad("goto", None, None, None)
-    qCounter += 1
     jumps = sJumps.pop()
     sJumps.append(qCounter)
-    quadGen.quads[jumps] = ("gotoF",sOperands[len(sOperands)-1],None,qCounter+1)
-    qCounter+=1
+    qCounter += 1
+    print("sjumps en quadselse es:",sJumps)
+    print("jumps en quadselse es:",jumps)
+    quadGen.quads[jumps] = ("gotoF",currBool,None,qCounter)
     print("QG ES: ",str(quadGen))
 
 ###############################Quands while#############
@@ -1115,7 +1193,7 @@ parser = yacc.yacc()
 # Procesar cada línea con el parser
 
 
-fileName = "prueba4.txt"   
+fileName = "pruebaif2.txt"   
 inputFile = open(fileName, 'r')
 inputCode = inputFile.read()
 inputFile.close()

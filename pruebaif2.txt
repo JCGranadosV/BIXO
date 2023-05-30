@@ -1,0 +1,18 @@
+program pruebaiff;
+function int que(int a, float b){
+    var int c,d,e;
+    c=3+4;
+    if(3==4){
+    d=5*5+4;
+    e=1+1+2*4;
+    }else {
+    d=3-3+22;
+    e=11+1+1*4;
+    };
+    e=2+3+4/5;
+    return d;
+}
+main(){
+    var int ma;
+    ma=1+1;
+}
