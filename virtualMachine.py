@@ -7,7 +7,7 @@ class VirtualMachine:
         self.quads = quads
         self.varTable = varTable
 
-    def memory(self,localMem, globalMem, tempMem)
+    def memory(self,localMem, globalMem, tempMem):
         self.localMem = localMem
         self.globalMem = globalMem
         self.tempMem = tempMem
