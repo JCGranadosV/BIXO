@@ -460,15 +460,61 @@ def p_param(p):
 def p_exp(p):
     '''exp : texp 
            | texp OR exp'''
+    global qCounter, tempIntMemory, tempCounterInt
     if len(p) == 2:
         p[0]=p[1]
+    elif len(p) == 4:
+        mem1=local_var_table["variables"]["tempInt"][p[1]]
+        mem2=local_var_table["variables"]["tempInt"][p[3]]
+        print(p[1],p[2],p[3])
+        print("mem1", mem1)
+        print("mem2", mem2)
+        val1=local_var_table["values"]["tempInt"][mem1]
+        val2=local_var_table["values"]["tempInt"][mem2]
+        print("val1", val1)
+        print("val2", val2)
+        print(local_var_table)
+        if (val1==1 or val2==1):
+            argfinal=1
+        else: argfinal=0
+        temp=getTemp()
+        local_var_table["variables"]["tempInt"][temp]=tempIntMemory
+        local_var_table["values"]["tempInt"][tempIntMemory]=argfinal
+        quadGen.gen_quad("OR", p[1], p[3], temp)
+        qCounter+=1
+        tempIntMemory+=1
+        tempCounterInt+=1
+        p[0]=temp
 
 #AQUI FALTA EL DEL SEGUNDO 
 def p_texp(p):
     '''texp : gexp 
             | gexp AND texp'''
+    global qCounter, tempIntMemory, tempCounterInt
     if len(p) == 2:
         p[0]=p[1]
+    elif len(p) == 4:
+        mem1=local_var_table["variables"]["tempInt"][p[1]]
+        mem2=local_var_table["variables"]["tempInt"][p[3]]
+        print(p[1],p[2],p[3])
+        print("mem1", mem1)
+        print("mem2", mem2)
+        val1=local_var_table["values"]["tempInt"][mem1]
+        val2=local_var_table["values"]["tempInt"][mem2]
+        print("val1", val1)
+        print("val2", val2)
+        print(local_var_table)
+        if (val1==1 and val2==1):
+            argfinal=1
+        else: argfinal=0
+        temp=getTemp()
+        local_var_table["variables"]["tempInt"][temp]=tempIntMemory
+        local_var_table["values"]["tempInt"][tempIntMemory]=argfinal
+        quadGen.gen_quad("AND", p[1], p[3], temp)
+        qCounter+=1
+        tempIntMemory+=1
+        tempCounterInt+=1
+        p[0]=temp
 
 def p_gexp(p):
     '''gexp : mexp 
@@ -1235,7 +1281,7 @@ parser = yacc.yacc()
 # Procesar cada línea con el parser
 
 
-fileName = "pruebaif2.txt"   
+fileName = "pruebaifand.txt"   
 inputFile = open(fileName, 'r')
 inputCode = inputFile.read()
 inputFile.close()

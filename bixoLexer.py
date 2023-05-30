@@ -101,8 +101,6 @@ t_GTE = r'>='
 t_LT = r'\<'
 t_LTE = r'<='
 t_EQUAL = r'\='
-t_AND = r'\&'
-t_OR = r'\|'
 t_LPAREN = r'\('
 t_RPAREN = r'\)'
 t_LBRACE = r'\{'
@@ -169,6 +167,14 @@ def t_IF(t):
 
 def t_ELSE(t):
     r'else'
+    return t
+
+def t_AND(t):
+    r'\&'
+    return t
+
+def t_OR(t):
+    r'\|'
     return t
 
 def t_IFEQUAL(t):
