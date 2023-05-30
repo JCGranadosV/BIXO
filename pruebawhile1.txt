@@ -1,0 +1,17 @@
+program pruebawhile;
+function int que(int a, float b){
+    var int c,d,e;
+    var int m;
+    c=5+3+1+5;
+    m=5+1;
+    while(c!=m & m==2 | m==6){
+    d=5*5+4;
+    e=1+1+2*4;
+    };
+    e=2+3+5/5;
+    return d;
+}
+main(){
+    var int ma;
+    ma=1+1;
+}

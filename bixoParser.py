@@ -1135,66 +1135,37 @@ def p_quadsElse(p):
 
 ###############################Quands while#############
 def p_while(p):
-    ''' while : WHILE LPAREN saveJumps exp RPAREN quadsWhile statements jumpsWhile whilep'''
+    ''' while : WHILE saveJumps LPAREN whilexp RPAREN quadsWhile LBRACE body RBRACE jumpsWhile SEMICOLON'''
 
-def p_whilep(p):
-    ''' whilep : SEMICOLON
-               | statements whilep'''
-               
+def p_whilexp(p):
+    '''whilexp : exp '''
+    global sBools
+    sBools.append(p[1])
+
 def p_saveJumps(p):
     ''' saveJumps :'''
+    global sJumps, qCounter
     sJumps.append(qCounter)
     
 def p_quadsWhile(p):
     ''' quadsWhile :'''
-    print("AQUI CORRE EL QUADSWHILE")
-    global sOperators, sOperands, sTypes, qCounter, tempCounter
-    arg2=sOperands.pop()
-    arg1=sOperands.pop()
-    operator=sOperators.pop()
-    if operator not in ['ERA', 'GOSUB']:
-        temp = getTemp()
-        quadGen.gen_quad(operator, arg1, arg2, temp)
-    else:
-        print("no entro el temp")
-        quadGen.gen_quad(operator, arg1, arg2, None)
-    print(arg1,arg2,operator)
-    if(operator == ">"):
-        if(arg1>arg2):
-            sOperands.append(1)
-        else: sOperands.append(0)
-    elif(operator == "=="):
-        if(arg1==arg2):
-            sOperands.append(1)
-        else: sOperands.append(0)    
-    elif(operator == "<"):
-        if(arg1<arg2):
-            sOperands.append(1)
-        else: sOperands.append(0)    
-    elif(operator == "!="):
-        if(arg1!=arg2):
-            sOperands.append(1)
-        else: sOperands.append(0) 
-    toF = sOperands[len(sOperands)-1]
-    if (len(sOperands) != 0):
-        print("TOF ES: ",sOperands[len(sOperands)-1])
-        if (toF == 0 or toF ==1):
-            print("ENTRO AL WHILE")
-            quadGen.gen_quad("gotoF", sOperands[len(sOperands)-1], None, None)
-            qCounter += 1
-            sJumps.append(qCounter)
-            print("QG ES: ",str(quadGen))
-            print(sJumps)
-    else: print("no es bool")
+    global sBools, qCounter, tempCounter, currBool, sJumps
+    currBool=sBools.pop()
+    quadGen.gen_quad("gotoF", currBool, None, None)
+    sJumps.append(qCounter)
+    qCounter += 1
     
 def p_jumpsWhile(p):
     ''' jumpsWhile :'''
-    global sOperators, sOperands, sTypes, qCounter, sJumps
+    global qCounter, currBool, sJumps, hayElse, sBools    
     jumps = sJumps.pop()
-    endret = sJumps.pop()
-    quadGen.gen_quad("goto", len(sOperands)-1, None, endret)
     qCounter += 1
-    quadGen.quads[jumps] = ("goto",None,None,qCounter+1)
+    quadGen.quads[jumps] = ("gotoF", currBool, None, qCounter)
+    jumps = sJumps.pop()
+    quadGen.gen_quad("goto",None ,None,jumps)
+    #al final reseteamos todos nuestras pilas
+    sBools=[]
+    sJumps=[]
     ##################################################################
 
 def p_for(p):
@@ -1281,7 +1252,7 @@ parser = yacc.yacc()
 # Procesar cada línea con el parser
 
 
-fileName = "pruebaifand.txt"   
+fileName = "pruebawhile1.txt"   
 inputFile = open(fileName, 'r')
 inputCode = inputFile.read()
 inputFile.close()
