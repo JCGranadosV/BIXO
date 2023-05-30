@@ -480,9 +480,15 @@ def p_gexp(p):
         arg1=None
         arg2=None
         argfinal=None
+        var1=None
+        var2=None
+        resInt=None
+        resFloat=None
+        memoriaVar1=0
+        memoriaVar2=0
         tipo2=sTipos.pop()
         tipo1=sTipos.pop()
-        #print(tipo1,tipo2)
+        print(tipo1,tipo2)
         comp=p[2]
         sTipos.append("int")
         #guardo el valor de su temp
@@ -490,6 +496,7 @@ def p_gexp(p):
         local_var_table["variables"]["tempInt"][temp]=tempIntMemory
         tempIntMemory+=1
         tempCounterInt+=1
+
 
         #reviso si lo que recibi ya es un numero
         if re.match(regexInt, str(p[1])):
@@ -504,24 +511,58 @@ def p_gexp(p):
         elif re.match(regexFloat, str(p[3])):
             arg2=p[3]
 
-        #si no es un numero, busco el valor de su temp
+        #si es una variable busco su temporal
+        if (var1==None and arg1==None):
+            while (memoriaVar1<20000):
+                if tipo1=="int":
+                    #memoria=local_var_table["variables"]["tempInt"][p[1]]
+                    memoriaVar1=local_var_table["variables"]["varInt"][p[1]]
+                    memoriaVar1=memoriaVar1[0]
+                    #print(memoriaVar1)
+                    var1=local_var_table["values"]["varInt"][memoriaVar1]
+                    #print("var1",var1)
+                    memoriaVar1=local_var_table["variables"]["tempInt"][var1]
+                    #print("MEMORIA DE temp",memoriaVar1)
+                elif tipo1=="float":
+                    memoriaVar1=local_var_table["variables"]["varFloat"][p[1]]
+                    memoriaVar1=memoriaVar1[0]
+                    var1=local_var_table["values"]["varFloat"][memoriaVar1]
+                    memoriaVar1=local_var_table["variables"]["tempFloat"][var1]
+
+        if (var2==None and arg2==None):
+            while (memoriaVar2<20000):
+                if tipo2=="int":
+                    memoriaVar2=local_var_table["variables"]["varInt"][p[3]]
+                    memoriaVar2=memoriaVar2[0]
+                    var2=local_var_table["values"]["varInt"][memoriaVar2]
+                    memoriaVar2=local_var_table["variables"]["tempInt"][var2]
+                elif tipo2=="float":
+                    memoriaVar2=local_var_table["variables"]["varFloat"][p[3]]
+                    memoriaVar2=memoriaVar2[0]
+                    var2=local_var_table["values"]["varFloat"][memoriaVar2]
+                    memoriaVar2=local_var_table["variables"]["tempFloat"][var2]
+
+        #busco el valor de su temp
         if arg1==None:
             if tipo1=="int":
-                memoria=local_var_table["variables"]["tempInt"][p[1]]
+                memoria=memoriaVar1
                 arg1=local_var_table["values"]["tempInt"][memoria]
+                #print("EL ARG 1 ES ",arg1)
+                p[0]=arg1
             elif tipo1=="float":
-                memoria=local_var_table["variables"]["tempFloat"][p[1]]
+                memoria=memoriaVar1
                 arg1=local_var_table["values"]["tempFloat"][memoria]
 
         if arg2==None:
             if tipo2=="int":
-                memoria=local_var_table["variables"]["tempInt"][p[3]]
+                memoria=memoriaVar2
                 arg2=local_var_table["values"]["tempInt"][memoria]
             elif tipo2=="float":
-                memoria=local_var_table["variables"]["tempFloat"][p[3]]
+                memoria=memoriaVar2
                 arg2=local_var_table["values"]["tempFloat"][memoria]
 
         memoria=local_var_table["variables"]["tempInt"][temp]
+
         if comp=="<":
             #primero agarro valor de primer argumento (si es que no es un numero)
             argfinal = 1 if arg1 < arg2 else 0
@@ -572,6 +613,7 @@ def p_mexp(p):
         resambos=None
         res1=None
         res2=None
+        #print(local_var_table)
 
         #print("cuadruplo de ",p[1],p[2],p[3])
         #print("temp actual", temp)
@@ -658,7 +700,7 @@ def p_mexp(p):
                 qCounter+=1
                 p[0]=temp
         #print("p[0]:",temp)        
-        #print(local_var_table)
+        print(local_var_table)
 
 
 

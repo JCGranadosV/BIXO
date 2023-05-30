@@ -1,8 +1,10 @@
 program pruebaiff;
 function int que(int a, float b){
     var int c,d,e;
-    c=3+4;
-    if(3==4){
+    var int m;
+    c=5+3+1+5;
+    m=5+1;
+    if(c!=m){
     d=5*5+4;
     e=1+1+2*4;
     }else {
