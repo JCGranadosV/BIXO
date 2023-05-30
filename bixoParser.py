@@ -45,16 +45,20 @@ var_table = {
 local_var_table = {
     "function": "",
     "variables": {
-        "int": {},
-        "float": {}
+        "varInt": {},
+        "varFloat": {},
+        "tempInt":{},
+        "tempFloat":{}
     },
     "counters": {
         "int": 0,
         "float": 0
     },
     "values": {
-        "int": {},
-        "float": {}
+        "varInt": {},
+        "varFloat": {},
+        "tempInt": {},
+        "tempFloat": {}
     }
 }
 
@@ -62,12 +66,14 @@ local_var_table = {
 def add_var_local(name, type, currFunc):
      if(type=="int"):
         var_mem = local_var_table["counters"][type] + localInt
+        local_var_table["variables"]["varInt"][name] = [var_mem] 
      elif(type=="float"):
         var_mem = local_var_table["counters"][type] + localFloat
+        local_var_table["variables"]["varFloat"][name] = [var_mem] 
      #print("memoria:",var_mem)
      local_var_table["function"] = currFunc
      local_var_table["counters"][type] += 1
-     local_var_table["variables"][type][name] = [var_mem]      
+          
      sTypes.append(type)
 
 #Funcion que agrega variable global a tabla y asigna memoria
@@ -89,7 +95,11 @@ def copy_var_local():
 
 #Funcion que agrega el valor de una variable y su espacio de memoria a la tabla
 def add_local_var_value(variable_type,direccion_memoria, var_assign):
-    local_var_table["values"][variable_type][direccion_memoria]=var_assign
+    if variable_type=="int":
+        local_var_table["values"]["varInt"][direccion_memoria]=var_assign
+    elif variable_type=="float":
+        local_var_table["values"]["varFloat"][direccion_memoria]=var_assign
+    
 
 #Funcion que crea temporales
 def getTemp():
@@ -142,6 +152,8 @@ tempCounterFloat=0
 sTipos=[]
 sParams=[]
 sReturns=[]
+tempIntMemory=20000
+tempFloatMemory=24000
 
 functions_table = {}
 
@@ -164,12 +176,16 @@ def add_function(name, return_type, return_value, start_address, varInt, varFloa
 
 def limpiaDatos():
     local_var_table["function"]=""
-    local_var_table["variables"]["int"]={}
-    local_var_table["variables"]["float"]={}
+    local_var_table["variables"]["varInt"]={}
+    local_var_table["variables"]["varFloat"]={}
+    local_var_table["variables"]["tempInt"]={}
+    local_var_table["variables"]["tempFloat"]={}
     local_var_table["counters"]["int"]=0
     local_var_table["counters"]["float"]=0
-    local_var_table["values"]["int"]={}
-    local_var_table["values"]["float"]={}
+    local_var_table["values"]["varInt"]={}
+    local_var_table["values"]["varFloat"]={}
+    local_var_table["values"]["tempInt"]={}
+    local_var_table["values"]["tempFloat"]={}
     #print("LOCAL VAR TABLE DESPUES DE EMPTY: ",local_var_table)
 
 def checkTable():
@@ -252,7 +268,7 @@ def p_decvarp(p):
         #print("pilavars: ", sVars)
         for vars in sVars:
         #Revisa que la variable no exista ya en la tabla y que no sea un parametro(porque solia marcar error para parametros)
-            if (((vars in local_var_table["variables"]["int"]) or (vars in local_var_table["variables"]["float"])) and (vars not in sParams)):
+            if (((vars in local_var_table["variables"]["varInt"]) or (vars in local_var_table["variables"]["varFloat"])) and (vars not in sParams)):
                 #antes de implementar este error checar la logica 
                 print(vars,"ERROR YA EXISTE")
             else:
@@ -263,7 +279,7 @@ def p_decvarp(p):
         #print("pilavars: ", sVars)
         #Revisa que la variable no exista ya en la tabla 
         for vars in sVars:
-            if (vars in var_table["global"]["variables"]["int"]) or (vars in var_table["global"]["variables"]["float"]):
+            if (vars in var_table["global"]["variables"]["float"]) or (vars in var_table["global"]["variables"]["float"]):
                 #antes de implementar este error checar la logica 
                 print(vars,"ERROR YA EXISTE ")
             else:
@@ -325,7 +341,7 @@ def p_decfunctype(p):
 def p_decfunc(p):
     '''decfunc : ID'''
     limpiaDatos()
-    global currFunc,currFuncStartAddress,counterInicioFunc, sParams, tempCounter, sCallParams
+    global currFunc,currFuncStartAddress,counterInicioFunc, sParams, tempCounter, sCallParams, tempIntMemory, tempFloatMemory
     currFunc=p[1]
     currFuncStartAddress=qCounter
     counterInicioFunc=qCounter
@@ -333,6 +349,8 @@ def p_decfunc(p):
     sParams=[]
     sCallParams=[]
     tempCounter=1
+    tempIntMemory=20000
+    tempFloatMemory=24000
     print("CURRENT FUNC", currFunc)
 
     
@@ -362,13 +380,15 @@ def p_voidfunction(p):
 def p_decfuncmain(p):
     '''decfuncmain : '''
     limpiaDatos()
-    global currFunc, tempCounter, sParams, mainStartAddress, sCallParams
+    global currFunc, tempCounter, sParams, mainStartAddress, sCallParams, tempIntMemory, tempFloatMemory
     currFunc="main"
     mainStartAddress=qCounter
     #reinicio pila de params y tempCounter para nueva funcion 
     sParams=[]
     sCallParams=[]
     tempCounter=1
+    tempIntMemory=20000
+    tempFloatMemory=24000
     #Relleno el quadruplo 1 con la localizacion del main
     quadGen.quads[0] = ("GOTO",None,None, mainStartAddress)
     print("CURRENT FUNC", currFunc)
@@ -468,24 +488,103 @@ def p_mexp(p):
     if len(p) == 2:
         p[0]=p[1]
     elif len(p)==4:
-        global qCounter, tempCounterFloat, tempCounterInt, sTipos
+        global qCounter, tempCounterFloat, tempCounterInt, sTipos, tempIntMemory, tempFloatMemory
         temp = getTemp()
         tipo2=sTipos.pop()
         tipo1=sTipos.pop()
+        resambos=None
+        res1=None
+        res2=None
+
+        print("cuadruplo de ",p[1],p[2],p[3])
+        print("temp actual", temp)
+        
+
+        #guardo el valor de su temp
+        print(temp)
         tipo_resultado = semantic_cube[tipo1][p[2]][tipo2]
         sTipos.append(tipo_resultado)
+        print("tipo resultado:",tipo_resultado)
         if (tipo_resultado=="int"):
-                tempCounterInt+=1
+            local_var_table["variables"]["tempInt"][temp]=tempIntMemory
+            tempIntMemory+=1
+            tempCounterInt+=1
         elif (tipo_resultado=="float"):
-                tempCounterFloat+=1
-        qCounter+=1
-        if p[2]=="+":
-            quadGen.gen_quad("+", p[1], p[3], temp)
-            p[0]=temp
-        elif p[2]=="-":
-            quadGen.gen_quad("-", p[1], p[3], temp)
-            p[0]=temp
-    
+            local_var_table["variables"]["tempFloat"][temp]=tempFloatMemory
+            tempFloatMemory+=1
+            tempCounterFloat+=1
+
+        
+###############Revisan si el parametro que se recibe ya es un numero
+        if re.match(regexInt, str(p[1])):
+            res1=p[1]
+
+        elif re.match(regexFloat, str(p[1])):
+            res1=p[1]
+
+        if re.match(regexInt, str(p[3])):
+            res2=p[3]
+
+        elif re.match(regexFloat, str(p[3])):
+            res2=p[3]
+#########################################
+##############Si no es un numero entonces buscan el valor del temp
+        print("res1",res1)
+        print("res2",res2)
+        if res1==None:
+            if tipo1=="int":
+                memoria=local_var_table["variables"]["tempInt"][p[1]]
+                res1=local_var_table["values"]["tempInt"][memoria]
+            elif tipo1=="float":
+                memoria=local_var_table["variables"]["tempFloat"][p[1]]
+                res1=local_var_table["values"]["tempFloat"][memoria]
+
+        if res2==None:
+            if tipo2=="int":
+                memoria=local_var_table["variables"]["tempInt"][p[3]]
+                res2=local_var_table["values"]["tempInt"][memoria]
+            elif tipo2=="float":
+                memoria=local_var_table["variables"]["tempFloat"][p[3]]
+                res2=local_var_table["values"]["tempFloat"][memoria]
+############################################
+        
+        print("VOY A HACER ",res1,p[2],res2)
+        #Aqui hago la suma como tal y genero cuadruplos
+        if tipo_resultado=="int":
+            memoria=local_var_table["variables"]["tempInt"][temp]
+            
+            if p[2]=="+":
+                resambos=res1+res2
+                local_var_table["values"]["tempInt"][memoria]=resambos
+                quadGen.gen_quad("+", p[1], p[3], temp)
+                qCounter+=1
+                p[0]=temp
+            elif p[2]=="-":
+                resambos=res1-res2
+                local_var_table["values"]["tempInt"][memoria]=resambos
+                quadGen.gen_quad("-", p[1], p[3], temp)
+                qCounter+=1
+                p[0]=temp
+        elif tipo_resultado=="float":
+            memoria=local_var_table["variables"]["tempFloat"][temp]
+            
+            if p[2]=="+":
+                resambos=res1+res2
+                local_var_table["values"]["tempFloat"][memoria]=resambos
+                quadGen.gen_quad("+", p[1], p[3], temp)
+                qCounter+=1
+                p[0]=temp
+            elif p[2]=="-":
+                resambos=res1-res2
+                local_var_table["values"]["tempFloat"][memoria]=resambos
+                quadGen.gen_quad("-", p[1], p[3], temp)
+                qCounter+=1
+                p[0]=temp
+        print("p[0]:",temp)        
+        print(local_var_table)
+
+
+
 
 def p_t(p):
     '''t : f 
@@ -494,24 +593,97 @@ def p_t(p):
     if len(p) == 2:
         p[0]=p[1]
     elif len(p)==4:
-        global qCounter, tempCounterFloat, tempCounterInt, sTipos
+        global qCounter, tempCounterFloat, tempCounterInt, sTipos, tempIntMemory, tempFloatMemory
         temp = getTemp()
         tipo2=sTipos.pop()
         tipo1=sTipos.pop()
+        resambos=None
+        res1=None
+        res2=None
+
+        print("cuadruplo de ",p[1],p[2],p[3])
+        print("temp actual", temp)
+        
+
+        #guardo el valor de su temp
+        print(temp)
         tipo_resultado = semantic_cube[tipo1][p[2]][tipo2]
         sTipos.append(tipo_resultado)
         if (tipo_resultado=="int"):
-                tempCounterInt+=1
+            local_var_table["variables"]["tempInt"][temp]=tempIntMemory
+            tempIntMemory+=1
+            tempCounterInt+=1
         elif (tipo_resultado=="float"):
-                tempCounterFloat+=1
-        qCounter+=1
-        if p[2]=="*":
-            quadGen.gen_quad("*", p[1], p[3], temp)
-            p[0]=temp
-        elif p[2]=="/":
-            temp = getTemp()
-            quadGen.gen_quad("/", p[1],p[3], temp)
-            p[0]=temp
+            local_var_table["variables"]["tempFloat"][temp]=tempFloatMemory
+            tempFloatMemory+=1
+            tempCounterFloat+=1
+
+        
+###############Revisan si el parametro que se recibe ya es un numero
+        if re.match(regexInt, str(p[1])):
+            res1=p[1]
+
+        elif re.match(regexFloat, str(p[1])):
+            res1=p[1]
+
+        if re.match(regexInt, str(p[3])):
+            res2=p[3]
+
+        elif re.match(regexFloat, str(p[3])):
+            res2=p[3]
+#########################################
+##############Si no es un numero entonces buscan el valor del temp
+        if res1==None:
+            if tipo1=="int":
+                memoria=local_var_table["variables"]["tempInt"][p[1]]
+                res1=local_var_table["values"]["tempInt"][memoria]
+            elif tipo1=="float":
+                memoria=local_var_table["variables"]["tempFloat"][p[1]]
+                res1=local_var_table["values"]["tempFloat"][memoria]
+
+        if res2==None:
+            if tipo2=="int":
+                memoria=local_var_table["variables"]["tempInt"][p[3]]
+                res2=local_var_table["values"]["tempInt"][memoria]
+            elif tipo2=="float":
+                memoria=local_var_table["variables"]["tempFloat"][p[3]]
+                res2=local_var_table["values"]["tempFloat"][memoria]
+############################################
+        
+        print("VOY A HACER ",res1,p[2],res2)
+        #Aqui hago la suma como tal y genero cuadruplos
+        if tipo_resultado=="int":
+            memoria=local_var_table["variables"]["tempInt"][temp]
+            
+            if p[2]=="*":
+                resambos=res1*res2
+                local_var_table["values"]["tempInt"][memoria]=resambos
+                quadGen.gen_quad("*", p[1], p[3], temp)
+                qCounter+=1
+                p[0]=temp
+            elif p[2]=="/":
+                resambos=res1/res2
+                local_var_table["values"]["tempInt"][memoria]=resambos
+                quadGen.gen_quad("/", p[1], p[3], temp)
+                qCounter+=1
+                p[0]=temp
+        elif tipo_resultado=="float":
+            memoria=local_var_table["variables"]["tempFloat"][temp]
+            
+            if p[2]=="*":
+                resambos=res1*res2
+                local_var_table["values"]["tempFloat"][memoria]=resambos
+                quadGen.gen_quad("*", p[1], p[3], temp)
+                qCounter+=1
+                p[0]=temp
+            elif p[2]=="/":
+                resambos=res1/res2
+                local_var_table["values"]["tempFloat"][memoria]=resambos
+                quadGen.gen_quad("/", p[1], p[3], temp)
+                qCounter+=1
+                p[0]=temp
+        print("p[0]:",temp)       
+        print(local_var_table)
    
 def p_f(p):
     '''f : LPAREN exp RPAREN
@@ -556,15 +728,15 @@ def p_assign(p):
     elif re.match(regexTemp, str(p[3])):
         var_assign_type="temp"
     #Revisa si la variable es un int o un float
-    if (var_name in (var_table["global"]["variables"]["int"]) or (var_name in local_var_table["variables"]["int"])):
+    if (var_name in (var_table["global"]["variables"]["int"]) or (var_name in local_var_table["variables"]["varInt"])):
         variable_type="int"
-    elif ((var_name in var_table["global"]["variables"]["float"]) or (var_name in local_var_table["variables"]["float"])):
+    elif ((var_name in var_table["global"]["variables"]["float"]) or (var_name in local_var_table["variables"]["varFloat"])):
         variable_type="float"
 
     #Revisa que a lo que se le esta asignando si exista
     if (var_assign_type=="var"):
          #print("variable a asignar es var", var_assign)
-         if((var_assign in (var_table["global"]["variables"]["int"]) or (var_assign in var_table["global"]["variables"]["float"])) or (var_assign in (local_var_table["variables"]["int"]) or (var_assign in local_var_table["variables"]["float"]))):
+         if((var_assign in (var_table["global"]["variables"]["int"]) or (var_assign in var_table["global"]["variables"]["float"])) or (var_assign in (local_var_table["variables"]["varInt"]) or (var_assign in local_var_table["variables"]["varFloat"]))):
              #print("la variable a asignar si existe", var_assign)
              pass
          else: print("ERROR LA VARIABLE A ASIGNAR",var_assign, "NO EXISTE")
@@ -583,10 +755,13 @@ def p_assign(p):
     #Ejecucion para scope local
     elif scope == "local":
         #primero revisa si esta en el local
-        if (var_name in (local_var_table["variables"]["int"]) or (var_name in local_var_table["variables"]["float"])):
+        if (var_name in (local_var_table["variables"]["varInt"]) or (var_name in local_var_table["variables"]["varFloat"])):
             #para encontrar y almacenar direccion de memoria
             var_assign=p[3]
-            direccion_memoria = local_var_table.get("variables", {}).get(variable_type, {}).get(var_name)
+            if variable_type=="int":
+                direccion_memoria = local_var_table.get("variables", {}).get("varInt", {}).get(var_name)
+            elif variable_type=="float":
+                direccion_memoria = local_var_table.get("variables", {}).get("varFloat", {}).get(var_name)
             direccion_memoria = direccion_memoria[0]
             add_local_var_value(variable_type,direccion_memoria, var_assign)
             #genera cuadruplo
