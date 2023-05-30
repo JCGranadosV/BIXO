@@ -1064,26 +1064,19 @@ def p_callp(p):
 #    '''if : IF LPAREN exp quadsIf RPAREN statements ifp jumpsIf'''    
 def p_if(p):
     '''if : IF LPAREN ifexp RPAREN quadsIf LBRACE body RBRACE ifelse jumpsIf SEMICOLON'''
-    print("AQUI CORRE EL IF")    
-    print("QG ES: ",str(quadGen))
 
 def p_ifexp(p):
     '''ifexp : exp '''
     global sBools
-    print("p[1]",p[1])
     sBools.append(p[1])
-    print("SBOOLS",sBools)
-    print("QG ES: ",str(quadGen))
 
 def p_ifelse(p):
     ''' ifelse : 
                | ELSE quadsElse LBRACE body RBRACE'''
-    print("ENTRO IFELSE")
     global hayElse
     if (len(p)>2):
         hayElse=1
     else: hayElse=0
-    print("hayelse", hayElse)
             
 
 def p_quadsIf(p):
@@ -1094,27 +1087,17 @@ def p_quadsIf(p):
     quadGen.gen_quad("gotoF", currBool, None, None)
     sJumps.append(qCounter)
     qCounter += 1
-    print(sJumps)
-    print(quadGen.quads)
-    print(qCounter)
-    
 
 def p_jumpsIf(p):
     '''jumpsIf : '''  
-    print("ENTRO JUMPSIF")
     global qCounter, currBool, sJumps, hayElse    
     jumps = sJumps.pop()
-    print("QCCOUNER ES",qCounter)
-    print("QG ES: ",str(quadGen))
-    print("jumps en jumpsif es:",jumps)
-    print("sjumps en quadselse es:",sJumps)
     if(hayElse):
         print("ENTRO ELSE")
         quadGen.quads[jumps] = ("goto",None,None,qCounter)
     else:
         quadGen.quads[jumps] = ("gotoF",currBool ,None,qCounter)
 
-    print("QG ES DESPUES: ",str(quadGen))
     #al final reseteamos todos nuestras pilas
     sBools=[]
     sJumps=[]
@@ -1128,10 +1111,7 @@ def p_quadsElse(p):
     jumps = sJumps.pop()
     sJumps.append(qCounter)
     qCounter += 1
-    print("sjumps en quadselse es:",sJumps)
-    print("jumps en quadselse es:",jumps)
     quadGen.quads[jumps] = ("gotoF",currBool,None,qCounter)
-    print("QG ES: ",str(quadGen))
 
 ###############################Quands while#############
 def p_while(p):
