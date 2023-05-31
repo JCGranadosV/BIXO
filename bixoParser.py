@@ -160,8 +160,13 @@ tempIntMemory=20000
 tempFloatMemory=24000
 #para print
 sPrints=[]
-
 currBool=None
+#para arrays
+sMatrixSize=[]
+sMatrixStart=[]
+matrixCounter=0
+sMatrixValues=[]
+mValues=0
 
 functions_table = {}
 
@@ -196,12 +201,25 @@ def limpiaDatos():
     local_var_table["values"]["tempFloat"]={}
     #print("LOCAL VAR TABLE DESPUES DE EMPTY: ",local_var_table)
 
+def clearMatrixValues():
+    sMatrixSize=[]
+    sMatrixStart=[]
+    matrixCounter=0
+    sMatrixValues=[]
+    mValues=0
+
+
 def checkTable():
     return(local_var_table)
 
 def getFuncReturn(func_name):
     funcReturn = functions_table[func_name]["return_value"]
     return funcReturn
+
+def varExist(var):
+    if((var in (var_table["global"]["variables"]["int"]) or (var in var_table["global"]["variables"]["float"])) or (var in (local_var_table["variables"]["varInt"]) or (var in local_var_table["variables"]["varFloat"]))):
+        return 1
+    else: print("ERROR LA VARIABLE A ASIGNAR",var, "NO EXISTE")
 
     
 
@@ -357,6 +375,7 @@ def p_decfunc(p):
     #reinicio pila de params y tempCounter para nueva funcion 
     sParams=[]
     sCallParams=[]
+    clearMatrixValues()
     tempCounter=1
     tempIntMemory=20000
     tempFloatMemory=24000
@@ -395,6 +414,7 @@ def p_decfuncmain(p):
     #reinicio pila de params y tempCounter para nueva funcion 
     sParams=[]
     sCallParams=[]
+    clearMatrixValues()
     tempCounter=1
     tempIntMemory=20000
     tempFloatMemory=24000
@@ -875,7 +895,9 @@ def p_statements(p):
                  |  print
                  |  if
                  |  while
-                 |  for'''
+                 |  for
+                 |  array
+                 |  matrix'''
     p[0] = p[1]
     
 def p_assign(p):
@@ -900,11 +922,7 @@ def p_assign(p):
 
     #Revisa que a lo que se le esta asignando si exista
     if (var_assign_type=="var"):
-         #print("variable a asignar es var", var_assign)
-         if((var_assign in (var_table["global"]["variables"]["int"]) or (var_assign in var_table["global"]["variables"]["float"])) or (var_assign in (local_var_table["variables"]["varInt"]) or (var_assign in local_var_table["variables"]["varFloat"]))):
-             #print("la variable a asignar si existe", var_assign)
-             pass
-         else: print("ERROR LA VARIABLE A ASIGNAR",var_assign, "NO EXISTE")
+         varExist(var_assign)
         
     #Ejecucion para scope global
     if scope == "global":
@@ -1169,19 +1187,73 @@ def p_funcesp(p):
                 | getweights'''  
 
 def p_array(p):
-    ''' array : ID EQUAL ARRAY LPAREN var arrayp'''
+    ''' array : ARRAY DOT ID EQUAL ARRAY LPAREN exp RPAREN SEMICOLON'''
+    global qCounter, local_var_table, regexFloat, regexInt, regexTemp, dimCounter, sDim
+    print("ENTRO AQUI")
     
-def p_arrayp(p):
-    ''' arrayp : RPAREN
-               | COMMA var RPAREN'''
     
 def p_matrix(p):
-    ''' matrix : ID EQUAL MATRIX LPAREN array matrixp'''
-    
-def p_matrixp(p):
-    ''' matrixp : RPAREN
-                | COMMA array RPAREN'''
+    '''matrix : MATRIX ID LBRACKET exp RBRACKET LBRACKET exp RBRACKET EQUAL LBRACKET matvalues RBRACKET SEMICOLON'''
+    global qCounter, local_var_table,tempFloatMemory, currFunc, tempCounterFloat, sMatrixSize, sMatrixStart, matrixCounter
+    matrix_name=p[2]
+    r=1
+    rows=p[4]
+    columns=p[7]
+    temp=getTemp()
+    quadGen.gen_quad("MATRIX", temp,rows, columns)
+    #quadGen.gen_quad("VER", matrix_name,0,columns)
+    qCounter+=1
+    #Calculo size          
+    lSup1=rows
+    lSup2=columns
+    r=r*(lSup1+1)
+    r=r*(lSup2+1)
+    m0=r
+    size=m0
+    m1=m0/(lSup1+1)
+    m2=m1/(lSup2+1)
+
+    #todas las matrix seran de tipo float
+    #creo var en tabla local
+    add_var_local(matrix_name,"float",currFunc)
+    memory=local_var_table["variables"]["varFloat"][matrix_name]
+    memory=memory[0]
+    local_var_table["values"]["varFloat"][memory]=temp
+
+
+    #creo temp y libero espacio de memoria
+    print("tempFloatMemory",tempFloatMemory)
+    local_var_table["variables"]["tempFloat"][temp]=tempFloatMemory
+    tempFloatMemory+=size
+    tempCounterFloat+=1
+    print("temp",temp)
+    print(local_var_table)
+ 
+    #guardo size y sumo a counter
+    quadGen.gen_quad("=", temp,None,matrix_name)
+    qCounter+=1
+    sMatrixSize.append(size)
+    sMatrixStart.append(qCounter-1)
+    print("size", size)
+    print("qCounter",qCounter)
+    print("sMatrixStart",sMatrixStart)
+    matrixCounter+=1
+    print("sMatrixvalues",sMatrixValues)
+    print("mvalues",mValues)
                 
+def p_mat_values(p):
+    '''matvalues : exp
+                 | exp COMMA matvalues'''
+    print("ENTRA ACA")
+    global sMatrixValues, mValues
+    if len(p)==2:
+        sMatrixValues.append(p[1])
+        mValues+=1
+    elif len(p)==4:
+        sMatrixValues.append(p[1])
+        mValues+=1
+        p[0]=p[1]
+
 def p_mean(p):
     '''mean : MEAN LPAREN array RPAREN'''
     
@@ -1232,7 +1304,7 @@ parser = yacc.yacc()
 # Procesar cada línea con el parser
 
 
-fileName = "pruebawhile1.txt"   
+fileName = "pruebaMatrix.txt"   
 inputFile = open(fileName, 'r')
 inputCode = inputFile.read()
 inputFile.close()

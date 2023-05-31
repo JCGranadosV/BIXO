@@ -1,0 +1,15 @@
+program pruebamatrix;
+function int que(int a){
+    var int c,d,e;
+    var float n;
+    e=2+3+5;
+    n=2.3*3.3*5;
+    matrix m[5][4]=[3,4,5];
+    e=2+2+3;
+    n=2.3*5;
+    return e;
+}
+main(){
+    var int ma;
+    ma=1+1;
+}

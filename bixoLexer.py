@@ -100,7 +100,6 @@ t_GT = r'\>'
 t_GTE = r'>='
 t_LT = r'\<'
 t_LTE = r'<='
-t_EQUAL = r'\='
 t_LPAREN = r'\('
 t_RPAREN = r'\)'
 t_LBRACE = r'\{'
@@ -132,8 +131,6 @@ t_PREDICT = r'predict'
 t_GETWEIGHTS = r'getweights'
 #NUMPY
 t_NUMPY = r'numpy'
-t_ARRAY = r'array'
-t_MATRIX = r'matrix'
 t_MEAN = r'mean'
 
 
@@ -197,6 +194,10 @@ def t_MINUS(t):
     r'\-'
     return t
 
+def t_EQUAL(t):
+    r'\='
+    return t
+
 def t_READ(t):
     r'read'
     return t
@@ -215,6 +216,14 @@ def t_FLOAT(t):
 
 def t_VOID(t):
     r'void'
+    return t
+
+def t_ARRAY(t):
+    r'array'
+    return t
+
+def t_MATRIX(t):
+    r'matrix'
     return t
 
 def t_CTF(t):
