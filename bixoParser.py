@@ -168,6 +168,7 @@ matrixCounter=0
 sMatrixValues=[]
 mValues=0
 
+
 functions_table = {}
 
 def add_function(name, return_type, return_value, start_address, varInt, varFloat, tempInt, tempFloat,local_table):
@@ -1194,14 +1195,14 @@ def p_array(p):
     
 def p_matrix(p):
     '''matrix : MATRIX ID LBRACKET exp RBRACKET LBRACKET exp RBRACKET EQUAL LBRACKET matvalues RBRACKET SEMICOLON'''
-    global qCounter, local_var_table,tempFloatMemory, currFunc, tempCounterFloat, sMatrixSize, sMatrixStart, matrixCounter, tempCounterFloat
+    global qCounter, local_var_table,tempFloatMemory, currFunc, tempCounterFloat, sMatrixSize, sMatrixStart, matrixCounter, tempCounterFloat, mValues, sMatrixValues
     matrix_name=p[2]
     r=1
     rows=p[4]
     columns=p[7]
     temp=getTemp()
+    #cuadruplo que genera var para almacenar matrix
     quadGen.gen_quad("MATRIX", matrix_name, rows, columns)
-    #quadGen.gen_quad("VER", matrix_name,0,columns)
     qCounter+=1
     #Calculo size          
     lSup1=rows
@@ -1210,9 +1211,6 @@ def p_matrix(p):
     r=r*(lSup2+1)
     m0=r
     size=m0
-    m1=m0/(lSup1+1)
-    m2=m1/(lSup2+1)
-    limMemory=tempFloatMemory+size
     
 
     #todas las matrix seran de tipo float
@@ -1220,18 +1218,11 @@ def p_matrix(p):
     add_var_local(matrix_name,"float",currFunc)
     memory=local_var_table["variables"]["varFloat"][matrix_name]
     memory=memory[0]
-    
-
- 
-    #sMatrixSize.append(size)
-    #sMatrixStart.append(qCounter-1)
-    print("size", size)
-    print("qCounter",qCounter)
-    #print("sMatrixStart",sMatrixStart)
     matrixCounter+=1
-    print("sMatrixvalues",sMatrixValues)
+
     if (mValues!=size):
         print("ERROR NUMERO INVALIDO DE VALORES PARA MATRIX",matrix_name,"SE ESPERAN",size,"SE TIENEN", mValues)
+        sys.exit()
     #cuadruplo matrixstart que envia cuando inicia la matrix y en que direccion de memoria, y que matrix es
     i=0
     j=0
@@ -1241,10 +1232,9 @@ def p_matrix(p):
         row = []
         for j in range(columns+1):
             value = sMatrixValues.pop()
-            print("VALUE",value)
             row.append(value)
         ordered_values.append(row)
-    print ( "ORDERED VALUES" ,ordered_values)
+    #print ( "ORDERED VALUES" ,ordered_values)
 
     #genera cuadruplos usando valores ordenados y los almacena en temporales
     for i in range(rows+1):
@@ -1261,20 +1251,14 @@ def p_matrix(p):
             tempCounterFloat+=1
             quadGen.gen_quad("=",f"{matrix_name}[{i}][{j}]", None, temp)
             qCounter+=1
-            #quad = ('=', value, None, f"{matrix_name}[{i}][{j}]")
 
     quadGen.gen_quad("MATRIXEND",temp, memory, matrix_name)
     qCounter+=1
 
-    #while (len(sMatrixValues)!=0):
-    #    #para cada valor genero temp 
-    #    currVal=sMatrixValues.pop()
-    #    temp=getTemp()
-    #    local_var_table["variables"]["tempFloat"][temp]=tempFloatMemory
-    #    local_var_table["values"]["tempFloat"][tempFloatMemory]=currVal
-    #    tempFloatMemory+=1
-    #    if(j==)
-    #    print("currVal",currVal)
+    #reseteo mvalues y smatrixvalues
+    mValues=0
+    sMatrixValues=[]
+
                 
 def p_mat_values(p):
     '''matvalues : exp
