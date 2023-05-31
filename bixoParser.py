@@ -162,6 +162,9 @@ tempFloatMemory=24000
 sPrints=[]
 currBool=None
 #para arrays
+cArrayValues=0
+sArrayValues=[]
+#para matrices
 sMatrixSize=[]
 sMatrixStart=[]
 matrixCounter=0
@@ -1189,11 +1192,62 @@ def p_funcesp(p):
                 | getweights'''  
 
 def p_array(p):
-    ''' array : ARRAY DOT ID EQUAL ARRAY LPAREN exp RPAREN SEMICOLON'''
-    global qCounter, local_var_table, regexFloat, regexInt, regexTemp, dimCounter, sDim
-    print("ENTRO AQUI")
+    ''' array : ARRAY ID LBRACKET exp RBRACKET EQUAL LBRACKET arrvalues RBRACKET SEMICOLON'''
+    global qCounter, local_var_table, tempFloatMemory, currFunc, tempCounterFloat, sArrayValues, cArrayValues
+    array_name=p[2]
+    r=1
+    rows=p[4]
+    temp=getTemp()
+    #cuadruplo que genera var para almacenar array
+    quadGen.gen_quad("ARRAY", array_name, rows, None)
+    qCounter+=1
+    #calculo size
+    size=r*(rows+1)
+
+    #creo var en tabla local float
+    add_var_local(array_name,"float",currFunc)
+    memory=local_var_table["variables"]["varFloat"][array_name]
+    memory=memory[0]
     
-    
+    if (cArrayValues!=size):
+        print("ERROR NUMERO INVALIDO DE VALORES PARA ARRAY",array_name,"SE ESPERAN",size,"SE TIENEN", cArrayValues)
+        sys.exit()
+    i=0
+    print(sArrayValues)
+    while(len(sArrayValues)!=0):
+        value=sArrayValues.pop()
+        temp=getTemp()
+        if i==0:
+            local_var_table["values"]["varFloat"][memory]=temp
+            quadGen.gen_quad("ARRAYSTART",temp,memory, array_name)
+            qCounter+=1
+        local_var_table["variables"]["tempFloat"][temp]=tempFloatMemory
+        local_var_table["values"]["tempFloat"][tempFloatMemory]=value
+        tempFloatMemory+=1
+        tempCounterFloat+=1
+        quadGen.gen_quad("=",f"{array_name}[{i}]", None, temp)
+        qCounter+=1
+        i+=1
+    quadGen.gen_quad("ARRAYEND",temp, memory, array_name)
+    qCounter+=1
+
+    #reseteo sArrayValues y cArrayValues
+    cArrayValues=0
+    sArrayValues=[]
+
+
+def p_arrvalues(p):
+    '''arrvalues : exp
+                 | exp COMMA arrvalues'''
+    global sArrayValues, cArrayValues
+    if len(p)==2:
+        sArrayValues.append(p[1])
+        cArrayValues+=1
+    elif len(p)==4:
+        sArrayValues.append(p[1])
+        cArrayValues+=1
+        p[0]=p[1]
+
 def p_matrix(p):
     '''matrix : MATRIX ID LBRACKET exp RBRACKET LBRACKET exp RBRACKET EQUAL LBRACKET matvalues RBRACKET SEMICOLON'''
     global qCounter, local_var_table,tempFloatMemory, currFunc, tempCounterFloat, sMatrixSize, sMatrixStart, matrixCounter, tempCounterFloat, mValues, sMatrixValues
@@ -1212,7 +1266,6 @@ def p_matrix(p):
     r=r*(lSup2+1)
     m0=r
     size=m0
-    
 
     #todas las matrix seran de tipo float
     #creo var en tabla local
@@ -1328,7 +1381,7 @@ parser = yacc.yacc()
 # Procesar cada línea con el parser
 
 
-fileName = "pruebaMatrix.txt"   
+fileName = "pruebarray.txt"   
 inputFile = open(fileName, 'r')
 inputCode = inputFile.read()
 inputFile.close()
