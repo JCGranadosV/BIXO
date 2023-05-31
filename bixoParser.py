@@ -1194,13 +1194,13 @@ def p_array(p):
     
 def p_matrix(p):
     '''matrix : MATRIX ID LBRACKET exp RBRACKET LBRACKET exp RBRACKET EQUAL LBRACKET matvalues RBRACKET SEMICOLON'''
-    global qCounter, local_var_table,tempFloatMemory, currFunc, tempCounterFloat, sMatrixSize, sMatrixStart, matrixCounter
+    global qCounter, local_var_table,tempFloatMemory, currFunc, tempCounterFloat, sMatrixSize, sMatrixStart, matrixCounter, tempCounterFloat
     matrix_name=p[2]
     r=1
     rows=p[4]
     columns=p[7]
     temp=getTemp()
-    quadGen.gen_quad("MATRIX", temp,rows, columns)
+    quadGen.gen_quad("MATRIX", matrix_name, rows, columns)
     #quadGen.gen_quad("VER", matrix_name,0,columns)
     qCounter+=1
     #Calculo size          
@@ -1212,39 +1212,73 @@ def p_matrix(p):
     size=m0
     m1=m0/(lSup1+1)
     m2=m1/(lSup2+1)
+    limMemory=tempFloatMemory+size
+    
 
     #todas las matrix seran de tipo float
     #creo var en tabla local
     add_var_local(matrix_name,"float",currFunc)
     memory=local_var_table["variables"]["varFloat"][matrix_name]
     memory=memory[0]
-    local_var_table["values"]["varFloat"][memory]=temp
+    
 
-
-    #creo temp y libero espacio de memoria
-    print("tempFloatMemory",tempFloatMemory)
-    local_var_table["variables"]["tempFloat"][temp]=tempFloatMemory
-    tempFloatMemory+=size
-    tempCounterFloat+=1
-    print("temp",temp)
-    print(local_var_table)
  
-    #guardo size y sumo a counter
-    quadGen.gen_quad("=", temp,None,matrix_name)
-    qCounter+=1
-    sMatrixSize.append(size)
-    sMatrixStart.append(qCounter-1)
+    #sMatrixSize.append(size)
+    #sMatrixStart.append(qCounter-1)
     print("size", size)
     print("qCounter",qCounter)
-    print("sMatrixStart",sMatrixStart)
+    #print("sMatrixStart",sMatrixStart)
     matrixCounter+=1
     print("sMatrixvalues",sMatrixValues)
-    print("mvalues",mValues)
+    if (mValues!=size):
+        print("ERROR NUMERO INVALIDO DE VALORES PARA MATRIX",matrix_name,"SE ESPERAN",size,"SE TIENEN", mValues)
+    #cuadruplo matrixstart que envia cuando inicia la matrix y en que direccion de memoria, y que matrix es
+    i=0
+    j=0
+    #ordena los valores
+    ordered_values = []
+    for i in range(rows+1):
+        row = []
+        for j in range(columns+1):
+            value = sMatrixValues.pop()
+            print("VALUE",value)
+            row.append(value)
+        ordered_values.append(row)
+    print ( "ORDERED VALUES" ,ordered_values)
+
+    #genera cuadruplos usando valores ordenados y los almacena en temporales
+    for i in range(rows+1):
+        for j in range(columns+1):
+            value = ordered_values[i][j]
+            temp=getTemp()
+            if i==0 and j==0:
+                local_var_table["values"]["varFloat"][memory]=temp
+                quadGen.gen_quad("MATRIXSTART",temp,memory, matrix_name)
+                qCounter+=1
+            local_var_table["variables"]["tempFloat"][temp]=tempFloatMemory
+            local_var_table["values"]["tempFloat"][tempFloatMemory]=value
+            tempFloatMemory+=1
+            tempCounterFloat+=1
+            quadGen.gen_quad("=",f"{matrix_name}[{i}][{j}]", None, temp)
+            qCounter+=1
+            #quad = ('=', value, None, f"{matrix_name}[{i}][{j}]")
+
+    quadGen.gen_quad("MATRIXEND",temp, memory, matrix_name)
+    qCounter+=1
+
+    #while (len(sMatrixValues)!=0):
+    #    #para cada valor genero temp 
+    #    currVal=sMatrixValues.pop()
+    #    temp=getTemp()
+    #    local_var_table["variables"]["tempFloat"][temp]=tempFloatMemory
+    #    local_var_table["values"]["tempFloat"][tempFloatMemory]=currVal
+    #    tempFloatMemory+=1
+    #    if(j==)
+    #    print("currVal",currVal)
                 
 def p_mat_values(p):
     '''matvalues : exp
                  | exp COMMA matvalues'''
-    print("ENTRA ACA")
     global sMatrixValues, mValues
     if len(p)==2:
         sMatrixValues.append(p[1])
