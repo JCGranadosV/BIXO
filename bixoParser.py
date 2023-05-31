@@ -220,7 +220,8 @@ def getFuncReturn(func_name):
 def varExist(var):
     if((var in (var_table["global"]["variables"]["int"]) or (var in var_table["global"]["variables"]["float"])) or (var in (local_var_table["variables"]["varInt"]) or (var in local_var_table["variables"]["varFloat"]))):
         return 1
-    else: print("ERROR LA VARIABLE A ASIGNAR",var, "NO EXISTE")
+    else: print("ERROR LA VARIABLE",var, "NO EXISTE")
+    sys.exit()
 
     
 
@@ -898,7 +899,8 @@ def p_statements(p):
                  |  while
                  |  for
                  |  array
-                 |  matrix'''
+                 |  matrix
+                 |  mean'''
     p[0] = p[1]
     
 def p_assign(p):
@@ -1178,7 +1180,6 @@ def p_forp(p):
  ##########################----------AQUI INICIAN FUNCIONES ESPECIALES--------------------------------------------------------------------------   
 def p_funcesp(p):
     ''' funcesp : array
-                | matrix
                 | mean
                 | layers
                 | sequential
@@ -1273,7 +1274,12 @@ def p_mat_values(p):
         p[0]=p[1]
 
 def p_mean(p):
-    '''mean : MEAN LPAREN array RPAREN'''
+    '''mean : MEAN LPAREN ID RPAREN SEMICOLON'''
+    global qCounter
+    id=p[3]
+    varExist(id)
+    quadGen.gen_quad("MEAN", id, None, None)
+    qCounter+=1
     
 def p_layers(p):
     '''layers : ID EQUAL LAYERS LPAREN UNITS EQUAL INT RPAREN'''

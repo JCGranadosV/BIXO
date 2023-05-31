@@ -86,6 +86,9 @@ reserved = {
     'string': 'STRING',
     'true': 'TRUE',
     'false': 'FALSE',
+    'mean' : 'MEAN',
+    'array' : 'ARRAY',
+    'matrix' : 'MATRIX',
     'print' : 'PRINT',
     'void' : 'VOID',
     'epochs' : 'EPOCHS',
@@ -131,7 +134,6 @@ t_PREDICT = r'predict'
 t_GETWEIGHTS = r'getweights'
 #NUMPY
 t_NUMPY = r'numpy'
-t_MEAN = r'mean'
 
 
 def t_PROGRAM(t):
@@ -224,6 +226,10 @@ def t_ARRAY(t):
 
 def t_MATRIX(t):
     r'matrix'
+    return t
+
+def t_MEAN(t):
+    r'mean'
     return t
 
 def t_CTF(t):

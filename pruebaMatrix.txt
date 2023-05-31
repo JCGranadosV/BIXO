@@ -9,6 +9,7 @@ function int que(int a){
     var float kk;
     kk=3.3*5;
     matrix z[2][2]=[1,2,3,4,5,6,7,8,9];
+    mean(m);
     n=2.3*5;
     return e;
 }
