@@ -23,5 +23,6 @@ main(){
     kle=3+4+5;
     var int ce;
     ce=cerrar();
+    print(ce);
     kle=ma;
 }
