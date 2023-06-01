@@ -92,6 +92,8 @@ reserved = {
     'print' : 'PRINT',
     'void' : 'VOID',
     'epochs' : 'EPOCHS',
+    'layers' : 'LAYERS',
+    'units' : 'UNITS',
     'verbose' : 'VERBOSE'
 }
 
@@ -123,8 +125,6 @@ t_ASSIGN = r'assign'
 t_FUNCESP = r'funcesp'
 #LIBRERIAS DE ML:
 #t_TENSORFLOW = r'tensorflow'
-t_LAYERS = r'layers'
-t_UNITS = r'units'
 t_SEQUENTIAL = r'sequential'
 t_COMPILE = r'compile'
 t_FIT = r'fit'
@@ -230,6 +230,14 @@ def t_MATRIX(t):
 
 def t_MEAN(t):
     r'mean'
+    return t
+
+def t_LAYERS(t):
+    r'layers'
+    return t
+
+def t_UNITS(t):
+    r'units'
     return t
 
 def t_CTF(t):

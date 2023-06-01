@@ -903,7 +903,8 @@ def p_statements(p):
                  |  for
                  |  array
                  |  matrix
-                 |  mean'''
+                 |  mean
+                 |  layers'''
     p[0] = p[1]
     
 def p_assign(p):
@@ -1335,7 +1336,11 @@ def p_mean(p):
     qCounter+=1
     
 def p_layers(p):
-    '''layers : ID EQUAL LAYERS LPAREN UNITS EQUAL INT RPAREN'''
+    '''layers : LAYERS LPAREN UNITS EQUAL CTI RPAREN SEMICOLON'''
+    global qCounter
+    units=p[5]
+    quadGen.gen_quad("LAYERS",units,None,None)
+    qCounter+=1
     
 def p_sequential(p):
     ''' sequential : ID EQUAL SEQUENTIAL LPAREN LBRACKET layers sequentialp'''
