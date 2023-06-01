@@ -1,4 +1,4 @@
-program pruebarray;
+program pruebafuncesp;
 function int que(int a){
     var int c,d,e;
     var float n;
@@ -10,6 +10,9 @@ function int que(int a){
     kk=3.3*5;
     n=2.3*5;
     array dos[2]=[0,1,2];
+    layers(units=1);
+    sequential();
+    compile(0.1);
     return e;
 }
 main(){

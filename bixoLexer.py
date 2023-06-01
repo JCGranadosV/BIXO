@@ -94,7 +94,9 @@ reserved = {
     'epochs' : 'EPOCHS',
     'layers' : 'LAYERS',
     'units' : 'UNITS',
-    'verbose' : 'VERBOSE'
+    'verbose' : 'VERBOSE',
+    'sequential' : 'SEQUENTIAL',
+    'compile' : 'COMPILE'
 }
 
 #REGEX TOKENS
@@ -125,8 +127,6 @@ t_ASSIGN = r'assign'
 t_FUNCESP = r'funcesp'
 #LIBRERIAS DE ML:
 #t_TENSORFLOW = r'tensorflow'
-t_SEQUENTIAL = r'sequential'
-t_COMPILE = r'compile'
 t_FIT = r'fit'
 t_EPOCHS = r'epochs'
 t_VERBOSE = r'verbose'
@@ -238,6 +238,14 @@ def t_LAYERS(t):
 
 def t_UNITS(t):
     r'units'
+    return t
+
+def t_SEQUENTIAL(t):
+    r'sequential'
+    return t
+
+def t_COMPILE(t):
+    r'compile'
     return t
 
 def t_CTF(t):

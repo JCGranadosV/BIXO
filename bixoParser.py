@@ -170,7 +170,8 @@ sMatrixStart=[]
 matrixCounter=0
 sMatrixValues=[]
 mValues=0
-
+#funcesp
+layers=0
 
 functions_table = {}
 
@@ -211,6 +212,7 @@ def clearMatrixValues():
     matrixCounter=0
     sMatrixValues=[]
     mValues=0
+    layers=0
 
 
 def checkTable():
@@ -904,7 +906,9 @@ def p_statements(p):
                  |  array
                  |  matrix
                  |  mean
-                 |  layers'''
+                 |  layers
+                 |  sequential
+                 |  compile'''
     p[0] = p[1]
     
 def p_assign(p):
@@ -1337,27 +1341,39 @@ def p_mean(p):
     
 def p_layers(p):
     '''layers : LAYERS LPAREN UNITS EQUAL CTI RPAREN SEMICOLON'''
-    global qCounter
+    global qCounter, layers
+    layers=1
     units=p[5]
     quadGen.gen_quad("LAYERS",units,None,None)
     qCounter+=1
     
 def p_sequential(p):
-    ''' sequential : ID EQUAL SEQUENTIAL LPAREN LBRACKET layers sequentialp'''
+    ''' sequential : SEQUENTIAL LPAREN RPAREN SEMICOLON'''
+    global qCounter,layers
+    #revisa que ya se hayan definido layers
+    if layers==0:
+        print("ERROR LAYERS NOT DEFINED")
+        sys.exit()
+    quadGen.gen_quad("SEQUENTIAL",None,None,None)
+    qCounter+=1
+    layers+=1
     
-def p_sequentialp(p):
-    ''' sequentialp : RBRACKET RPAREN
-                    | COMMA layers sequentialp'''
-                    
+                
 def p_compile(p):
-    ''' compile : sequential DOT COMPILE LPAREN RPAREN'''
+    ''' compile : COMPILE LPAREN CTF RPAREN SEMICOLON'''
+    global qCounter,layers
+    learnRate=p[3]
+    if layers!=2:
+        print("ERROR DEFINIR LAYERS Y SEQUENTIAL PRIMERO")
+        sys.exit()
+    #manda el learning rate
+    quadGen.gen_quad("COMPILE",learnRate,None,None)
+    qCounter+=1
     
 def p_fit(p):
-    ''' fit : ID EQUAL sequential DOT FIT LPAREN array COMMA array COMMA EPOCHS EQUAL INT COMMA VERBOSE EQUAL fitp'''
+    ''' fit : FIT LPAREN ID COMMA ID COMMA EPOCHS EQUAL CTI COMMA VERBOSE EQUAL CTI '''
     
-def p_fitp(p):
-    ''' fitp : TRUE RPAREN
-             | FALSE RPAREN'''
+    
 
 def p_predict(p):
     ''' predict : ID EQUAL sequential DOT PREDICT LPAREN LBRACKET predictp'''
@@ -1386,7 +1402,7 @@ parser = yacc.yacc()
 # Procesar cada línea con el parser
 
 
-fileName = "pruebarray.txt"   
+fileName = "pruebafuncesp.txt"   
 inputFile = open(fileName, 'r')
 inputCode = inputFile.read()
 inputFile.close()
