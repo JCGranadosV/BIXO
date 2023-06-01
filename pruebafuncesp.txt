@@ -16,6 +16,9 @@ function int que(int a){
     fit(m,dos,epochs=1000);
     predict(20.2);
     getweights();
+    var int la;
+    la=5+3;
+    fibonacci(5);
     return e;
 }
 main(){

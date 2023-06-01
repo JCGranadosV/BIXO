@@ -911,7 +911,8 @@ def p_statements(p):
                  |  compile
                  |  fit
                  |  predict
-                 |  getweights'''
+                 |  getweights
+                 |  fibonacci'''
     p[0] = p[1]
     
 def p_assign(p):
@@ -1408,6 +1409,13 @@ def p_getweights(p):
         print("ERROR DEFINIR LAYERS, SEQUENTIAL, COMPILE y FIT PRIMERO")
         sys.exit()
     quadGen.gen_quad("GETWEIGHTS",None,None,None)
+    qCounter+=1
+
+def p_fibonacci(p):
+    ''' fibonacci : FIBONACCI LPAREN exp RPAREN SEMICOLON'''
+    global qCounter
+    val=p[3]
+    quadGen.gen_quad("FIBONACCI",val,None,None)
     qCounter+=1
 
 # Empty production

@@ -64,7 +64,8 @@ tokens = [
     'NUMPY',
     'ARRAY',
     'MATRIX',
-    'MEAN'
+    'MEAN',
+    'FIBONACCI'
 ]
 
 reserved = {
@@ -99,7 +100,8 @@ reserved = {
     'compile' : 'COMPILE',
     'fit' : 'FIT',
     'predict' : 'PREDICT',
-    'getweights' : 'GETWEIGHTS'
+    'getweights' : 'GETWEIGHTS',
+    'fibonacci' : 'FIBONACCI'
 }
 
 #REGEX TOKENS
@@ -261,6 +263,10 @@ def t_PREDICT(t):
 
 def t_GETWEIGHTS(t):
     r'getweights'
+    return t
+
+def t_FIBONACCI(t):
+    r'fibonacci'
     return t
 
 def t_CTF(t):
