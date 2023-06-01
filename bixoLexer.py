@@ -96,7 +96,9 @@ reserved = {
     'units' : 'UNITS',
     'verbose' : 'VERBOSE',
     'sequential' : 'SEQUENTIAL',
-    'compile' : 'COMPILE'
+    'compile' : 'COMPILE',
+    'fit' : 'FIT',
+    'predict' : 'PREDICT'
 }
 
 #REGEX TOKENS
@@ -127,10 +129,7 @@ t_ASSIGN = r'assign'
 t_FUNCESP = r'funcesp'
 #LIBRERIAS DE ML:
 #t_TENSORFLOW = r'tensorflow'
-t_FIT = r'fit'
-t_EPOCHS = r'epochs'
 t_VERBOSE = r'verbose'
-t_PREDICT = r'predict'
 t_GETWEIGHTS = r'getweights'
 #NUMPY
 t_NUMPY = r'numpy'
@@ -246,6 +245,18 @@ def t_SEQUENTIAL(t):
 
 def t_COMPILE(t):
     r'compile'
+    return t
+
+def t_FIT(t):
+    r'fit'
+    return t
+
+def t_EPOCHS(t):
+    r'epochs'
+    return t
+
+def t_PREDICT(t):
+    r'predict'
     return t
 
 def t_CTF(t):

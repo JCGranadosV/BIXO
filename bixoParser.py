@@ -908,7 +908,9 @@ def p_statements(p):
                  |  mean
                  |  layers
                  |  sequential
-                 |  compile'''
+                 |  compile
+                 |  fit
+                 |  predict'''
     p[0] = p[1]
     
 def p_assign(p):
@@ -1369,18 +1371,34 @@ def p_compile(p):
     #manda el learning rate
     quadGen.gen_quad("COMPILE",learnRate,None,None)
     qCounter+=1
+    layers+=1
     
 def p_fit(p):
-    ''' fit : FIT LPAREN ID COMMA ID COMMA EPOCHS EQUAL CTI COMMA VERBOSE EQUAL CTI '''
-    
+    ''' fit : FIT LPAREN ID COMMA ID COMMA EPOCHS EQUAL CTI RPAREN SEMICOLON'''
+    global qCounter, layers
+    if layers!=3:
+        print("ERROR DEFINIR LAYERS, SEQUENTIAL y COMPILE PRIMERO")
+        sys.exit()
+    arr1=p[3]
+    arr2=p[5]
+    epochs=p[9]
+    varExist(arr1)
+    varExist(arr2)
+    quadGen.gen_quad("FIT",arr1,arr2,epochs)
+    qCounter+=1
+    layers+=1
     
 
 def p_predict(p):
-    ''' predict : ID EQUAL sequential DOT PREDICT LPAREN LBRACKET predictp'''
+    ''' predict : PREDICT LPAREN CTF RPAREN SEMICOLON'''
+    global qCounter, layers
+    if layers!=4:
+        print("ERROR DEFINIR LAYERS, SEQUENTIAL, COMPILE y FIT PRIMERO")
+        sys.exit()
+    val=p[3]
+    quadGen.gen_quad("PREDICT",val,None,None)
+
     
-def p_predictp(p):
-    ''' predictp : INT RBRACKET RPAREN
-                 | FLOAT RBRACKET RPAREN'''
 
 def p_getweights(p):
     ''' getweights : layers DOT GETWEIGHTS LPAREN RPAREN'''

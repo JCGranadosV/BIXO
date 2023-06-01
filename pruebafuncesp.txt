@@ -13,6 +13,8 @@ function int que(int a){
     layers(units=1);
     sequential();
     compile(0.1);
+    fit(m,dos,epochs=1000);
+    predict(20.2);
     return e;
 }
 main(){
