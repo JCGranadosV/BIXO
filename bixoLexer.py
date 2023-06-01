@@ -98,7 +98,8 @@ reserved = {
     'sequential' : 'SEQUENTIAL',
     'compile' : 'COMPILE',
     'fit' : 'FIT',
-    'predict' : 'PREDICT'
+    'predict' : 'PREDICT',
+    'getweights' : 'GETWEIGHTS'
 }
 
 #REGEX TOKENS
@@ -130,7 +131,6 @@ t_FUNCESP = r'funcesp'
 #LIBRERIAS DE ML:
 #t_TENSORFLOW = r'tensorflow'
 t_VERBOSE = r'verbose'
-t_GETWEIGHTS = r'getweights'
 #NUMPY
 t_NUMPY = r'numpy'
 
@@ -257,6 +257,10 @@ def t_EPOCHS(t):
 
 def t_PREDICT(t):
     r'predict'
+    return t
+
+def t_GETWEIGHTS(t):
+    r'getweights'
     return t
 
 def t_CTF(t):

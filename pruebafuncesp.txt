@@ -15,6 +15,7 @@ function int que(int a){
     compile(0.1);
     fit(m,dos,epochs=1000);
     predict(20.2);
+    getweights();
     return e;
 }
 main(){

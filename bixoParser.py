@@ -910,7 +910,8 @@ def p_statements(p):
                  |  sequential
                  |  compile
                  |  fit
-                 |  predict'''
+                 |  predict
+                 |  getweights'''
     p[0] = p[1]
     
 def p_assign(p):
@@ -1397,11 +1398,17 @@ def p_predict(p):
         sys.exit()
     val=p[3]
     quadGen.gen_quad("PREDICT",val,None,None)
+    qCounter+=1
 
-    
 
 def p_getweights(p):
-    ''' getweights : layers DOT GETWEIGHTS LPAREN RPAREN'''
+    ''' getweights : GETWEIGHTS LPAREN RPAREN SEMICOLON'''
+    global qCounter, layers
+    if layers!=4:
+        print("ERROR DEFINIR LAYERS, SEQUENTIAL, COMPILE y FIT PRIMERO")
+        sys.exit()
+    quadGen.gen_quad("GETWEIGHTS",None,None,None)
+    qCounter+=1
 
 # Empty production
 def p_empty(p):
