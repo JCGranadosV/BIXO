@@ -14,6 +14,7 @@ function void cerrar (float c){
     l = 3;
     c = 5;
     print(c);
+    read(c);
 }
 function int comer (float b){
     var int m,n,y;

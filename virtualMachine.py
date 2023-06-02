@@ -57,8 +57,9 @@ def getFuncVar(var):
 
 
 print(qCounter)
-
+i = 0
 for i in range(qCounter):
+    print(i)
     quad=sQuads.quads[i]
     print("CUADRUPLO",quad)
     print("QUAD POS 0", quad[0])
@@ -68,21 +69,53 @@ for i in range(qCounter):
     res=quad[3]
     if(op=="+"):
         pass
-    if(op == "="):
+    if(op=="-"):
         pass
+    if(op=="*"):
+        pass
+    if(op=="/"):
+        pass
+    #if(op == "="):
+    #    print("hay = aca")
+    #    print(res)
+    #    func=getFuncVar(res)
+    #    print(res, "ESTA EN", func)
+    #    if (res in functions_table[func]["vars_table"]["variables"]["varInt"]):
+    #        memoria=functions_table[func]["vars_table"]["variables"]["varInt"][res]
+    #    else:
+    #        memoria=functions_table[func]["vars_table"]["variables"]["varFloat"][res]
+    #    print("RES Y MEMORIA",res,memoria)
         #TO-do
     if(op == "print"):
-        print("hay print aca")
-        print(res)
         func=getFuncVar(res)
-        print(res, "ESTA EN", func)
         if (res in functions_table[func]["vars_table"]["variables"]["varInt"]):
             memoria=functions_table[func]["vars_table"]["variables"]["varInt"][res]
+            ioF = "int"
         else:
             memoria=functions_table[func]["vars_table"]["variables"]["varFloat"][res]
-        print("RES Y MEMORIA",res,memoria)
-    print(i)
+            ioF = "float"
+        if (ioF == "int"):
+            value = functions_table[func]["vars_table"]["values"]["varInt"][memoria[0]]
+        elif(ioF == "float"):
+            value = functions_table[func]["vars_table"]["values"]["varFloat"][memoria[0]]
+        print(value)
+    if(op == "GOTO"):
+        print("Hay goto aca")
+        i = res
         
+        print(i,res)
+        print("GOTO NOS LLEVA A",res)
+       
+    if(op == "era"):
+        print("Hay goto aca")
+    #if(op == "goto" or "GOTO"):
+     #   print("Hay goto aca")
+    #if(op == "read"):
+    #    print("hay read aca")
+    #    print(res)
+    #if(op == "write"):
+    #    print("hay = aca")
+    #    print(res)
         
 
 
