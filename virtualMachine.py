@@ -58,7 +58,8 @@ def getFuncVar(var):
 
 print(qCounter)
 
-for quad in sQuads.quads:
+for i in range(qCounter):
+    quad=sQuads.quads[i]
     print("CUADRUPLO",quad)
     print("QUAD POS 0", quad[0])
     op=quad[0]
@@ -66,9 +67,10 @@ for quad in sQuads.quads:
     arg2=quad[2]
     res=quad[3]
     if(op=="+"):
-        print("AQUI HAY SUMA")
+        pass
     if(op == "="):
         pass
+        #TO-do
     if(op == "print"):
         print("hay print aca")
         print(res)
@@ -79,6 +81,7 @@ for quad in sQuads.quads:
         else:
             memoria=functions_table[func]["vars_table"]["variables"]["varFloat"][res]
         print("RES Y MEMORIA",res,memoria)
+    print(i)
         
         
 
