@@ -2,7 +2,7 @@ program id;
 var float col, que;
 var int pepe, rodrigo, juan;
 
-function float abrir (int k){
+function float abrir (int k,  int ko){
     var int prueb;
     var float m;
     m=3;

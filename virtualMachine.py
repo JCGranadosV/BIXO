@@ -114,6 +114,8 @@ def mapeo():
 print("----------------INICIA VM-----------------")
 mapeo()
 print(hashMap)
+quads=sQuads.quads
+print(sQuads)
 #for i in range(qCounter):
 #    print(i)
 #    quad=sQuads.quads[i]
