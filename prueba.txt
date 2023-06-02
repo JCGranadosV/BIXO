@@ -4,15 +4,24 @@ var int pepe, rodrigo, juan;
 
 function float abrir (int k){
     var int prueb;
+    var float m;
+    m=3;
+    return m;
 }
 function void cerrar (float c){
     var int l;
     var float c;
     l = 3;
     c = 5;
+    print(c);
 }
 function int comer (float b){
-    var float m,n,y;
+    var int m,n,y;
     m = 4;
     y= 10;
+    return m;
+}
+main(){
+    var int ma;
+    ma=1+1;
 }
