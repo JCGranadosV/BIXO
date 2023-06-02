@@ -719,25 +719,63 @@ def p_mexp(p):
 
         elif re.match(regexFloat, str(p[3])):
             res2=p[3]
+
+#################################################
+#si es una var
+
+        while ((res1==None) and (not re.match(regexTemp,p[1]))):
+            if tipo1=="int":
+                memoria=local_var_table["variables"]["varInt"][p[1]]
+                res1=local_var_table["values"]["varInt"][memoria[0]]
+            elif tipo1=="float":
+                memoria=local_var_table["variables"]["varFloat"][p[1]]
+                res1=local_var_table["values"]["varFloat"][memoria[0]]
+
+        while res2==None and (not re.match(regexTemp,p[3])):
+            if tipo2=="int":
+                memoria=local_var_table["variables"]["varInt"][p[3]]
+                res2=local_var_table["values"]["varInt"][memoria[0]]
+            elif tipo2=="float":
+                memoria=local_var_table["variables"]["varFloat"][p[3]]
+                res2=local_var_table["values"]["varFloat"][memoria[0]]
+        print(local_var_table)
+        print("RES1", res1, "RES2", res2)
+
 #########################################
 ##############Si no es un numero entonces buscan el valor del temp
-        #print("res1",res1)
-        #print("res2",res2)
-        if res1==None:
+        #si es un temp
+
+        if (res1==None):
             if tipo1=="int":
                 memoria=local_var_table["variables"]["tempInt"][p[1]]
                 res1=local_var_table["values"]["tempInt"][memoria]
             elif tipo1=="float":
                 memoria=local_var_table["variables"]["tempFloat"][p[1]]
                 res1=local_var_table["values"]["tempFloat"][memoria]
+        elif(re.match(regexTemp,str(res1))):
+            if tipo1=="int":
+                memoria=local_var_table["variables"]["tempInt"][res1]
+                res1=local_var_table["values"]["tempInt"][memoria]
+            elif tipo1=="float":
+                memoria=local_var_table["variables"]["tempFloat"][res1]
+                res1=local_var_table["values"]["tempFloat"][memoria]
 
-        if res2==None:
+        if (res2==None):
             if tipo2=="int":
                 memoria=local_var_table["variables"]["tempInt"][p[3]]
                 res2=local_var_table["values"]["tempInt"][memoria]
             elif tipo2=="float":
                 memoria=local_var_table["variables"]["tempFloat"][p[3]]
                 res2=local_var_table["values"]["tempFloat"][memoria]
+        elif(re.match(regexTemp,str(res2))):
+            if tipo2=="int":
+                memoria=local_var_table["variables"]["tempInt"][res2]
+                res1=local_var_table["values"]["tempInt"][memoria]
+            elif tipo2=="float":
+                memoria=local_var_table["variables"]["tempFloat"][res2]
+                res2=local_var_table["values"]["tempFloat"][memoria]
+
+        
 ############################################
         
         #print("VOY A HACER ",res1,p[2],res2)
@@ -746,7 +784,7 @@ def p_mexp(p):
             memoria=local_var_table["variables"]["tempInt"][temp]
             
             if p[2]=="+":
-                resambos=res1+res2
+                resambos=int(res1)+int(res2)
                 local_var_table["values"]["tempInt"][memoria]=resambos
                 quadGen.gen_quad("+", p[1], p[3], temp)
                 qCounter+=1

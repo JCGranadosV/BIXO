@@ -1,5 +1,6 @@
 import sys
 import re
+import copy
 import ply.yacc as yacc
 import bixoLexer
 import ply.lex as lexer
@@ -11,6 +12,7 @@ functions_table=bixo.functions_table
 sQuads=bixo.quadGen
 gen_quad = bixo.quadGen.gen_quad
 qCounter = bixo.qCounter
+globalVarTable = bixo.var_table["global"]
 
 class VirtualMachine:
     def __init__(self, code, quads, varTable):
@@ -46,6 +48,7 @@ tempBool = 28000
 #sQuads los imprime enumerados con formato
 #sQuads.quads los imprime en una lista (que se puede contabilizar)
 
+hashMap={}
 
 def getFuncVar(var):
     for func in functions_table:
@@ -55,66 +58,117 @@ def getFuncVar(var):
             return (func)
     print("ERROR NO EXISTE")    
 
+def mapeo():
+    global localInt, localFloat, tempInt, tempFloat,globalInt, globalFloat
+    print(globalVarTable)
+    globalHashMap={}
+    #mapeo globales
+    #global int
+    for gVari, value in globalVarTable["variables"]["int"].items():
+        result=""
+        print(gVari,globalInt,"RESULT",result)
+        globalHashMap[gVari]=(globalInt,result)
+        globalInt+=1
+    #global float
+    for gVarf, value in globalVarTable["variables"]["float"].items():
+        result=""
+        print(gVarf,globalFloat,"RESULT",result)
+        globalHashMap[gVarf]=(globalFloat,result)
+        globalFloat+=1
+    hashMap["global"]=globalHashMap
+    
 
-print(qCounter)
-i = 0
-for i in range(qCounter):
-    print(i)
-    quad=sQuads.quads[i]
-    print("CUADRUPLO",quad)
-    print("QUAD POS 0", quad[0])
-    op=quad[0]
-    arg1=quad[1]
-    arg2=quad[2]
-    res=quad[3]
-    if(op=="+"):
-        pass
-    if(op=="-"):
-        pass
-    if(op=="*"):
-        pass
-    if(op=="/"):
-        pass
-    #if(op == "="):
-    #    print("hay = aca")
-    #    print(res)
-    #    func=getFuncVar(res)
-    #    print(res, "ESTA EN", func)
-    #    if (res in functions_table[func]["vars_table"]["variables"]["varInt"]):
-    #        memoria=functions_table[func]["vars_table"]["variables"]["varInt"][res]
-    #    else:
-    #        memoria=functions_table[func]["vars_table"]["variables"]["varFloat"][res]
-    #    print("RES Y MEMORIA",res,memoria)
-        #TO-do
-    if(op == "print"):
-        func=getFuncVar(res)
-        if (res in functions_table[func]["vars_table"]["variables"]["varInt"]):
-            memoria=functions_table[func]["vars_table"]["variables"]["varInt"][res]
-            ioF = "int"
-        else:
-            memoria=functions_table[func]["vars_table"]["variables"]["varFloat"][res]
-            ioF = "float"
-        if (ioF == "int"):
-            value = functions_table[func]["vars_table"]["values"]["varInt"][memoria[0]]
-        elif(ioF == "float"):
-            value = functions_table[func]["vars_table"]["values"]["varFloat"][memoria[0]]
-        print(value)
-    if(op == "GOTO"):
-        print("Hay goto aca")
-        i = res
-        
-        print(i,res)
-        print("GOTO NOS LLEVA A",res)
-       
-    if(op == "era"):
-        print("Hay goto aca")
-    #if(op == "goto" or "GOTO"):
-     #   print("Hay goto aca")
+    #mapeo locales
+    for func in functions_table:
+        funcHashMap={}
+        print(func)
+        #mapeo varints
+        for vari, value in functions_table[func]["vars_table"]["variables"]["varInt"].items():
+            result=functions_table[func]["vars_table"]["values"]["varInt"].get(value[0], "")
+            print(vari,localInt,"RESULT",result)
+            funcHashMap[vari]=(localInt,result)
+            localInt+=1
+        #mapeo varfloats
+        for varf, value in functions_table[func]["vars_table"]["variables"]["varFloat"].items():
+            result=functions_table[func]["vars_table"]["values"]["varFloat"].get(value[0], "")
+            print(varf,localFloat,"RESULT",result)
+            funcHashMap[varf]=(localFloat,result)
+            localFloat+=1
+        #mapeo tempInts
+        for tempi, value in functions_table[func]["vars_table"]["variables"]["tempInt"].items():
+            result=functions_table[func]["vars_table"]["values"]["tempInt"].get(value, "")
+            print(tempi,tempInt,"RESULT",result)
+            funcHashMap[tempi]=(tempInt,result)
+            tempInt+=1
+        #mapeo tempFloats
+        for tempf, value in functions_table[func]["vars_table"]["variables"]["tempFloat"].items():
+            result=functions_table[func]["vars_table"]["values"]["tempFloat"].get(value, "")
+            print(tempf,tempFloat,"RESULT",result)
+            funcHashMap[tempf]=(tempFloat,result)
+            tempFloat+=1
+
+        hashMap[func]=funcHashMap
+    #print(hashMap)
+
+
+print("----------------INICIA VM-----------------")
+mapeo()
+print(hashMap)
+#for i in range(qCounter):
+#    print(i)
+#    quad=sQuads.quads[i]
+#    print("CUADRUPLO",quad)
+#    print("QUAD POS 0", quad[0])
+#    op=quad[0]
+#    arg1=quad[1]
+#    arg2=quad[2]
+#    res=quad[3]
+#    if(op=="+" or op=="-" or op=="*" or op=="/"):
+#        pass
+#    elif(op == "="):
+#        func=getFuncVar(res)
+#        if (res in functions_table[func]["vars_table"]["variables"]["varInt"]):
+#            memoria=functions_table[func]["vars_table"]["variables"]["varInt"][res]
+#            value = functions_table[func]["vars_table"]["values"]["varInt"][memoria[0]]
+#        elif(res in functions_table[func]["vars_table"]["variables"]["varFloat"]):
+#            memoria=functions_table[func]["vars_table"]["variables"]["varFloat"][res]
+#            value = functions_table[func]["vars_table"]["values"]["varFloat"][memoria[0]]
+#
+#
+#    if(op == "print"):
+#        func=getFuncVar(res)
+#        if (res in functions_table[func]["vars_table"]["variables"]["varInt"]):
+#            memoria=functions_table[func]["vars_table"]["variables"]["varInt"][res]
+#            value = functions_table[func]["vars_table"]["values"]["varInt"][memoria[0]]
+#        elif(res in functions_table[func]["vars_table"]["variables"]["varFloat"]):
+#            memoria=functions_table[func]["vars_table"]["variables"]["varFloat"][res]
+#            value = functions_table[func]["vars_table"]["values"]["varFloat"][memoria[0]]
+#        print(value)
+#    elif(op=="read"):
+#        func=getFuncVar(res)
+#        value=input()
+#        if (res in functions_table[func]["vars_table"]["variables"]["varInt"]):
+#            memoria=functions_table[func]["vars_table"]["variables"]["varInt"][res]
+#            functions_table[func]["vars_table"]["values"]["varInt"][memoria[0]]=value
+#        elif(res in functions_table[func]["vars_table"]["variables"]["varFloat"]):
+#            memoria=functions_table[func]["vars_table"]["variables"]["varFloat"][res]
+#            functions_table[func]["vars_table"]["values"]["varFloat"][memoria[0]]=value
+#        print(functions_table)
+#        
+#
+#    elif(op == "GOTO"):
+#        print("Hay goto aca")
+#        i = res
+#        
+#        print(i,res)
+#        print("GOTO NOS LLEVA A",res)
+#       
+#    elif(op == "era"):
+#        print("Hay goto aca")
+#    #if(op == "goto" or "GOTO"):
+#     #   print("Hay goto aca")
     #if(op == "read"):
     #    print("hay read aca")
-    #    print(res)
-    #if(op == "write"):
-    #    print("hay = aca")
     #    print(res)
         
 
