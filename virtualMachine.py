@@ -64,19 +64,25 @@ def mapeo():
     print(globalVarTable)
     globalHashMap={}
     #mapeo valor de cada func
-    #for func  in functions_table:
-    #    returnType=functions_table[func]["return_type"]
-    #    returnVar=functions_table[func]["return_value"]
-    #    if(returnType=="int"):
-    #        print("RETURNVAR",functions_table[func]["vars_table"]["values"]["varInt"][returnVar])
-    #        returnVal=functions_table[func]["vars_table"]["values"]["varInt"][returnVar]
-    #        globalHashMap[func]=[globalInt,returnVal]
-    #        globalInt+=1
-    #    elif(returnType=="float"):
-    #        print("RETURNVAR",functions_table[func]["vars_table"])
-    #        returnVal=functions_table[func]["vars_table"]["values"]["varFloat"][returnVar]
-    #        globalHashMap[func]=[globalFloat,returnVal]
-    #        globalFloat+=1
+    for func  in functions_table:
+        returnType=functions_table[func]["return_type"]
+        returnVar=functions_table[func]["return_value"]
+        if(returnType=="int"):
+            returnValMem=functions_table[func]["vars_table"]["variables"]["varInt"][returnVar]
+            returnValTemp=functions_table[func]["vars_table"]["values"]["varInt"][returnValMem[0]]
+            returnTempMem=functions_table[func]["vars_table"]["variables"]["tempInt"][returnValTemp]
+            returnVal=functions_table[func]["vars_table"]["values"]["tempInt"][returnTempMem]
+            #print("RETURNVAL",returnVal)
+            globalHashMap[func]=[globalInt,returnVal]
+            globalInt+=1
+        elif(returnType=="float"):
+            returnValMem=functions_table[func]["vars_table"]["variables"]["varFloat"][returnVar]
+            returnValTemp=functions_table[func]["vars_table"]["values"]["varFloat"][returnValMem[0]]
+            returnTempMem=functions_table[func]["vars_table"]["variables"]["tempFloat"][returnValTemp]
+            returnVal=functions_table[func]["vars_table"]["values"]["tempFloat"][returnTempMem]
+            #print("RETURNVAL",returnVal)
+            globalHashMap[func]=[globalFloat,returnVal]
+            globalFloat+=1
 
     #mapeo globales
     #global int
