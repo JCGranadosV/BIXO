@@ -1,43 +1,27 @@
 program id;
-var float col, que;
-var int pepe, rodrigo, juan;
-function void abrir(float k){
-    var float carlitos;
-    var int n;
-    var int v;
-    n=3;
-    v=5;
-    carlitos=n+v+5;
+var int i;
+function float abrir (float k, float c){
+    var float a;
+    var float b;
+    a=3+4-5+6.6+9+10-44.4;
+    b=2.2+3+4;
+    read(a);
+    print(a,b);
+    return b;
 }
-function int cerrar(int c, int l, float ks){
-    var int rodrigo;
-    rodrigo=3;
-    return rodrigo+4+5;
-}
-function float comer(int m){
-    var int a,b;
-    var float ff;
-    var float fa;
-    var int c;
-    var int x, y;
-    var float z;
-    x=3;
-    y=7;
-    z=4.5*3;
-    b=3;
-    var int ret;
-    read(c);
-    print(a);
-    ff=5.5*4*6*7+10/4-3/3+22;
-    fa=ff;
-    abrir(ff)
-    c=cerrar(x,y,z);
-    fa=comer(x);
-    return a;
+function int cerrar(){
+    var float c;
+    var int d;
+    var int kl;
+    c=3/2+4*4*6.3+6+7.7/34.4;
+    kl=3+5;
+    return kl; 
 }
 main(){
     var int ma;
-    ma=3+4;
-    var float klop;
-    klop=3.3*4+ma;
+    var float kle;
+    kle=3+4+5;
+    var int ce;
+    ce=abrir(3.4,2.2);
+    print(ce);
 }

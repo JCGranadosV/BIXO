@@ -285,8 +285,8 @@ while (i< qCounter):
         
 
     i+=1
-    print(quad)
-    print(i)
+    print("Quad",i,quad)
+    #print(i)
     
 
 print(valueMap)
