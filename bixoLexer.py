@@ -65,7 +65,8 @@ tokens = [
     'ARRAY',
     'MATRIX',
     'MEAN',
-    'FIBONACCI'
+    'FIBONACCI',
+    'MMULT'
 ]
 
 reserved = {
@@ -101,7 +102,8 @@ reserved = {
     'fit' : 'FIT',
     'predict' : 'PREDICT',
     'getweights' : 'GETWEIGHTS',
-    'fibonacci' : 'FIBONACCI'
+    'fibonacci' : 'FIBONACCI',
+    'mmult': 'MMULT'
 }
 
 #REGEX TOKENS
@@ -227,6 +229,10 @@ def t_ARRAY(t):
 
 def t_MATRIX(t):
     r'matrix'
+    return t
+
+def t_MMULT(t):
+    r'mmult'
     return t
 
 def t_MEAN(t):

@@ -217,6 +217,7 @@ while (i< qCounter):
     arg1=quad[1]
     arg2=quad[2]
     res=quad[3]
+    print("Quad",i,quad)
     if(op=="+" or op=="-" or op=="*" or op=="/"):
         pass
     elif(op=="="):
@@ -336,6 +337,20 @@ while (i< qCounter):
             arr=arrays[arg1]
             mean=np.mean(arr)
             print("Mean de",arg1,"=",mean)
+    elif(op=="MATRIXMULT"):
+        if(arg1 in matrixes):
+            mat1=np.array(matrixes[arg1])
+        else: 
+            print("ERROR NO EXISTE MATRIX", arg1)
+            sys.exit()
+        if(arg2 in matrixes):
+            mat2=np.array(matrixes[arg2])
+        else: 
+            print("ERROR NO EXISTE MATRIX", arg2)
+            sys.exit()
+        mult=np.matmul(mat1,mat2)
+        print("MULTIPLICACION DE",arg1,"*",arg2,"ES =",mult)
+
     #elif(op=="LAYERS"):
     #elif(op=="SEQUENTIAL"):
     #elif(op=="COMPILE"):
@@ -346,7 +361,7 @@ while (i< qCounter):
         
 
     i+=1
-    print("Quad",i,quad)
+    
     #print(i)
     
 

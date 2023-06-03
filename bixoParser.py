@@ -979,7 +979,8 @@ def p_statements(p):
                  |  fit
                  |  predict
                  |  getweights
-                 |  fibonacci'''
+                 |  fibonacci
+                 |  mmult'''
     p[0] = p[1]
     
 def p_assign(p):
@@ -1400,6 +1401,8 @@ def p_mat_values(p):
         mValues+=1
         p[0]=p[1]
 
+
+
 def p_mean(p):
     '''mean : MEAN LPAREN ID RPAREN SEMICOLON'''
     global qCounter
@@ -1481,6 +1484,15 @@ def p_fibonacci(p):
     global qCounter
     val=p[3]
     quadGen.gen_quad("FIBONACCI",val,None,None)
+    qCounter+=1
+
+def p_mmult(p):
+    '''mmult : MMULT LPAREN ID COMMA ID RPAREN SEMICOLON'''
+    global qCounter
+    m1=p[3]
+    m2=p[5]
+    print("MATRIXMULTTTTTTTTTT_--------------------------------------")
+    quadGen.gen_quad("MATRIXMULT", m1, m2, None)
     qCounter+=1
 
 # Empty production
