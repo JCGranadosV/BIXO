@@ -4,7 +4,8 @@ var int pepe, rodrigo, juan;
 
 function float abrir (int k,  int ko){
     var int prueb;
-    var float m;
+    var float m,mmmi;
+    mmmi=4;
     m=3;
     m=3+4+5*3*5-2;
     return m;
