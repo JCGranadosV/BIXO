@@ -188,6 +188,12 @@ print(sQuads)
 switch=0
 lArray=[]
 arrays={}
+lMatrix=[]
+auxiliar = []
+ordered_values = []
+matrixes={}
+mRows=0
+mColumns=0
 s2=0
 i=0
 #while i < qCounter:
@@ -229,6 +235,8 @@ while (i< qCounter):
     elif(op=="print"):
         if(res in arrays):
             print(arrays[res])
+        elif(res in matrixes):
+            print(matrixes[res])
         else:
             func=getFuncVar(res)
             val=valueMap[func][res][1]
@@ -243,9 +251,7 @@ while (i< qCounter):
         if(i>0):
             i=res-1
     elif(op=="GOTOF"):
-        print("ENTRO GOTOF")
         toF=getTempValue(arg1)
-        print("TOF ES: ",toF)
         if(toF==0 or switch == 1):
             i=res-1
         else:
@@ -292,9 +298,36 @@ while (i< qCounter):
         lArray.append(currVal)
     elif(op=="ARRAYEND"):
         arrays[res]=np.array(lArray)
-    #elif(op=="MATRIX"):
-    #elif(op=="MATRIXSTART"):
-    #elif(op=="MATRIXEND"):
+    elif(op=="MATRIX"):
+        mRows=arg2
+        mColumns=res
+        lMatrix=[]
+        auxiliar = []
+        ordered_values = []
+    elif(op=="MATRIXSTART"):
+        pass
+    elif(op=="MATRIXFILL"):
+        pass
+        #print(valueMap)
+        currVal=valueMap["main"][arg2][1]
+        lMatrix.append(currVal)
+    elif(op=="MATRIXEND"):
+        auxiliar = []
+        # Vaciar la pila y almacenar los elementos en la lista auxiliar en orden inverso
+        while lMatrix:
+            e = lMatrix.pop()
+            auxiliar.append(e)
+        pass
+        for m in range(mRows+1):
+            row = []
+            for j in range(mColumns+1):
+                value = auxiliar.pop()
+                row.append(value)
+            ordered_values.append(row)
+        mat=np.array(ordered_values)
+        matrixes[res]=mat
+        #print("MATRICES:", matrixes)
+        
     #elif(op=="MEAN"):
     #elif(op=="LAYERS"):
     #elif(op=="SEQUENTIAL"):

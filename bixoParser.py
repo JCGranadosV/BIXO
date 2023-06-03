@@ -1377,6 +1377,8 @@ def p_matrix(p):
             tempCounterFloat+=1
             quadGen.gen_quad("=",f"{matrix_name}[{i}][{j}]", None, temp)
             qCounter+=1
+            quadGen.gen_quad("MATRIXFILL",f"{matrix_name}[{i}][{j}]", temp, matrix_name)
+            qCounter+=1
 
     quadGen.gen_quad("MATRIXEND",temp, memory, matrix_name)
     qCounter+=1
@@ -1498,7 +1500,7 @@ parser = yacc.yacc()
 # Procesar cada línea con el parser
 
 
-fileName = "pruebarray.txt"   
+fileName = "pruebaMatrix.txt"   
 inputFile = open(fileName, 'r')
 inputCode = inputFile.read()
 inputFile.close()
