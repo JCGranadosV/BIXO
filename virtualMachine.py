@@ -230,10 +230,10 @@ while (i< qCounter):
         print("ENTRO GOTOF")
         toF=getTempValue(arg1)
         print("TOF ES: ",toF)
-        if(toF==0):
+        if(toF==0 or switch == 1):
             i=res-1
         else:
-            pass
+            switch = 1
     elif(op=="ERA"):
         pass
     #elif(op=="PARAM"):
