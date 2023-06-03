@@ -122,9 +122,9 @@ def asignar_valores(hashMap):
         funcHashMap = {}
         #revisa cada valorr y si es un temp lo asigna a su valor
         for var, (mem, value) in varMap.items():
-            if (re.match(regexTemp,var)):
+            #if (re.match(regexTemp,var)):
                 #omito datos temporales
-                continue
+            #    continue
             if isinstance(value, (int, float)):
                 #omito numeros
                 pass
