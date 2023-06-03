@@ -327,8 +327,15 @@ while (i< qCounter):
         mat=np.array(ordered_values)
         matrixes[res]=mat
         #print("MATRICES:", matrixes)
-        
-    #elif(op=="MEAN"):
+    elif(op=="MEAN"):
+        if(arg1 in matrixes):
+            mat=matrixes[arg1]
+            mean=np.mean(mat)
+            print("Mean de",arg1,"=",mean)
+        elif(arg1 in arrays):
+            arr=arrays[arg1]
+            mean=np.mean(arr)
+            print("Mean de",arg1,"=",mean)
     #elif(op=="LAYERS"):
     #elif(op=="SEQUENTIAL"):
     #elif(op=="COMPILE"):
