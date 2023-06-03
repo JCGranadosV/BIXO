@@ -63,6 +63,21 @@ def mapeo():
     global localInt, localFloat, tempInt, tempFloat,globalInt, globalFloat
     print(globalVarTable)
     globalHashMap={}
+    #mapeo valor de cada func
+    #for func  in functions_table:
+    #    returnType=functions_table[func]["return_type"]
+    #    returnVar=functions_table[func]["return_value"]
+    #    if(returnType=="int"):
+    #        print("RETURNVAR",functions_table[func]["vars_table"]["values"]["varInt"][returnVar])
+    #        returnVal=functions_table[func]["vars_table"]["values"]["varInt"][returnVar]
+    #        globalHashMap[func]=[globalInt,returnVal]
+    #        globalInt+=1
+    #    elif(returnType=="float"):
+    #        print("RETURNVAR",functions_table[func]["vars_table"])
+    #        returnVal=functions_table[func]["vars_table"]["values"]["varFloat"][returnVar]
+    #        globalHashMap[func]=[globalFloat,returnVal]
+    #        globalFloat+=1
+
     #mapeo globales
     #global int
     for gVari, value in globalVarTable["variables"]["int"].items():
@@ -155,8 +170,8 @@ def asignar_valores(hashMap):
 
 print("----------------INICIA VM-----------------")
 mapeo()
-valueMap=asignar_valores(hashMap)
 print("HASHMAP ORIGINAL",hashMap)
+valueMap=asignar_valores(hashMap)
 print("VALORES ASIGNADOS",valueMap)
 quads=sQuads.quads
 print(sQuads)
@@ -219,6 +234,24 @@ while (i< qCounter):
             i=res-1
         else:
             pass
+    elif(op=="ERA"):
+        pass
+    #elif(op=="PARAM"):
+    #elif(op=="GOSUB"):
+    #elif(op=="ARRAY"):
+    #elif(op=="ARRAYSTART"):
+    #elif(op=="ARRAYEND"):
+    #elif(op=="MATRIX"):
+    #elif(op=="MATRIXSTART"):
+    #elif(op=="MATRIXEND"):
+    #elif(op=="MEAN"):
+    #elif(op=="LAYERS"):
+    #elif(op=="SEQUENTIAL"):
+    #elif(op=="COMPILE"):
+    #elif(op=="FIT"):
+    #elif(op=="PREDICT"):
+    #elif(op=="FIBONACCI"):
+    
         
 
     i+=1
