@@ -1,5 +1,13 @@
 program id;
 var int i;
+function int cerrar(){
+    var float c;
+    var int d;
+    var int kl;
+    c=3/2+4*4*6.3+6+7.7/34.4;
+    kl=3+5;
+    return kl; 
+}
 function float abrir (float k, float c){
     var float a;
     var float b;
@@ -8,14 +16,6 @@ function float abrir (float k, float c){
     read(a);
     print(a,b);
     return b;
-}
-function int cerrar(){
-    var float c;
-    var int d;
-    var int kl;
-    c=3/2+4*4*6.3+6+7.7/34.4;
-    kl=3+5;
-    return kl; 
 }
 main(){
     var int ma;

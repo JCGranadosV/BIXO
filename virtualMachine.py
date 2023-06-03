@@ -184,6 +184,7 @@ print("VALORES ASIGNADOS",valueMap)
 quads=sQuads.quads
 print(sQuads)
 switch=0
+s2=0
 i=0
 #while i < qCounter:
 #    if switch==10:
@@ -232,8 +233,8 @@ while (i< qCounter):
         valueMap[func][res]=(mem,val)
     elif(op=="GOTO"):
         #if para saltar goto al main mientras testeo
-        if(i>0):
-            i=res-1
+        #if(i>0):
+        i=res-1
     elif(op=="GOTOF"):
         print("ENTRO GOTOF")
         toF=getTempValue(arg1)
@@ -266,8 +267,13 @@ while (i< qCounter):
         else:
             print("ERROR NO EXISTE FUNCION A LLAMAR")
             sys.exit()
-    #elif(op=="PARAM"):
-    #elif(op=="GOSUB"):
+    elif(op=="PARAM"):
+        pass
+    elif(op=="GOSUB"):
+        #if para saltar goto al main mientras testeo
+        if(s2==0):
+            i=res-1
+        s2=1
     #elif(op=="ARRAY"):
     #elif(op=="ARRAYSTART"):
     #elif(op=="ARRAYEND"):
