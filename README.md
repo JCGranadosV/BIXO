@@ -9,6 +9,8 @@ Debuggeamos y trabajamos en la generacion de cuadruplos y la tabla de constantes
 
 INSTALACION DE LIBRERIAS:
 pip install ply
+pip install numpy
+pip install tensorflow
 
 
 

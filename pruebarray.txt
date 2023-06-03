@@ -1,18 +1,18 @@
 program pruebarray;
-function int que(int a){
+
+main(){
+    var int ma;
     var int c,d,e;
     var float n;
+    ma=1+1;
     e=2+3+5;
     n=2.3*3.3*5;
     array m[5]=[2,4,6,8,10,12];
     e=2+2+3;
+    print(e);
     var float kk;
     kk=3.3*5;
     n=2.3*5;
     array dos[2]=[0,1,2];
-    return e;
-}
-main(){
-    var int ma;
-    ma=1+1;
+    print(m);
 }

@@ -5,6 +5,8 @@ import ply.yacc as yacc
 import bixoLexer
 import ply.lex as lexer
 import bixoParser as bixo
+import numpy as np
+import tensorflow as tf
 
 
 #importa data de parser
@@ -184,6 +186,8 @@ print("VALORES ASIGNADOS",valueMap)
 quads=sQuads.quads
 print(sQuads)
 switch=0
+lArray=[]
+arrays={}
 s2=0
 i=0
 #while i < qCounter:
@@ -223,9 +227,12 @@ while (i< qCounter):
                    sys.exit()
             valueMap["global"][res]=(mem,val)
     elif(op=="print"):
-        func=getFuncVar(res)
-        val=valueMap[func][res][1]
-        print(val)
+        if(res in arrays):
+            print(arrays[res])
+        else:
+            func=getFuncVar(res)
+            val=valueMap[func][res][1]
+            print(val)
     elif(op=="read"):
         func=getFuncVar(res)
         val=input()
@@ -233,8 +240,8 @@ while (i< qCounter):
         valueMap[func][res]=(mem,val)
     elif(op=="GOTO"):
         #if para saltar goto al main mientras testeo
-        #if(i>0):
-        i=res-1
+        if(i>0):
+            i=res-1
     elif(op=="GOTOF"):
         print("ENTRO GOTOF")
         toF=getTempValue(arg1)
@@ -274,9 +281,17 @@ while (i< qCounter):
         if(s2==0):
             i=res-1
         s2=1
-    #elif(op=="ARRAY"):
-    #elif(op=="ARRAYSTART"):
-    #elif(op=="ARRAYEND"):
+    elif(op=="ARRAY"):
+        lArray=[]
+        #array=np.array()
+    elif(op=="ARRAYSTART"):
+        pass
+        #while
+    elif(op=="ARRAYFILL"):
+        currVal=valueMap["main"][arg2][1]
+        lArray.append(currVal)
+    elif(op=="ARRAYEND"):
+        arrays[res]=np.array(lArray)
     #elif(op=="MATRIX"):
     #elif(op=="MATRIXSTART"):
     #elif(op=="MATRIXEND"):

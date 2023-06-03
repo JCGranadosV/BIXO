@@ -456,7 +456,8 @@ def p_modules(p):
     '''modules : function modules
                | voidfunction modules
                | function
-               | voidfunction'''
+               | voidfunction
+               | '''
     global currFuncType
     currFuncType=""
     if(len(p)==2):
@@ -1296,6 +1297,8 @@ def p_array(p):
         tempCounterFloat+=1
         quadGen.gen_quad("=",f"{array_name}[{i}]", None, temp)
         qCounter+=1
+        quadGen.gen_quad("ARRAYFILL",f"{array_name}[{i}]", temp, array_name)
+        qCounter+=1
         i+=1
     quadGen.gen_quad("ARRAYEND",temp, memory, array_name)
     qCounter+=1
@@ -1495,7 +1498,7 @@ parser = yacc.yacc()
 # Procesar cada línea con el parser
 
 
-fileName = "prueba3.txt"   
+fileName = "pruebarray.txt"   
 inputFile = open(fileName, 'r')
 inputCode = inputFile.read()
 inputFile.close()
