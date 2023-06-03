@@ -1106,7 +1106,8 @@ def p_call(p):
         #si la funcion a llamar es de tipo float o int, genera el cuadruplo de almacenarlo
         if((functions_table[funCall]["return_type"]=="int") or (functions_table[funCall]["return_type"]=="float")):
             temp=getTemp()
-            quadGen.gen_quad('=', funCall, None, temp)
+            quadGen.gen_quad("ASSIGNFUNC",funCall, currFunc, temp)
+            #quadGen.gen_quad('=', funCall, None, temp)
             qCounter+=1
             p[0]=temp
             #sReturns.append(getFuncReturn(funCall))
@@ -1127,7 +1128,8 @@ def p_call(p):
         #si la funcion a llamar es de tipo float o int, genera el cuadruplo de almacenarlo
         if(currFuncType=="int") or (currFuncType=="float"):
             temp=getTemp()
-            quadGen.gen_quad('=', currFunc, None, temp)
+            quadGen.gen_quad("ASSIGNFUNC",funCall, currFunc, temp)
+            #quadGen.gen_quad('=', currFunc, None, temp)
             qCounter+=1
             p[0]=temp
             #print("ES UNA LLAMADA A TIPO FLOAT O INT A SI MISMO")

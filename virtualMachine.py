@@ -242,8 +242,30 @@ while (i< qCounter):
             i=res-1
         else:
             switch = 1
+    elif(op=="ASSIGNFUNC"):
+        val=valueMap["global"][arg1][1]
+        #print("ASSIGNFUNC VAL ",val)
+        mem=21000
+        valueMap[arg2][res]=(mem,val)
+        #print (valueMap)
+
+        for value in valueMap[arg2]:
+            currVal=valueMap[arg2][value]
+            if(currVal[1]==res):
+                #print("CURRVAL, RES",currVal, res, "ESTA EN ", value)
+                valorTemp=valueMap["global"][arg1][1]
+                #print("valorTEMP ES:",valorTemp)
+                currValMem=currVal[0]
+                valueMap[arg2][value]=(mem, valorTemp)
+        #print(valueMap)
+        
+
     elif(op=="ERA"):
-        pass
+        if (res in valueMap["global"]):
+            pass
+        else:
+            print("ERROR NO EXISTE FUNCION A LLAMAR")
+            sys.exit()
     #elif(op=="PARAM"):
     #elif(op=="GOSUB"):
     #elif(op=="ARRAY"):
