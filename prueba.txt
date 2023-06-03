@@ -14,11 +14,12 @@ function void cerrar (float c){
     var int l;
     var float cm;
     l = 3;
+    pepe=3;
     cm = 5+4+5*4*2/2;
     var float cmmi;
     cmmi=cm+4*2.2;
-    print(c);
-    read(c);
+    print(cmmi);
+    read(l);
 }
 function int comer (float b){
     var int m,n,y;

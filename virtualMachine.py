@@ -52,11 +52,12 @@ hashMap={}
 
 def getFuncVar(var):
     for func in functions_table:
-        print ("FUNC ES:",func)
+        #print ("FUNC ES:",func)
         if ((var in functions_table[func]["vars_table"]["variables"]["varInt"]) or (var in functions_table[func]["vars_table"]["variables"]["varFloat"])):
             #print("la var", var, "existe en ", func)
             return (func)
-    print("ERROR NO EXISTE")    
+    print("ERROR NO EXISTE VARIABLE")    
+    sys.exit()
 
 def mapeo():
     global localInt, localFloat, tempInt, tempFloat,globalInt, globalFloat
@@ -146,11 +147,74 @@ def asignar_valores(hashMap):
 
 print("----------------INICIA VM-----------------")
 mapeo()
-valores_asignados=asignar_valores(hashMap)
+valueMap=asignar_valores(hashMap)
 print("HASHMAP ORIGINAL",hashMap)
-print("VALORES ASIGNADOS",valores_asignados)
+print("VALORES ASIGNADOS",valueMap)
 quads=sQuads.quads
 print(sQuads)
+switch=0
+i=0
+#while i < qCounter:
+#    if switch==10:
+#        break
+#    if i == 5:
+#        i = 0  # Salta a la iteración 10
+#        continue  # Salta al siguiente ciclo del bucle
+#    elif i == 15:
+#        break  # Termina el bucle
+#    print(i)
+#    i += 1
+#    switch+=1
+
+
+while (i< qCounter):
+    quad=sQuads.quads[i]
+    #print("CUADRUPLO",quad)
+    #print("QUAD POS 0", quad[0])
+    op=quad[0]
+    arg1=quad[1]
+    arg2=quad[2]
+    res=quad[3]
+    if(op=="+" or op=="-" or op=="*" or op=="/"):
+        pass
+    elif(op=="="):
+        #para asignar variables globales
+        if(res in valueMap["global"]):
+            val=arg1
+            mem=valueMap["global"][res][0]
+            if isinstance(val, (int, float)):
+                #omito numeros
+                pass
+            else:
+                if (re.match(regexTemp,val)):
+                   print("ERROR asignar temporal a global")
+                   sys.exit()
+            valueMap["global"][res]=(mem,val)
+            
+        
+        #if (func=="global"):
+        #    val=arg1
+        #    mem=valueMap[func][res][0]
+        #    valueMap[func][res]=(mem,val)
+    elif(op=="print"):
+        func=getFuncVar(res)
+        val=valueMap[func][res][1]
+        print(val)
+    elif(op=="read"):
+        func=getFuncVar(res)
+        val=input()
+        mem=valueMap[func][res][0]
+        valueMap[func][res]=(mem,val)
+    #elif(op=="GOTO"):
+        
+
+
+
+    #print(i)
+    i+=1
+
+print(valueMap)
+
 #for i in range(qCounter):
 #    print(i)
 #    quad=sQuads.quads[i]

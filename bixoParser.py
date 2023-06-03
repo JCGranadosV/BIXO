@@ -1052,19 +1052,11 @@ def p_read(p):
     temp=getTemp()
     var_name=p[3]
     if(var_name in (local_var_table["variables"]["varInt"])):
-        local_var_table["variables"]["tempInt"][temp]=tempIntMemory
-        tempIntMemory+=1
-        tempCounterInt+=1
-        quadGen.gen_quad('read', None, None, temp)
-        quadGen.gen_quad('=', temp, None, p[3])
-        qCounter += 2
+        quadGen.gen_quad('read', None, None, p[3])
+        qCounter += 1
     elif(var_name in (local_var_table["variables"]["varFloat"])):
-        local_var_table["variables"]["tempFloat"][temp]=tempFloatMemory
-        tempFloatMemory+=1
-        tempCounterFloat+=1
-        quadGen.gen_quad('read', None, None, temp)
-        quadGen.gen_quad('=', temp, None, p[3])
-        qCounter += 2
+        quadGen.gen_quad('read', None, None, p[3])
+        qCounter += 1
     else: print("ERROR no existe la var")
     
     
