@@ -190,12 +190,6 @@ while (i< qCounter):
                    print("ERROR asignar temporal a global")
                    sys.exit()
             valueMap["global"][res]=(mem,val)
-            
-        
-        #if (func=="global"):
-        #    val=arg1
-        #    mem=valueMap[func][res][0]
-        #    valueMap[func][res]=(mem,val)
     elif(op=="print"):
         func=getFuncVar(res)
         val=valueMap[func][res][1]
