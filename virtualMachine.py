@@ -116,6 +116,14 @@ def mapeo():
         hashMap[func]=funcHashMap
     #print(hashMap)
 
+
+def getTempValue(temp):
+    for func in valueMap:
+        for var, val in valueMap[func].items():
+            if(temp==var):
+                return val[1]
+
+
 def asignar_valores(hashMap):
     resultHashMap = {}
     #itera en cada funcion
@@ -199,13 +207,24 @@ while (i< qCounter):
         val=input()
         mem=valueMap[func][res][0]
         valueMap[func][res]=(mem,val)
-    #elif(op=="GOTO"):
+    elif(op=="GOTO"):
+        #if para saltar goto al main mientras testeo
+        if(i>0):
+            i=res-1
+    elif(op=="GOTOF"):
+        print("ENTRO GOTOF")
+        toF=getTempValue(arg1)
+        print("TOF ES: ",toF)
+        if(toF==0):
+            i=res-1
+        else:
+            pass
         
 
-
-
-    #print(i)
     i+=1
+    print(quad)
+    print(i)
+    
 
 print(valueMap)
 

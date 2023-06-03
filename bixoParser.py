@@ -1175,7 +1175,7 @@ def p_quadsIf(p):
     print("AQUI CORRE EL QUADSIF")
     global sBools, qCounter, tempCounter, currBool, sJumps
     currBool=sBools.pop()
-    quadGen.gen_quad("gotoF", currBool, None, None)
+    quadGen.gen_quad("GOTOF", currBool, None, None)
     sJumps.append(qCounter)
     qCounter += 1
 
@@ -1185,9 +1185,9 @@ def p_jumpsIf(p):
     jumps = sJumps.pop()
     if(hayElse):
         print("ENTRO ELSE")
-        quadGen.quads[jumps] = ("goto",None,None,qCounter)
+        quadGen.quads[jumps] = ("GOTO",None,None,qCounter)
     else:
-        quadGen.quads[jumps] = ("gotoF",currBool ,None,qCounter)
+        quadGen.quads[jumps] = ("GOTOF",currBool ,None,qCounter)
 
     #al final reseteamos todos nuestras pilas
     sBools=[]
@@ -1198,11 +1198,11 @@ def p_quadsElse(p):
     '''quadsElse : '''   
     print("AQUI CORRE EL QUADSELSE") 
     global sOperators, sOperands, qCounter, currBool, sJumps
-    quadGen.gen_quad("goto", None, None, None)
+    quadGen.gen_quad("GOTO", None, None, None)
     jumps = sJumps.pop()
     sJumps.append(qCounter)
     qCounter += 1
-    quadGen.quads[jumps] = ("gotoF",currBool,None,qCounter)
+    quadGen.quads[jumps] = ("GOTOF",currBool,None,qCounter)
 
 ###############################Quands while#############
 def p_while(p):
@@ -1222,7 +1222,7 @@ def p_quadsWhile(p):
     ''' quadsWhile :'''
     global sBools, qCounter, tempCounter, currBool, sJumps
     currBool=sBools.pop()
-    quadGen.gen_quad("gotoF", currBool, None, None)
+    quadGen.gen_quad("GOTOF", currBool, None, None)
     sJumps.append(qCounter)
     qCounter += 1
     
@@ -1231,9 +1231,9 @@ def p_jumpsWhile(p):
     global qCounter, currBool, sJumps, hayElse, sBools    
     jumps = sJumps.pop()
     qCounter += 1
-    quadGen.quads[jumps] = ("gotoF", currBool, None, qCounter)
+    quadGen.quads[jumps] = ("GOTOF", currBool, None, qCounter)
     jumps = sJumps.pop()
-    quadGen.gen_quad("goto",None ,None,jumps)
+    quadGen.gen_quad("GOTO",None ,None,jumps)
     #al final reseteamos todos nuestras pilas
     sBools=[]
     sJumps=[]
@@ -1493,7 +1493,7 @@ parser = yacc.yacc()
 # Procesar cada línea con el parser
 
 
-fileName = "prueba.txt"   
+fileName = "pruebawhile1.txt"   
 inputFile = open(fileName, 'r')
 inputCode = inputFile.read()
 inputFile.close()
