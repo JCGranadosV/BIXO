@@ -1512,7 +1512,7 @@ parser = yacc.yacc()
 # Procesar cada línea con el parser
 
 
-fileName = "pruebaMatrix.txt"   
+fileName = "pruebafuncesp.txt"   
 inputFile = open(fileName, 'r')
 inputCode = inputFile.read()
 inputFile.close()

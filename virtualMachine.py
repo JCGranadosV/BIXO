@@ -196,17 +196,10 @@ mRows=0
 mColumns=0
 s2=0
 i=0
-#while i < qCounter:
-#    if switch==10:
-#        break
-#    if i == 5:
-#        i = 0  # Salta a la iteración 10
-#        continue  # Salta al siguiente ciclo del bucle
-#    elif i == 15:
-#        break  # Termina el bucle
-#    print(i)
-#    i += 1
-#    switch+=1
+#################################
+#SECCION DE ML:
+units=0
+
 
 
 while (i< qCounter):
@@ -350,12 +343,25 @@ while (i< qCounter):
             sys.exit()
         mult=np.matmul(mat1,mat2)
         print("MULTIPLICACION DE",arg1,"*",arg2,"ES =",mult)
-
-    #elif(op=="LAYERS"):
-    #elif(op=="SEQUENTIAL"):
-    #elif(op=="COMPILE"):
-    #elif(op=="FIT"):
-    #elif(op=="PREDICT"):
+    elif(op=="LAYERS"):
+        capa = tf.keras.layers.Dense(units=arg1, input_shape=[1])
+    elif(op=="SEQUENTIAL"):
+        modelo = tf.keras.Sequential([capa])
+    elif(op=="COMPILE"):
+        modelo.compile(
+            optimizer = tf.keras.optimizers.Adam(arg1),
+            loss='mean_squared_error'
+        )
+    elif(op=="FIT"):
+        print("Comenzando entrenamiento...")
+        arr1=arrays[arg1]
+        arr2=arrays[arg2]
+        historial = modelo.fit(arr1, arr2, epochs=res, verbose=False)
+        print("Modelo entrenado!")
+    elif(op=="PREDICT"):
+        print("Hagamos una predicción!")
+        resultado = modelo.predict([arg1])
+        print("El resultado es: "+ str(resultado))
     #elif(op=="FIBONACCI"):
     
         
@@ -367,139 +373,9 @@ while (i< qCounter):
 
 print(valueMap)
 
-#for i in range(qCounter):
-#    print(i)
-#    quad=sQuads.quads[i]
-#    print("CUADRUPLO",quad)
-#    print("QUAD POS 0", quad[0])
-#    op=quad[0]
-#    arg1=quad[1]
-#    arg2=quad[2]
-#    res=quad[3]
-#    if(op=="+" or op=="-" or op=="*" or op=="/"):
-#        pass
-#    elif(op == "="):
-#        func=getFuncVar(res)
-#        if (res in functions_table[func]["vars_table"]["variables"]["varInt"]):
-#            memoria=functions_table[func]["vars_table"]["variables"]["varInt"][res]
-#            value = functions_table[func]["vars_table"]["values"]["varInt"][memoria[0]]
-#        elif(res in functions_table[func]["vars_table"]["variables"]["varFloat"]):
-#            memoria=functions_table[func]["vars_table"]["variables"]["varFloat"][res]
-#            value = functions_table[func]["vars_table"]["values"]["varFloat"][memoria[0]]
-#
-#
-#    if(op == "print"):
-#        func=getFuncVar(res)
-#        if (res in functions_table[func]["vars_table"]["variables"]["varInt"]):
-#            memoria=functions_table[func]["vars_table"]["variables"]["varInt"][res]
-#            value = functions_table[func]["vars_table"]["values"]["varInt"][memoria[0]]
-#        elif(res in functions_table[func]["vars_table"]["variables"]["varFloat"]):
-#            memoria=functions_table[func]["vars_table"]["variables"]["varFloat"][res]
-#            value = functions_table[func]["vars_table"]["values"]["varFloat"][memoria[0]]
-#        print(value)
-#    elif(op=="read"):
-#        func=getFuncVar(res)
-#        value=input()
-#        if (res in functions_table[func]["vars_table"]["variables"]["varInt"]):
-#            memoria=functions_table[func]["vars_table"]["variables"]["varInt"][res]
-#            functions_table[func]["vars_table"]["values"]["varInt"][memoria[0]]=value
-#        elif(res in functions_table[func]["vars_table"]["variables"]["varFloat"]):
-#            memoria=functions_table[func]["vars_table"]["variables"]["varFloat"][res]
-#            functions_table[func]["vars_table"]["values"]["varFloat"][memoria[0]]=value
-#        print(functions_table)
-#        
-#
-#    elif(op == "GOTO"):
-#        print("Hay goto aca")
-#        i = res
-#        
-#        print(i,res)
-#        print("GOTO NOS LLEVA A",res)
-#       
-#    elif(op == "era"):
-#        print("Hay goto aca")
-#    #if(op == "goto" or "GOTO"):
-#     #   print("Hay goto aca")
-    #if(op == "read"):
-    #    print("hay read aca")
-    #    print(res)
-        
 
-
-
-#def run(self):
-    #memoria del main
-   # self.sCall.append(mainMem)
-    #run quads
 
     
 
-
-#def runQuads(self, quad):
-#        op, arg1, arg2, res = quad
-#    if op == "goto":
-#        self.goto(res)
-#    elif op == "=":
-#        self.assign(arg1, res)
-#    elif op in ["+", "-", "/", "*", "&&", "||", ">", "<", ">=", "<=", "==", "!="]:
-#        self.operation(op, arg1, arg2, res)
-#    elif op == "print":
-#        self.print(arg1)
-#    elif op == "gotoF":
-#        self.gotoF(arg1, res)
-#    elif op == "era":
-#        self.era(arg1)
-##    elif op == "parameter":
-##        self.param(arg1)
-##    elif op == "gosub":
-##        self.gosub(res)
-#
-#    def goto(self, arg1, res):
-#        #asignamos el num de quad en res
-#        self.iIp[-1] = res
-#    
-#def assign(self, arg1, res):
-#    value = self.get_value(arg1)
-#    self.set_value(res, value)
-#
-#def operation(self, op, arg1, arg2, res):
-#    value1 = self.get_value(arg1)
-#    value2 = self.get_value(arg2)
-#
-#    if op == "+":
-#        result = value1 + value2
-#    elif op == "-":
-#        result = value1 - value2
-#    elif op == "*":
-#        result = value1 * value2
-#    elif op == "/":
-#        result = value1 / value2
-#    elif op == "&&":
-#        result = value1 and value2
-#    elif op == "||":
-#        result = value1 or value2
-#    elif op == ">":
-#        result = value1 > value2
-#    elif op == "<":
-#        result = value1 < value2
-#    elif op == ">=":
-#        result = value1 >= value2
-#    elif op == "<=":
-#        result = value1 <= value2
-#    elif op == "==":
-#        result = value1 == value2
-#    elif op == "!=":
-#            result = value1 != value2
-#
-#    self.set_value(res, result)
-#
-#def print(self, arg1):
-#    value = self.get_value(arg1)
-#    print(value)
-#
-#def gotoF(self, arg1, res):
-#    value = self.get_value(arg1)
-#    if not value:
-#        self.sIp[-1] = res
 
 
