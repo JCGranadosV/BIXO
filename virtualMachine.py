@@ -40,7 +40,7 @@ tempInt = 20000
 tempFloat = 24000
 tempBool = 28000
 
-
+regexTemp=bixo.regexTemp
 #para imprimir quad en posicion 1
 #print ("QUADGEN",sQuads.quads[1])
 
@@ -77,10 +77,15 @@ def mapeo():
         globalFloat+=1
     hashMap["global"]=globalHashMap
     
-
     #mapeo locales
     for func in functions_table:
         funcHashMap={}
+        globalInt = 4000
+        globalFloat = 8000 
+        localInt = 12000
+        localFloat = 16000
+        tempInt = 20000
+        tempFloat = 24000
         print(func)
         #mapeo varints
         for vari, value in functions_table[func]["vars_table"]["variables"]["varInt"].items():
@@ -110,10 +115,40 @@ def mapeo():
         hashMap[func]=funcHashMap
     #print(hashMap)
 
+def asignar_valores(hashMap):
+    resultHashMap = {}
+    #itera en cada funcion
+    for func, varMap in hashMap.items():
+        funcHashMap = {}
+        #revisa cada valorr y si es un temp lo asigna a su valor
+        for var, (mem, value) in varMap.items():
+            if (re.match(regexTemp,var)):
+                #omito datos temporales
+                continue
+            if isinstance(value, (int, float)):
+                #omito numeros
+                pass
+            else:
+                if (re.match(regexTemp,value)):
+                    #almaceno valor de temporal en la variable
+                    (mem1, value) = varMap[value]
+
+            funcHashMap[var] = (mem, value)
+
+        resultHashMap[func] = funcHashMap
+
+    return resultHashMap
+
+
+
+
+
 
 print("----------------INICIA VM-----------------")
 mapeo()
-print(hashMap)
+valores_asignados=asignar_valores(hashMap)
+print("HASHMAP ORIGINAL",hashMap)
+print("VALORES ASIGNADOS",valores_asignados)
 quads=sQuads.quads
 print(sQuads)
 #for i in range(qCounter):
