@@ -161,7 +161,9 @@ def asignar_valores(hashMap):
             else:
                 if (re.match(regexTemp,value)):
                     #almaceno valor de temporal en la variable
-                    (mem1, value) = varMap[value]
+                    print("VARMAP Y VALUE",varMap,value)
+                    if value in varMap:
+                        (mem1, value) = varMap[value]
 
             funcHashMap[var] = (mem, value)
 
