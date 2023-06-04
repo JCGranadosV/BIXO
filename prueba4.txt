@@ -18,11 +18,10 @@ function int cerrar(){
     return kl; 
 }
 main(){
+    var float res,s;
     var int ma;
-    var float kle;
-    kle=3+4+5;
-    var int ce;
-    ce=cerrar();
-    print(ce);
-    kle=ma;
+    res=cerrar();
+    s=3+4+5;
+    print(res);
+    s=ma;
 }
