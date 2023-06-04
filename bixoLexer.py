@@ -42,7 +42,6 @@ tokens = [
     'AND',
     'OR',
     'WHILE',
-    'FOR',
     'PRINT',
     'READ',
     'ASSIGN',
@@ -131,7 +130,6 @@ t_STRING = r'\".*?\"'
 #t_VAR = r'var'
 t_TRUE = r'true'
 t_FALSE = r'false'
-t_FOR = r'for'
 t_ASSIGN = r'assign'
 t_FUNCESP = r'funcesp'
 #LIBRERIAS DE ML:

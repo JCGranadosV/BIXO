@@ -974,8 +974,7 @@ def p_statements(p):
                  |  read
                  |  print
                  |  if
-                 |  while
-                 |  for
+                 |  while 
                  |  array
                  |  matrix
                  |  mean
@@ -1250,13 +1249,7 @@ def p_jumpsWhile(p):
     sJumps=[]
     ##################################################################
 
-def p_for(p):
-    '''for : FOR LPAREN var SEMICOLON exp SEMICOLON exp RPAREN LBRACKET statements forp'''
-    
-def p_forp(p):
-    ''' forp : RBRACKET
-             | statements forp'''
-    
+
 
  ##########################----------AQUI INICIAN FUNCIONES ESPECIALES--------------------------------------------------------------------------   
 def p_funcesp(p):
