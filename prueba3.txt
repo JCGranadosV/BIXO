@@ -12,16 +12,16 @@ function float abrir (float k, float c){
     var float a;
     var float b;
     a=3+4-5+6.6+9+10-44.4;
-    b=2.2+3+4;
+    b=2.2+3+4*5;
     read(a);
     print(a,b);
     return b;
 }
 main(){
+    var float ce;
+    ce=abrir(3.4,2.2);
     var int ma;
     var float kle;
-    kle=3+4+5;
-    var int ce;
-    ce=abrir(3.4,2.2);
+    kle=3+4+5.5;
     print(ce);
 }

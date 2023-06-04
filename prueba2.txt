@@ -1,2 +1,0 @@
-program id;
-if(2>3)
