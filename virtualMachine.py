@@ -40,7 +40,7 @@ localInt = 12000
 localFloat = 16000
 tempInt = 20000
 tempFloat = 24000
-tempBool = 28000
+
 
 regexTemp=bixo.regexTemp
 #para imprimir quad en posicion 1
