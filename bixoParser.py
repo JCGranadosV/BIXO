@@ -980,6 +980,7 @@ def p_statements(p):
                  |  predict
                  |  getweights
                  |  fibonacci
+                 |  factorial
                  |  mmult'''
     p[0] = p[1]
     
@@ -1484,6 +1485,13 @@ def p_fibonacci(p):
     global qCounter
     val=p[3]
     quadGen.gen_quad("FIBONACCI",val,None,None)
+    qCounter+=1
+
+def p_factorial(p):
+    ''' factorial : FACTORIAL LPAREN exp RPAREN SEMICOLON'''
+    global qCounter
+    val=p[3]
+    quadGen.gen_quad("FACTORIAL",val,None,None)
     qCounter+=1
 
 def p_mmult(p):

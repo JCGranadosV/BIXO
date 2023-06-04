@@ -66,7 +66,8 @@ tokens = [
     'MATRIX',
     'MEAN',
     'FIBONACCI',
-    'MMULT'
+    'MMULT',
+    'FACTORIAL'
 ]
 
 reserved = {
@@ -103,7 +104,8 @@ reserved = {
     'predict' : 'PREDICT',
     'getweights' : 'GETWEIGHTS',
     'fibonacci' : 'FIBONACCI',
-    'mmult': 'MMULT'
+    'mmult': 'MMULT',
+    'factorial' : 'FACTORIAL'
 }
 
 #REGEX TOKENS
@@ -273,6 +275,10 @@ def t_GETWEIGHTS(t):
 
 def t_FIBONACCI(t):
     r'fibonacci'
+    return t
+
+def t_FACTORIAL(t):
+    r'factorial'
     return t
 
 def t_CTF(t):

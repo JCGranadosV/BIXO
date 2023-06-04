@@ -376,6 +376,12 @@ while (i< qCounter):
             for _ in range(2, n):
                 a, b = b, a + b
                 print(b)  
+    elif(op=="FACTORIAL"):    
+        n=arg1
+        fact = 1
+        for k in range(1, n + 1):
+            fact *= k
+        print("FACTORIAL DE",n,"=",fact)
 
     i+=1
     
