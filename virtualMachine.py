@@ -43,6 +43,8 @@ tempFloat = 24000
 
 
 regexTemp=bixo.regexTemp
+regexInt=bixo.regexInt
+regexFloat=bixo.regexFloat
 #para imprimir quad en posicion 1
 #print ("QUADGEN",sQuads.quads[1])
 
@@ -185,6 +187,8 @@ valueMap=asignar_valores(hashMap)
 print("VALORES ASIGNADOS",valueMap)
 quads=sQuads.quads
 #print(sQuads)
+currFunc="global"
+quadCurrFunc=0
 switch=0
 lArray=[]
 arrays={}
@@ -199,6 +203,8 @@ i=0
 #################################
 #SECCION DE ML:
 units=0
+#para ciclos
+sBools=[]
 
 
 
@@ -212,9 +218,32 @@ while (i< qCounter):
     res=quad[3]
     print("Quad",i,quad)
     if(op=="+" or op=="-" or op=="*" or op=="/"):
-        pass
+        if isinstance(arg1, (int, float)):
+            val1=arg1
+        else:
+            val1=valueMap[currFunc][arg1][1]
+        if isinstance(arg2, (int, float)):
+            val2=arg2
+        else:
+            val2=valueMap[currFunc][arg2][1]
+        if(re.match(regexInt,str(arg1))):
+            val1=arg1
+        if(op=="+"):
+            val=val1+val2
+        elif(op=="-"):
+            val=val1-val2
+        elif(op=="*"):
+            val=val1*val2
+        elif(op=="/"):
+            val=val1/val2
+        
+        mem=valueMap[currFunc][res][0]
+        valueMap[currFunc][res]=(mem,val)
+        #print("VAL SUMA VA A ,",val, res)
+        #print(valueMap)
     elif(op=="="):
         #para asignar variables globales
+        
         if(res in valueMap["global"]):
             val=arg1
             mem=valueMap["global"][res][0]
@@ -226,6 +255,91 @@ while (i< qCounter):
                    print("ERROR asignar temporal a global")
                    sys.exit()
             valueMap["global"][res]=(mem,val)
+        else:
+            if isinstance(arg1, (int,float)):
+                val=arg1
+            else:
+                val=valueMap[currFunc][arg1][1]
+
+            mem=valueMap[currFunc][res][0]
+            valueMap[currFunc][res]=(mem,val)
+            #print("aqui a ", res, "le asigno el valor de",mem, val)
+            
+    elif(op=="=="):
+        if(re.match(regexInt,str(arg1))):
+            val1=arg1
+        else:
+            val1=valueMap["main"][arg1][1]
+        if(re.match(regexInt,str(arg2))):
+            val2=arg2
+        else:
+            val2=valueMap["main"][arg2][1]
+        if(val1==val2):
+            sBools.append(1)
+        else:  sBools.append(0)
+        #("Meti a sBools", sBools)
+    elif(op=="!="):
+        if(re.match(regexInt,str(arg1))):
+            val1=arg1
+            #print("VAL1:",val1)
+        else:
+            val1=valueMap["main"][arg1][1]
+        if(re.match(regexInt,str(arg2))):
+            val2=arg2
+        else:
+            val2=valueMap["main"][arg2][1]
+        if(val1!=val2):
+            sBools.append(1)
+        else:  sBools.append(0)
+        #print("Meti a sBools", sBools)
+
+    elif(op==">"):
+        if(re.match(regexInt,str(arg1))):
+            val1=arg1
+        else:
+            val1=valueMap["main"][arg1][1]
+        if(re.match(regexInt,str(arg2))):
+            val2=arg2
+        else:
+            val2=valueMap["main"][arg2][1]
+        if(val1>val2):
+            sBools.append(1)
+        else:  sBools.append(0)
+        #print("Meti a sBools", sBools)
+
+    elif(op=="<"):
+        if(re.match(regexInt,str(arg1))):
+            val1=arg1
+        else:
+            val1=valueMap["main"][arg1][1]
+        if(re.match(regexInt,str(arg2))):
+            val2=arg2
+        else:
+            val2=valueMap["main"][arg2][1]
+        if(val1<val2):
+            sBools.append(1)
+        else:  sBools.append(0)
+        #print("Meti a sBools", sBools)
+
+    elif(op=="AND"):
+        a2=sBools.pop(-1)
+        a1=sBools.pop(-1)
+        #print("A1 y A2 EN AND", a1,a2)
+        if(a1==1 and a2==1):
+            sBools.append(1)
+        else: sBools.append(0)
+        #print("Meti a sBools", sBools)
+
+
+    elif(op=="OR"):
+        a2=sBools.pop(-1)
+        a1=sBools.pop(-1)
+        #print("A1 y A2 EN OR", a1,a2)
+        if(a1==1 or a2==1):
+            sBools.append(1)
+        else: sBools.append(0)
+        #print("Meti a sBools", sBools)
+        
     elif(op=="print"):
         if(res in arrays):
             print(arrays[res])
@@ -243,11 +357,14 @@ while (i< qCounter):
     elif(op=="GOTO"):
         i=res-1
     elif(op=="GOTOF"):
-        toF=getTempValue(arg1)
-        if(toF==0 or switch == 1):
+        #print(valueMap)
+        toF=sBools.pop()
+        #print("TOF ES ", toF)
+        #if(toF==0 or switch == 1):
+        if(toF==0):
             i=res-1
-        else:
-            switch = 1
+        #else:
+        #    switch = 1
     elif(op=="ASSIGNFUNC"):
         val=valueMap["global"][arg1][1]
         #print("ASSIGNFUNC VAL ",val)
@@ -264,7 +381,9 @@ while (i< qCounter):
                 currValMem=currVal[0]
                 valueMap[arg2][value]=(mem, valorTemp)
         #print(valueMap)
-        
+    elif(op=="FUNCSTART"):
+        currFunc=arg1
+        quadCurrFunc=res
 
     elif(op=="ERA"):
         pass

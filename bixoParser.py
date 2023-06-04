@@ -379,10 +379,12 @@ def p_decfunctype(p):
 def p_decfunc(p):
     '''decfunc : ID'''
     limpiaDatos()
-    global currFunc,currFuncStartAddress,counterInicioFunc, sParams, tempCounter, sCallParams, tempIntMemory, tempFloatMemory
+    global currFunc,currFuncStartAddress,counterInicioFunc, sParams, tempCounter, sCallParams, tempIntMemory, tempFloatMemory, qCounter
     currFunc=p[1]
     currFuncStartAddress=qCounter
     counterInicioFunc=qCounter
+    quadGen.gen_quad("FUNCSTART",currFunc,None, qCounter)
+    qCounter+=1
     #reinicio pila de params y tempCounter para nueva funcion 
     sParams=[]
     sCallParams=[]
@@ -420,7 +422,7 @@ def p_voidfunction(p):
 def p_decfuncmain(p):
     '''decfuncmain : '''
     limpiaDatos()
-    global currFunc, tempCounter, sParams, mainStartAddress, sCallParams, tempIntMemory, tempFloatMemory
+    global currFunc, tempCounter, sParams, mainStartAddress, sCallParams, tempIntMemory, tempFloatMemory, qCounter
     currFunc="main"
     mainStartAddress=qCounter
     #reinicio pila de params y tempCounter para nueva funcion 
@@ -433,6 +435,9 @@ def p_decfuncmain(p):
     #Relleno el quadruplo 1 con la localizacion del main
     quadGen.quads[0] = ("GOTO",None,None, mainStartAddress)
     #print("CURRENT FUNC", currFunc)
+    #cuadruplo de currFunc
+    quadGen.gen_quad("FUNCSTART","main",None, mainStartAddress)
+    qCounter+=1
 
 
 def p_mainfunction(p):
@@ -669,8 +674,10 @@ def p_gexp(p):
             quadGen.gen_quad("!=", p[1], p[3], temp)
             qCounter+=1
             p[0]=temp
-        #print ("EL RESULTADO DEL IF ES:", argfinal)
-        #print("p[0]:",temp)
+        print (arg1,arg2)
+        print ("EL RESULTADO DEL IF ES:", argfinal)
+        print("p[0]:",temp)
+        print(qCounter)
 
 def p_gexpp(p):
     '''gexpp : LT
