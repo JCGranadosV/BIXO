@@ -63,7 +63,7 @@ def getFuncVar(var):
 
 def mapeo():
     global localInt, localFloat, tempInt, tempFloat,globalInt, globalFloat
-    print(globalVarTable)
+    #print(globalVarTable)
     globalHashMap={}
     #mapeo valor de cada func
     for func  in functions_table:
@@ -90,13 +90,13 @@ def mapeo():
     #global int
     for gVari, value in globalVarTable["variables"]["int"].items():
         result=""
-        print(gVari,globalInt,"RESULT",result)
+        #print(gVari,globalInt,"RESULT",result)
         globalHashMap[gVari]=(globalInt,result)
         globalInt+=1
     #global float
     for gVarf, value in globalVarTable["variables"]["float"].items():
         result=""
-        print(gVarf,globalFloat,"RESULT",result)
+        #print(gVarf,globalFloat,"RESULT",result)
         globalHashMap[gVarf]=(globalFloat,result)
         globalFloat+=1
     hashMap["global"]=globalHashMap
@@ -110,29 +110,29 @@ def mapeo():
         localFloat = 16000
         tempInt = 20000
         tempFloat = 24000
-        print(func)
+        #print(func)
         #mapeo varints
         for vari, value in functions_table[func]["vars_table"]["variables"]["varInt"].items():
             result=functions_table[func]["vars_table"]["values"]["varInt"].get(value[0], "")
-            print(vari,localInt,"RESULT",result)
+            #print(vari,localInt,"RESULT",result)
             funcHashMap[vari]=(localInt,result)
             localInt+=1
         #mapeo varfloats
         for varf, value in functions_table[func]["vars_table"]["variables"]["varFloat"].items():
             result=functions_table[func]["vars_table"]["values"]["varFloat"].get(value[0], "")
-            print(varf,localFloat,"RESULT",result)
+            #print(varf,localFloat,"RESULT",result)
             funcHashMap[varf]=(localFloat,result)
             localFloat+=1
         #mapeo tempInts
         for tempi, value in functions_table[func]["vars_table"]["variables"]["tempInt"].items():
             result=functions_table[func]["vars_table"]["values"]["tempInt"].get(value, "")
-            print(tempi,tempInt,"RESULT",result)
+            #print(tempi,tempInt,"RESULT",result)
             funcHashMap[tempi]=(tempInt,result)
             tempInt+=1
         #mapeo tempFloats
         for tempf, value in functions_table[func]["vars_table"]["variables"]["tempFloat"].items():
             result=functions_table[func]["vars_table"]["values"]["tempFloat"].get(value, "")
-            print(tempf,tempFloat,"RESULT",result)
+            #print(tempf,tempFloat,"RESULT",result)
             funcHashMap[tempf]=(tempFloat,result)
             tempFloat+=1
 
@@ -163,7 +163,7 @@ def asignar_valores(hashMap):
             else:
                 if (re.match(regexTemp,value)):
                     #almaceno valor de temporal en la variable
-                    print("VARMAP Y VALUE",varMap,value)
+                    #print("VARMAP Y VALUE",varMap,value)
                     if value in varMap:
                         (mem1, value) = varMap[value]
 
@@ -184,7 +184,7 @@ print("HASHMAP ORIGINAL",hashMap)
 valueMap=asignar_valores(hashMap)
 print("VALORES ASIGNADOS",valueMap)
 quads=sQuads.quads
-print(sQuads)
+#print(sQuads)
 switch=0
 lArray=[]
 arrays={}
@@ -241,9 +241,7 @@ while (i< qCounter):
         mem=valueMap[func][res][0]
         valueMap[func][res]=(mem,val)
     elif(op=="GOTO"):
-        #if para saltar goto al main mientras testeo
-        if(i>0):
-            i=res-1
+        i=res-1
     elif(op=="GOTOF"):
         toF=getTempValue(arg1)
         if(toF==0 or switch == 1):
@@ -269,11 +267,12 @@ while (i< qCounter):
         
 
     elif(op=="ERA"):
-        if (res in valueMap["global"]):
-            pass
-        else:
-            print("ERROR NO EXISTE FUNCION A LLAMAR")
-            sys.exit()
+        pass
+        #if (res in valueMap["global"]):
+        #    pass
+        #else:
+        #    print("ERROR NO EXISTE FUNCION A LLAMAR")
+        #    sys.exit()
     elif(op=="PARAM"):
         pass
     elif(op=="GOSUB"):

@@ -225,8 +225,9 @@ def getFuncReturn(func_name):
 def varExist(var):
     if((var in (var_table["global"]["variables"]["int"]) or (var in var_table["global"]["variables"]["float"])) or (var in (local_var_table["variables"]["varInt"]) or (var in local_var_table["variables"]["varFloat"]))):
         return 1
-    else: print("ERROR LA VARIABLE",var, "NO EXISTE")
-    sys.exit()
+    else:
+        print("ERROR LA VARIABLE",var, "NO EXISTE")
+        sys.exit()
 
     
 
@@ -305,6 +306,7 @@ def p_decvarp(p):
             if (((vars in local_var_table["variables"]["varInt"]) or (vars in local_var_table["variables"]["varFloat"])) and (vars not in sParams)):
                 #antes de implementar este error checar la logica 
                 print(vars,"ERROR YA EXISTE")
+                sys.exit()
             else:
                 add_var_local(vars,var_type,currFunc) 
         #copy_var_local()
@@ -316,6 +318,7 @@ def p_decvarp(p):
             if (vars in var_table["global"]["variables"]["float"]) or (vars in var_table["global"]["variables"]["float"]):
                 #antes de implementar este error checar la logica 
                 print(vars,"ERROR YA EXISTE ")
+                sys.exit()
             else:
                 if var_type == "int":
                      add_var_global(vars,var_type)
@@ -351,6 +354,7 @@ def p_function(p):
     #Revisa si existe la función
     if currFunc in functions_table: 
         print("ERROR YA EXISTE ESA FUNCION")
+        sys.exit()
     else:
         #Revisa que si haya algo en su tabla de variables locales
         if(len(localArray)!=0):
@@ -386,7 +390,7 @@ def p_decfunc(p):
     tempCounter=1
     tempIntMemory=20000
     tempFloatMemory=24000
-    print("CURRENT FUNC", currFunc)
+    #print("CURRENT FUNC", currFunc)
 
     
 def p_voidfunction(p):
@@ -396,6 +400,7 @@ def p_voidfunction(p):
     #Revisa si existe la función
     if currFunc in functions_table: 
         print("ERROR YA EXISTE ESA FUNCION")
+        sys.exit()
     else:
         #Revisa que si haya algo en su tabla de variables locales
         if(len(localArray)!=0):
@@ -427,7 +432,7 @@ def p_decfuncmain(p):
     tempFloatMemory=24000
     #Relleno el quadruplo 1 con la localizacion del main
     quadGen.quads[0] = ("GOTO",None,None, mainStartAddress)
-    print("CURRENT FUNC", currFunc)
+    #print("CURRENT FUNC", currFunc)
 
 
 def p_mainfunction(p):
@@ -437,6 +442,7 @@ def p_mainfunction(p):
     #Revisa si existe la función
     if currFunc in functions_table: 
         print("ERROR YA EXISTE MAIN")
+        sys.exit()
     else:
         #Revisa que si haya algo en su tabla de variables locales
         if(len(localArray)!=0):
@@ -494,14 +500,14 @@ def p_exp(p):
     elif len(p) == 4:
         mem1=local_var_table["variables"]["tempInt"][p[1]]
         mem2=local_var_table["variables"]["tempInt"][p[3]]
-        print(p[1],p[2],p[3])
-        print("mem1", mem1)
-        print("mem2", mem2)
+        #print(p[1],p[2],p[3])
+        #print("mem1", mem1)
+        #print("mem2", mem2)
         val1=local_var_table["values"]["tempInt"][mem1]
         val2=local_var_table["values"]["tempInt"][mem2]
-        print("val1", val1)
-        print("val2", val2)
-        print(local_var_table)
+        #print("val1", val1)
+        #print("val2", val2)
+        #print(local_var_table)
         if (val1==1 or val2==1):
             argfinal=1
         else: argfinal=0
@@ -524,14 +530,14 @@ def p_texp(p):
     elif len(p) == 4:
         mem1=local_var_table["variables"]["tempInt"][p[1]]
         mem2=local_var_table["variables"]["tempInt"][p[3]]
-        print(p[1],p[2],p[3])
-        print("mem1", mem1)
-        print("mem2", mem2)
+        #print(p[1],p[2],p[3])
+        #print("mem1", mem1)
+        #print("mem2", mem2)
         val1=local_var_table["values"]["tempInt"][mem1]
         val2=local_var_table["values"]["tempInt"][mem2]
-        print("val1", val1)
-        print("val2", val2)
-        print(local_var_table)
+        #print("val1", val1)
+        #print("val2", val2)
+        #print(local_var_table)
         if (val1==1 and val2==1):
             argfinal=1
         else: argfinal=0
@@ -562,7 +568,7 @@ def p_gexp(p):
         memoriaVar2=0
         tipo2=sTipos.pop()
         tipo1=sTipos.pop()
-        print(tipo1,tipo2)
+        #print(tipo1,tipo2)
         comp=p[2]
         sTipos.append("int")
         #guardo el valor de su temp
@@ -652,7 +658,7 @@ def p_gexp(p):
             p[0]=temp
         elif comp=="==":
             argfinal = 1 if arg1 == arg2 else 0
-            print(local_var_table)
+            #print(local_var_table)
             local_var_table["values"]["tempInt"][memoria]=argfinal
             quadGen.gen_quad("==", p[1], p[3], temp)
             qCounter+=1
@@ -663,7 +669,7 @@ def p_gexp(p):
             quadGen.gen_quad("!=", p[1], p[3], temp)
             qCounter+=1
             p[0]=temp
-        print ("EL RESULTADO DEL IF ES:", argfinal)
+        #print ("EL RESULTADO DEL IF ES:", argfinal)
         #print("p[0]:",temp)
 
 def p_gexpp(p):
@@ -732,8 +738,8 @@ def p_mexp(p):
             elif tipo2=="float":
                 memoria=local_var_table["variables"]["varFloat"][p[3]]
                 res2=local_var_table["values"]["varFloat"][memoria[0]]
-        print(local_var_table)
-        print("RES1", res1, "RES2", res2)
+        #print(local_var_table)
+        #print("RES1", res1, "RES2", res2)
 
 #########################################
 ##############Si no es un numero entonces buscan el valor del temp
@@ -805,7 +811,7 @@ def p_mexp(p):
                 qCounter+=1
                 p[0]=temp
         #print("p[0]:",temp)        
-        print(local_var_table)
+        #print(local_var_table)
 
 
 
@@ -869,8 +875,8 @@ def p_t(p):
             elif tipo2=="float":
                 memoria=local_var_table["variables"]["varFloat"][p[3]]
                 res2=local_var_table["values"]["varFloat"][memoria[0]]
-        print(local_var_table)
-        print("RES1", res1, "RES2", res2)
+        #print(local_var_table)
+        #print("RES1", res1, "RES2", res2)
 
 #########################################
 ##############Si no es un numero entonces buscan el valor del temp
@@ -942,7 +948,7 @@ def p_t(p):
                 qCounter+=1
                 p[0]=temp
         #print("p[0]:",temp)        
-        print(local_var_table)
+        #print(local_var_table)
    
 def p_f(p):
     '''f : LPAREN exp RPAREN
@@ -1011,7 +1017,6 @@ def p_assign(p):
     #Ejecucion para scope global
     if scope == "global":
         if (var_name in (var_table["global"]["variables"]["int"]) or (var_name in var_table["global"]["variables"]["float"])):
-            print("si existe en global")
             #genera cuadruplo
             quadGen.gen_quad("=",var_assign,None,var_name)
             qCounter+=1
@@ -1019,6 +1024,7 @@ def p_assign(p):
 
         else:
             print("ERROR NO EXISTE", var_name)
+            sys.exit()
     #Ejecucion para scope local
     elif scope == "local":
         #primero revisa si esta en el local
@@ -1038,13 +1044,13 @@ def p_assign(p):
             #switch para avisar que esta en local para que no revise en global
             estaenlocal=1
         elif ((var_name in (var_table["global"]["variables"]["int"]) or (var_name in var_table["global"]["variables"]["float"])) and estaenlocal==0):
-            print("si existe en global")
             #genera cuadruplo
             quadGen.gen_quad("=",var_assign,None,var_name)
             qCounter+=1
             #añade valor a tabla de constantes
         else:
             print("ERROR NO EXISTE", var_name)
+            sys.exit()
 
         
 
@@ -1060,7 +1066,9 @@ def p_read(p):
     elif(var_name in (local_var_table["variables"]["varFloat"])):
         quadGen.gen_quad('read', None, None, p[3])
         qCounter += 1
-    else: print("ERROR no existe la var")
+    else:
+        print("ERROR no existe la var")
+        sys.exit()
     
     
 
@@ -1141,6 +1149,7 @@ def p_call(p):
             pass
     else:
         print("ERROR NO EXISTE ESA FUNCION")
+        sys.exit()
     sCallParams=[]
     paramCounter=1
         
@@ -1177,7 +1186,6 @@ def p_ifelse(p):
 
 def p_quadsIf(p):
     '''quadsIf : '''            
-    print("AQUI CORRE EL QUADSIF")
     global sBools, qCounter, tempCounter, currBool, sJumps
     currBool=sBools.pop()
     quadGen.gen_quad("GOTOF", currBool, None, None)
@@ -1189,7 +1197,6 @@ def p_jumpsIf(p):
     global qCounter, currBool, sJumps, hayElse    
     jumps = sJumps.pop()
     if(hayElse):
-        print("ENTRO ELSE")
         quadGen.quads[jumps] = ("GOTO",None,None,qCounter)
     else:
         quadGen.quads[jumps] = ("GOTOF",currBool ,None,qCounter)
@@ -1201,7 +1208,6 @@ def p_jumpsIf(p):
 
 def p_quadsElse(p):
     '''quadsElse : '''   
-    print("AQUI CORRE EL QUADSELSE") 
     global sOperators, sOperands, qCounter, currBool, sJumps
     quadGen.gen_quad("GOTO", None, None, None)
     jumps = sJumps.pop()
@@ -1285,7 +1291,7 @@ def p_array(p):
         print("ERROR NUMERO INVALIDO DE VALORES PARA ARRAY",array_name,"SE ESPERAN",size,"SE TIENEN", cArrayValues)
         sys.exit()
     i=0
-    print(sArrayValues)
+    #print(sArrayValues)
     while(len(sArrayValues)!=0):
         value=sArrayValues.pop()
         temp=getTemp()
@@ -1499,7 +1505,6 @@ def p_mmult(p):
     global qCounter
     m1=p[3]
     m2=p[5]
-    print("MATRIXMULTTTTTTTTTT_--------------------------------------")
     quadGen.gen_quad("MATRIXMULT", m1, m2, None)
     qCounter+=1
 
@@ -1520,7 +1525,7 @@ parser = yacc.yacc()
 # Procesar cada línea con el parser
 
 
-fileName = "pruebafuncesp.txt"   
+fileName = "prueba.txt"   
 inputFile = open(fileName, 'r')
 inputCode = inputFile.read()
 inputFile.close()

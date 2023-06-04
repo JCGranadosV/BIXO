@@ -6,8 +6,7 @@ function float abrir (int k,  int ko){
     var int prueb;
     var float m,mmmi;
     mmmi=4;
-    m=3;
-    m=3+4+5*3*5-2;
+    m=3+4+5.5*3.3*5-2;
     return m;
 }
 function void cerrar (float c){
@@ -20,14 +19,12 @@ function void cerrar (float c){
     cmmi=cm+4*2.2;
     print(cmmi);
     read(l);
-}
-function int comer (float b){
-    var int m,n,y;
-    m = 4;
-    y= 10;
-    return m;
+    print(l);
 }
 main(){
+    cerrar(klo)
     var int ma;
+    var float klo;
+    klo=3.3*5;
     ma=1+1;
 }
