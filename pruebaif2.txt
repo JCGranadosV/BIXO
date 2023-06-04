@@ -1,20 +1,19 @@
-program pruebaiff;
-function int que(int a, float b){
-    var int c,d,e;
+program pruebaif;
+var int i;
+function int que(int a, int b){
     var int m;
-    c=5+3+1+5;
-    m=5+1;
-    if(c!=m){
-    d=5*5+4;
-    e=1+1+2*4;
-    }else {
-    d=3-3+22;
-    e=11+1+1*4;
-    };
-    e=2+3+4/5;
-    return d;
+    m=10+5;
+    return m;
 }
 main(){
-    var int ma;
-    ma=1+1;
+    var int c,t,y;
+    c=5+3+1+5;
+    y=5+1;
+    if(c!=y & y==4){
+    y=50;
+    }else {
+    y=100;
+    };
+    print(y);
 }
+
