@@ -362,9 +362,20 @@ while (i< qCounter):
         print("Hagamos una predicción!")
         resultado = modelo.predict([arg1])
         print("El resultado es: "+ str(resultado))
-    #elif(op=="FIBONACCI"):
-    
-        
+    elif(op=="FIBONACCI"):
+        n=arg1
+        if n<=0:
+            print("ERROR NUMERO DEBE SER MAYOR A 0")
+            sys.exit()
+        elif n == 1:
+            print(0)
+        else:
+            a, b = 0, 1
+            print(a)  
+            print(b)  
+            for _ in range(2, n):
+                a, b = b, a + b
+                print(b)  
 
     i+=1
     

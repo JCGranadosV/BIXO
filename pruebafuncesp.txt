@@ -17,5 +17,6 @@ main(){
     compile(0.1);
     fit(a,m, epochs = 1000);
     predict(220.0);
+    fibonacci(10);
     mean(m);
 }
