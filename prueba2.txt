@@ -11,9 +11,8 @@ function int cerrar(){
 function float abrir (float k, float c){
     var float a;
     var float b;
-    a=3+4-5+6.6+9+10-44.4;
+    a=3+4*5+6.6+9-4.4;
     b=2.2+3+4*5;
-    read(a);
     print(a,b);
     return b;
 }

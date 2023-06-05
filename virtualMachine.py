@@ -226,10 +226,18 @@ while (i< qCounter):
             val1=arg1
         else:
             val1=valueMap[currFunc][arg1][1]
+            val1mem=valueMap[currFunc][arg1][0]
+            if(val1mem>=16000):
+                val1=float(val1)
+            else: val1=int(val1)
         if isinstance(arg2, (int, float)):
             val2=arg2
         else:
             val2=valueMap[currFunc][arg2][1]
+            val2mem=valueMap[currFunc][arg2][0]
+            if(val2mem>=16000):
+                val2=float(val2)
+            else: val2=int(val2)
         if(re.match(regexInt,str(arg1))):
             val1=arg1
         if(op=="+"):
