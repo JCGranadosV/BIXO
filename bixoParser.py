@@ -1520,7 +1520,7 @@ parser = yacc.yacc()
 # Procesar cada línea con el parser
 
 
-fileName = "pruebaMatrix.txt"   
+fileName = "pruebaMatrix.bixo"   
 inputFile = open(fileName, 'r')
 inputCode = inputFile.read()
 inputFile.close()
