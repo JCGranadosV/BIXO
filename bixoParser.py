@@ -347,7 +347,7 @@ def p_type(p):
             
 def p_function(p):
     '''function : FUNCTION decfunctype decfunc LPAREN param RPAREN LBRACE body RETURN exp SEMICOLON RBRACE'''
-    global localArray, currFunc, functions_table, counterInicioFunc, tempCounterFloat, tempCounterInt
+    global localArray, currFunc, functions_table, counterInicioFunc, tempCounterFloat, tempCounterInt, qCounter
     func_type=p[2]
     return_value=p[10]
     copy_var_local()
@@ -369,6 +369,8 @@ def p_function(p):
         tempCounterFloat=0
         tempCounterInt=0
         #print("TABLA DE FUNCIONES", functions_table)
+        quadGen.gen_quad("FUNCEND",currFunc,None,return_value)
+        qCounter+=1
 
 def p_decfunctype(p):
     '''decfunctype : type'''
@@ -397,7 +399,7 @@ def p_decfunc(p):
     
 def p_voidfunction(p):
     '''voidfunction : FUNCTION VOID decfunc LPAREN param RPAREN LBRACE body RBRACE'''
-    global localArray, currFunc, functions_table,counterInicioFunc, tempCounterInt, tempCounterFloat
+    global localArray, currFunc, functions_table,counterInicioFunc, tempCounterInt, tempCounterFloat, qCounter
     func_type=p[2]
     #Revisa si existe la función
     if currFunc in functions_table: 
@@ -416,6 +418,8 @@ def p_voidfunction(p):
         tempCounterFloat=0
         tempCounterInt=0
         #print("TABLA DE FUNCIONES", functions_table)
+        quadGen.gen_quad("FUNCEND",currFunc,None,None)
+        qCounter+=1
 
 
 
@@ -945,13 +949,13 @@ def p_t(p):
             if p[2]=="*":
                 resambos=res1*res2
                 local_var_table["values"]["tempFloat"][memoria]=resambos
-                quadGen.gen_quad("+", p[1], p[3], temp)
+                quadGen.gen_quad("*", p[1], p[3], temp)
                 qCounter+=1
                 p[0]=temp
             elif p[2]=="/":
                 resambos=res1/res2
                 local_var_table["values"]["tempFloat"][memoria]=resambos
-                quadGen.gen_quad("-", p[1], p[3], temp)
+                quadGen.gen_quad("/", p[1], p[3], temp)
                 qCounter+=1
                 p[0]=temp
         #print("p[0]:",temp)        
@@ -1303,8 +1307,8 @@ def p_array(p):
         local_var_table["values"]["tempFloat"][tempFloatMemory]=value
         tempFloatMemory+=1
         tempCounterFloat+=1
-        quadGen.gen_quad("=",f"{array_name}[{i}]", None, temp)
-        qCounter+=1
+        #quadGen.gen_quad("=",f"{array_name}[{i}]", None, temp)
+        #qCounter+=1
         quadGen.gen_quad("ARRAYFILL",f"{array_name}[{i}]", temp, array_name)
         qCounter+=1
         i+=1
@@ -1383,8 +1387,8 @@ def p_matrix(p):
             local_var_table["values"]["tempFloat"][tempFloatMemory]=value
             tempFloatMemory+=1
             tempCounterFloat+=1
-            quadGen.gen_quad("=",f"{matrix_name}[{i}][{j}]", None, temp)
-            qCounter+=1
+            #quadGen.gen_quad("=",f"{matrix_name}[{i}][{j}]", None, temp)
+            #qCounter+=1
             quadGen.gen_quad("MATRIXFILL",f"{matrix_name}[{i}][{j}]", temp, matrix_name)
             qCounter+=1
 
@@ -1525,7 +1529,7 @@ parser = yacc.yacc()
 # Procesar cada línea con el parser
 
 
-fileName = "pruebawhile1.txt"   
+fileName = "prueba.txt"   
 inputFile = open(fileName, 'r')
 inputCode = inputFile.read()
 inputFile.close()

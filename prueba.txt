@@ -2,14 +2,7 @@ program id;
 var float col, que;
 var int pepe, rodrigo, juan;
 
-function float abrir (int k,  int ko){
-    var int prueb;
-    var float m,mmmi;
-    mmmi=4;
-    m=3+4+5.5*3.3*5-2;
-    return m;
-}
-function void cerrar (float c){
+function void cerrar (float c, float y){
     var int l;
     var float cm;
     l = 3;
@@ -20,11 +13,14 @@ function void cerrar (float c){
     print(cmmi);
     read(l);
     print(l);
+    print(c);
+    print(y);
 }
 main(){
-    cerrar(klo)
     var int ma;
     var float klo;
-    klo=3.3*5;
+    klo=5*3.3;
+    cerrar(klo, 8.8)
     ma=1+1;
+    print(ma);
 }

@@ -205,6 +205,10 @@ i=0
 units=0
 #para ciclos
 sBools=[]
+#para llamadas
+sCalls=[]
+sParams=[]
+sCallFunc=[]
 
 
 
@@ -384,6 +388,31 @@ while (i< qCounter):
     elif(op=="FUNCSTART"):
         currFunc=arg1
         quadCurrFunc=res
+        lInt=12000
+        lFloat=16000
+
+        while(sParams):
+            param=sParams.pop()
+            #print("PARAM RECIBIDO", param)
+            if(re.match(regexFloat,str(param))):
+                for variable, datos in valueMap[currFunc].items():
+                    if datos[0] == lFloat:
+                        nombre_variable = variable
+                        lFloat+=1
+                        break
+            elif(re.match(regexInt,str(param))):
+                for variable, datos in valueMap[currFunc].items():
+                    if datos[0] == lInt:
+                        nombre_variable = variable
+                        lInt+=1
+                        break
+            
+                
+            mem=valueMap[currFunc][nombre_variable][0]
+            valueMap[currFunc][nombre_variable]=(mem,param)
+            #print(nombre_variable,"=",param)
+
+
 
     elif(op=="ERA"):
         pass
@@ -393,12 +422,32 @@ while (i< qCounter):
         #    print("ERROR NO EXISTE FUNCION A LLAMAR")
         #    sys.exit()
     elif(op=="PARAM"):
-        pass
+        if isinstance(arg1, (int, float)):
+            val=arg1
+        else:
+            val=valueMap[currFunc][arg1][1]
+        
+        #print("PARAMVALUE=", arg1,val)
+        sParams.append(val)
     elif(op=="GOSUB"):
-        #if para saltar goto al main mientras testeo
-        if(s2==0):
-            i=res-1
-        s2=1
+        #if para evitar recursion mientras testeo
+        #if(s2==0):
+        sCalls.append(i+1)
+        sCallFunc.append(currFunc)
+        i=res-1
+
+        #s2=1
+
+    elif(op=="FUNCEND"):
+        if(res!=None):
+            retValue=res
+
+        if(sCalls):
+            jump=sCalls.pop()
+            f=sCallFunc.pop()
+            currFunc=f
+            i=jump-1
+
     elif(op=="ARRAY"):
         lArray=[]
         #array=np.array()
