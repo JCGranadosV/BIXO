@@ -8,7 +8,7 @@ function int que(int a, int b){
 main(){
     var int c,t,y;
     c=5+3+1+5;
-    y=5+1;
+    y=5-1;
     if(c!=y & y==4){
     y=50;
     }else {

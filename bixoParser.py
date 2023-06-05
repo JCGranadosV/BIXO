@@ -1520,7 +1520,7 @@ parser = yacc.yacc()
 # Procesar cada línea con el parser
 
 
-fileName = "prueba2.txt"   
+fileName = "pruebawhile.txt"   
 inputFile = open(fileName, 'r')
 inputCode = inputFile.read()
 inputFile.close()
