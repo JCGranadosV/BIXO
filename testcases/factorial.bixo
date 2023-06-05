@@ -1,0 +1,15 @@
+program fact;
+function void f() {
+    var int c;
+}
+
+main() {
+    var int n, result;
+    n = 4+1;
+    result=2-1;
+    while (n > 1) {
+        result= result*n;
+        n= n-1;
+    };
+    print(result);
+}
