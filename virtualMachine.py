@@ -541,6 +541,24 @@ while (i< qCounter):
         for k in range(1, n + 1):
             fact *= k
         print("FACTORIAL DE",n,"=",fact)
+    elif(op=="SORT"):
+        if(arg1 in matrixes):
+            mat=matrixes[arg1]
+            s=np.sort(mat)
+            print("Sorted matrix",arg1,"=",s)
+        elif(arg1 in arrays):
+            arr=arrays[arg1]
+            s=np.sort(arr)
+            print("Sorted matrix",arg1,"=",s)
+    elif(op=="FIND"):
+        if(arg1 in matrixes):
+            mat=matrixes[arg1]
+            x=np.where(mat==arg2)
+            print("VALUE",arg2,"AT INDEX:",x)
+        elif(arg1 in arrays):
+            arr=arrays[arg1]
+            x=np.where(arr==arg2)
+            print("VALUE",arg2,"AT INDEX:",x)
 
     i+=1
     

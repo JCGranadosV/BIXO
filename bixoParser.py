@@ -997,6 +997,8 @@ def p_statements(p):
                  |  getweights
                  |  fibonacci
                  |  factorial
+                 |  sort
+                 |  find
                  |  mmult'''
     p[0] = p[1]
     
@@ -1495,6 +1497,23 @@ def p_factorial(p):
     quadGen.gen_quad("FACTORIAL",val,None,None)
     qCounter+=1
 
+def p_sort(p):
+    '''sort : SORT LPAREN ID RPAREN SEMICOLON'''
+    global qCounter
+    id=p[3]
+    varExist(id)
+    quadGen.gen_quad("SORT", id, None, None)
+    qCounter+=1
+
+def p_find(p):
+    '''find : FIND LPAREN ID COMMA exp RPAREN SEMICOLON'''
+    global qCounter
+    id=p[3]
+    res=p[5]
+    varExist(id)
+    quadGen.gen_quad("FIND", id, res, None)
+    qCounter+=1
+
 def p_mmult(p):
     '''mmult : MMULT LPAREN ID COMMA ID RPAREN SEMICOLON'''
     global qCounter
@@ -1520,7 +1539,7 @@ parser = yacc.yacc()
 # Procesar cada línea con el parser
 
 
-fileName = "testcases/factorial.bixo"   
+fileName = "testcases/pruebaMatrix.bixo"   
 inputFile = open(fileName, 'r')
 inputCode = inputFile.read()
 inputFile.close()

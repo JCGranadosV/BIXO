@@ -66,7 +66,9 @@ tokens = [
     'MEAN',
     'FIBONACCI',
     'MMULT',
-    'FACTORIAL'
+    'FACTORIAL',
+    'SORT',
+    'FIND'
 ]
 
 reserved = {
@@ -104,7 +106,9 @@ reserved = {
     'getweights' : 'GETWEIGHTS',
     'fibonacci' : 'FIBONACCI',
     'mmult': 'MMULT',
-    'factorial' : 'FACTORIAL'
+    'factorial' : 'FACTORIAL',
+    'sort' : 'SORT',
+    'find' : 'FIND'
 }
 
 #REGEX TOKENS
@@ -277,6 +281,14 @@ def t_FIBONACCI(t):
 
 def t_FACTORIAL(t):
     r'factorial'
+    return t
+
+def t_SORT(t):
+    r'sort'
+    return t
+
+def t_FIND(t):
+    r'find'
     return t
 
 def t_CTF(t):

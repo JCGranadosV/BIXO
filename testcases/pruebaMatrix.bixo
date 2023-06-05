@@ -14,4 +14,5 @@ main(){
     mmult(m,z);
     print(z);
     mean(m);
+    sort(m);
 }

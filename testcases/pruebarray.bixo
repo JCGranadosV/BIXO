@@ -15,5 +15,6 @@ main(){
     n=2.3*5;
     array dos[2]=[0,1,2];
     mean(m);
+    find(m,6);
     print(m);
 }
