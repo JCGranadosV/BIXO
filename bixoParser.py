@@ -678,10 +678,10 @@ def p_gexp(p):
             quadGen.gen_quad("!=", p[1], p[3], temp)
             qCounter+=1
             p[0]=temp
-        print (arg1,arg2)
-        print ("EL RESULTADO DEL IF ES:", argfinal)
-        print("p[0]:",temp)
-        print(qCounter)
+        #print (arg1,arg2)
+        #print ("EL RESULTADO DEL IF ES:", argfinal)
+        #print("p[0]:",temp)
+        #print(qCounter)
 
 def p_gexpp(p):
     '''gexpp : LT
@@ -779,7 +779,6 @@ def p_mexp(p):
                 memoria=local_var_table["variables"]["tempFloat"][p[3]]
                 res2=local_var_table["values"]["tempFloat"][memoria]
         elif(re.match(regexTemp,str(res2))):
-            print("ENTRO AQUI")
             if tipo2=="int":
                 memoria=local_var_table["variables"]["tempInt"][res2]
                 res2=local_var_table["values"]["tempInt"][memoria]
