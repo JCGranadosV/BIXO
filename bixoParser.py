@@ -779,9 +779,10 @@ def p_mexp(p):
                 memoria=local_var_table["variables"]["tempFloat"][p[3]]
                 res2=local_var_table["values"]["tempFloat"][memoria]
         elif(re.match(regexTemp,str(res2))):
+            print("ENTRO AQUI")
             if tipo2=="int":
                 memoria=local_var_table["variables"]["tempInt"][res2]
-                res1=local_var_table["values"]["tempInt"][memoria]
+                res2=local_var_table["values"]["tempInt"][memoria]
             elif tipo2=="float":
                 memoria=local_var_table["variables"]["tempFloat"][res2]
                 res2=local_var_table["values"]["tempFloat"][memoria]
@@ -1520,7 +1521,7 @@ parser = yacc.yacc()
 # Procesar cada línea con el parser
 
 
-fileName = "pruebaMatrix.bixo"   
+fileName = "testcases/fibonacci.bixo"   
 inputFile = open(fileName, 'r')
 inputCode = inputFile.read()
 inputFile.close()

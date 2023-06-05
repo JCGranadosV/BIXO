@@ -16,22 +16,6 @@ gen_quad = bixo.quadGen.gen_quad
 qCounter = bixo.qCounter
 globalVarTable = bixo.var_table["global"]
 
-class VirtualMachine:
-    def __init__(self, code, quads, varTable):
-        self.code = code
-        self.quads = quads
-        self.varTable = varTable
-        self.sCall = []
-        self.sIp = [1]
-        self.localMem = None
-        self.globalMem = None
-        self.tempMem = None
-        self.stack = []
-
-    def memory(self,localMem, globalMem, tempMem):
-        self.localMem = localMem
-        self.globalMem = globalMem
-        self.tempMem = tempMem
 
 
 globalInt = 4000
