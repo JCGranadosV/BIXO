@@ -1263,15 +1263,6 @@ def p_jumpsWhile(p):
 
 
  ##########################----------AQUI INICIAN FUNCIONES ESPECIALES--------------------------------------------------------------------------   
-def p_funcesp(p):
-    ''' funcesp : array
-                | mean
-                | layers
-                | sequential
-                | compile
-                | fit
-                | predict
-                | getweights'''  
 
 def p_array(p):
     ''' array : ARRAY ID LBRACKET exp RBRACKET EQUAL LBRACKET arrvalues RBRACKET SEMICOLON'''
