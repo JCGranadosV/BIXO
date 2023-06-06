@@ -22,6 +22,7 @@ globalInt = 4000
 globalFloat = 8000 
 localInt = 12000
 localFloat = 16000
+arrValues=18000
 tempInt = 20000
 tempFloat = 24000
 
@@ -31,6 +32,7 @@ regexInt=bixo.regexInt
 regexFloat=bixo.regexFloat
 #para imprimir quad en posicion 1
 #print ("QUADGEN",sQuads.quads[1])
+
 
 #var que almacena todos los quads = sQuads
 #sQuads los imprime enumerados con formato
@@ -449,8 +451,20 @@ while (i< qCounter):
     elif(op=="ARRAYFILL"):
         currVal=valueMap["main"][arg2][1]
         lArray.append(currVal)
+        valueMap["main"][arg1]=(arrValues, currVal)
+        arrValues+=1
     elif(op=="ARRAYEND"):
         arrays[res]=np.array(lArray)
+    elif(op=="ARRAYASSIGN"):
+        assign=res
+        pos=arg2
+        var=arg1
+        strVal= str(var)+"[" + str(pos) + "]"
+        mem=valueMap["main"][strVal][0]
+        valueMap["main"][strVal]=(mem, assign)
+        #print("VALUEMAP",valueMap)
+        arrays[var][pos]=assign
+        #print("ARRAYS",arrays)
     elif(op=="MATRIX"):
         mRows=arg2
         mColumns=res

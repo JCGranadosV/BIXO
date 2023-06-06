@@ -1001,66 +1001,88 @@ def p_statements(p):
     p[0] = p[1]
     
 def p_assign(p):
-    '''assign : var EQUAL exp SEMICOLON'''
+    '''assign : var EQUAL exp SEMICOLON
+              | var LBRACKET CTI RBRACKET EQUAL exp SEMICOLON'''
     global qCounter, local_var_table, regexFloat, regexInt, regexTemp
-    var_name=p[1]
-    var_assign=p[3]
-    estaenlocal=0
-    var_assign_type="var"
-    #Revisa si el que se le asignara es un numero int, float, un temp, o una variable
-    if re.match(regexFloat, str(p[3])):
-        var_assign_type="float"
-    elif re.match(regexInt, str(p[3])):
-        var_assign_type="int"
-    elif re.match(regexTemp, str(p[3])):
-        var_assign_type="temp"
-    #Revisa si la variable es un int o un float
-    if (var_name in (var_table["global"]["variables"]["int"]) or (var_name in local_var_table["variables"]["varInt"])):
-        variable_type="int"
-    elif ((var_name in var_table["global"]["variables"]["float"]) or (var_name in local_var_table["variables"]["varFloat"])):
-        variable_type="float"
+    if len(p)==5:
+        var_name=p[1]
+        var_assign=p[3]
+        estaenlocal=0
+        var_assign_type="var"
+        #Revisa si el que se le asignara es un numero int, float, un temp, o una variable
+        if re.match(regexFloat, str(p[3])):
+            var_assign_type="float"
+        elif re.match(regexInt, str(p[3])):
+            var_assign_type="int"
+        elif re.match(regexTemp, str(p[3])):
+            var_assign_type="temp"
+        #Revisa si la variable es un int o un float
+        if (var_name in (var_table["global"]["variables"]["int"]) or (var_name in local_var_table["variables"]["varInt"])):
+            variable_type="int"
+        elif ((var_name in var_table["global"]["variables"]["float"]) or (var_name in local_var_table["variables"]["varFloat"])):
+            variable_type="float"
 
-    #Revisa que a lo que se le esta asignando si exista
-    if (var_assign_type=="var"):
-         varExist(var_assign)
+        #Revisa que a lo que se le esta asignando si exista
+        if (var_assign_type=="var"):
+             varExist(var_assign)
+
+        #Ejecucion para scope global
+        if scope == "global":
+            if (var_name in (var_table["global"]["variables"]["int"]) or (var_name in var_table["global"]["variables"]["float"])):
+                #genera cuadruplo
+                quadGen.gen_quad("=",var_assign,None,var_name)
+                qCounter+=1
+                #añade valor a tabla de constantes
+
+            else:
+                print("ERROR NO EXISTE", var_name)
+                sys.exit()
+        #Ejecucion para scope local
+        elif scope == "local":
+            #primero revisa si esta en el local
+            if (var_name in (local_var_table["variables"]["varInt"]) or (var_name in local_var_table["variables"]["varFloat"])):
+                #para encontrar y almacenar direccion de memoria
+                var_assign=p[3]
+                if variable_type=="int":
+                    direccion_memoria = local_var_table.get("variables", {}).get("varInt", {}).get(var_name)
+                elif variable_type=="float":
+                    direccion_memoria = local_var_table.get("variables", {}).get("varFloat", {}).get(var_name)
+                direccion_memoria = direccion_memoria[0]
+                add_local_var_value(variable_type,direccion_memoria, var_assign)
+                #genera cuadruplo
+                quadGen.gen_quad("=",var_assign,None,var_name)
+                #añade valor a tabla de constantes
+                qCounter+=1
+                #switch para avisar que esta en local para que no revise en global
+                estaenlocal=1
+            elif ((var_name in (var_table["global"]["variables"]["int"]) or (var_name in var_table["global"]["variables"]["float"])) and estaenlocal==0):
+                #genera cuadruplo
+                quadGen.gen_quad("=",var_assign,None,var_name)
+                qCounter+=1
+                #añade valor a tabla de constantes
+            else:
+                print("ERROR NO EXISTE", var_name)
+                sys.exit()
+    else:
+        var_name=p[1]
+        var_pos=p[3]
+        var_assign=p[6]
+        var_assign_type="var"
+        #Revisa si el que se le asignara es un numero int, float, un temp, o una variable
+        if re.match(regexFloat, str(p[3])):
+            var_assign_type="float"
+        elif re.match(regexInt, str(p[3])):
+            var_assign_type="int"
+        #revisa q si exista la variable a la que se le esta asignando
+        if (var_assign_type=="var"):
+             varExist(var_assign)
+
+        quadGen.gen_quad("ARRAYASSIGN",var_name,var_pos,var_assign)
+        qCounter+=1
+
         
-    #Ejecucion para scope global
-    if scope == "global":
-        if (var_name in (var_table["global"]["variables"]["int"]) or (var_name in var_table["global"]["variables"]["float"])):
-            #genera cuadruplo
-            quadGen.gen_quad("=",var_assign,None,var_name)
-            qCounter+=1
-            #añade valor a tabla de constantes
-
-        else:
-            print("ERROR NO EXISTE", var_name)
-            sys.exit()
-    #Ejecucion para scope local
-    elif scope == "local":
-        #primero revisa si esta en el local
-        if (var_name in (local_var_table["variables"]["varInt"]) or (var_name in local_var_table["variables"]["varFloat"])):
-            #para encontrar y almacenar direccion de memoria
-            var_assign=p[3]
-            if variable_type=="int":
-                direccion_memoria = local_var_table.get("variables", {}).get("varInt", {}).get(var_name)
-            elif variable_type=="float":
-                direccion_memoria = local_var_table.get("variables", {}).get("varFloat", {}).get(var_name)
-            direccion_memoria = direccion_memoria[0]
-            add_local_var_value(variable_type,direccion_memoria, var_assign)
-            #genera cuadruplo
-            quadGen.gen_quad("=",var_assign,None,var_name)
-            #añade valor a tabla de constantes
-            qCounter+=1
-            #switch para avisar que esta en local para que no revise en global
-            estaenlocal=1
-        elif ((var_name in (var_table["global"]["variables"]["int"]) or (var_name in var_table["global"]["variables"]["float"])) and estaenlocal==0):
-            #genera cuadruplo
-            quadGen.gen_quad("=",var_assign,None,var_name)
-            qCounter+=1
-            #añade valor a tabla de constantes
-        else:
-            print("ERROR NO EXISTE", var_name)
-            sys.exit()
+        
+    
 
         
 
@@ -1537,7 +1559,7 @@ parser = yacc.yacc()
 # Procesar cada línea con el parser
 
 
-fileName = "testcases/prueba.bixo"   
+fileName = "testcases/prueba3.bixo"   
 inputFile = open(fileName, 'r')
 inputCode = inputFile.read()
 inputFile.close()
