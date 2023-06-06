@@ -498,8 +498,7 @@ def p_param(p):
         add_var_local(p[2],p[1],currFunc) 
         #print("LOCAL VAR TABLE",local_var_table)
 
-
-#AQUI FALTA EL DEL SEGUNDO     
+     
 def p_exp(p):
     '''exp : texp 
            | texp OR exp'''
@@ -529,7 +528,6 @@ def p_exp(p):
         tempCounterInt+=1
         p[0]=temp
 
-#AQUI FALTA EL DEL SEGUNDO 
 def p_texp(p):
     '''texp : gexp 
             | gexp AND texp'''
@@ -1539,7 +1537,7 @@ parser = yacc.yacc()
 # Procesar cada línea con el parser
 
 
-fileName = "testcases/prueba2.bixo"   
+fileName = "testcases/prueba.bixo"   
 inputFile = open(fileName, 'r')
 inputCode = inputFile.read()
 inputFile.close()

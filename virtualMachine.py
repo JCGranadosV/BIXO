@@ -549,7 +549,7 @@ while (i< qCounter):
         elif(arg1 in arrays):
             arr=arrays[arg1]
             s=np.sort(arr)
-            print("Sorted matrix",arg1,"=",s)
+            print("Sorted array",arg1,"=",s)
     elif(op=="FIND"):
         if(arg1 in matrixes):
             mat=matrixes[arg1]
