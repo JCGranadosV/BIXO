@@ -4,7 +4,9 @@ main(){
     var float kk;
     kk=3.3*5;
     matrix z[3][3]=[2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32];
+    z[2][1]=5;
     mmult(m,z);
+    print(z[2][1]);
     print(z);
     mean(m);
     sort(m);

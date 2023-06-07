@@ -25,6 +25,7 @@ localFloat = 16000
 arrValues=18000
 tempInt = 20000
 tempFloat = 24000
+matrixValues=28000
 
 
 regexTemp=bixo.regexTemp
@@ -200,13 +201,11 @@ sCallFunc=[]
 
 while (i< qCounter):
     quad=sQuads.quads[i]
-    #print("CUADRUPLO",quad)
-    #print("QUAD POS 0", quad[0])
     op=quad[0]
     arg1=quad[1]
     arg2=quad[2]
     res=quad[3]
-    #print("Quad",i,quad)
+    print("Quad",i,quad)
     if(op=="+" or op=="-" or op=="*" or op=="/"):
         if isinstance(arg1, (int, float)):
             val1=arg1
@@ -491,10 +490,11 @@ while (i< qCounter):
     elif(op=="MATRIXSTART"):
         pass
     elif(op=="MATRIXFILL"):
-        pass
         #print(valueMap)
         currVal=valueMap["main"][arg2][1]
         lMatrix.append(currVal)
+        valueMap["main"][arg1]=(matrixValues, currVal)
+        matrixValues+=1
     elif(op=="MATRIXEND"):
         auxiliar = []
         # Vaciar la pila y almacenar los elementos en la lista auxiliar en orden inverso
@@ -511,6 +511,42 @@ while (i< qCounter):
         mat=np.array(ordered_values)
         matrixes[res]=mat
         #print("MATRICES:", matrixes)
+        print(valueMap)
+    elif(op=="MATRIXASSIGN"):
+        pass
+        print(valueMap)
+        assign=res
+        pos1=arg2[0]
+        pos2=arg2[1]
+        var=arg1
+        if isinstance(pos1, (int)):
+            #print("POS ES INT", pos)
+            pass
+        else:
+            pos1=valueMap["main"][pos1][1]
+            #print("POS QUEDA COMO ",pos)
+        if isinstance(pos2, (int)):
+            #print("POS ES INT", pos)
+            pass
+        else:
+            pos2=valueMap["main"][pos2][1]
+            #print("POS QUEDA COMO ",pos)
+        
+        if isinstance(assign, (int, float)):
+            #print("ASSIGN ES NUMERO ", assign)
+            pass
+        else:
+            assign=valueMap["main"][assign][1]
+            #print("ASSIGN QUEDA COMO ",assign)
+        strVal= str(var)+"[" + str(pos1) + "]"+"[" + str(pos2) + "]"
+        mem=valueMap["main"][strVal][0]
+        valueMap["main"][strVal]=(mem, assign)
+        #print("VALUEMAP",valueMap)
+        matrixes[var][pos1][pos2]=assign
+        #print("ARRAYS",arrays)
+    elif(op=="MATRIXPRINT"):
+        if res in valueMap["main"]:
+            print(valueMap["main"][res][1])
     elif(op=="MEAN"):
         if(arg1 in matrixes):
             mat=matrixes[arg1]

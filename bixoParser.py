@@ -1002,7 +1002,8 @@ def p_statements(p):
     
 def p_assign(p):
     '''assign : var EQUAL exp SEMICOLON
-              | var LBRACKET exp RBRACKET EQUAL exp SEMICOLON'''
+              | var LBRACKET exp RBRACKET EQUAL exp SEMICOLON
+              | var LBRACKET exp RBRACKET LBRACKET exp RBRACKET EQUAL exp SEMICOLON'''
     global qCounter, local_var_table, regexFloat, regexInt, regexTemp
     if len(p)==5:
         var_name=p[1]
@@ -1064,7 +1065,7 @@ def p_assign(p):
                 print("ERROR NO EXISTE", var_name)
                 sys.exit()
     elif (len(p)==8):
-        print("ENTRO AQUI")
+        #print("ENTRO AQUI")
         var_name=p[1]
         var_pos=p[3]
         var_assign=p[6]
@@ -1081,6 +1082,24 @@ def p_assign(p):
         quadGen.gen_quad("ARRAYASSIGN",var_name,var_pos,var_assign)
         qCounter+=1
         #print (quadGen.quads)
+    else:
+        print("ASSIGN MATRIX")
+        var_name=p[1]
+        var_pos1=p[3]
+        var_pos2=p[6]
+        var_assign=p[9]
+        var_assign_type="var"
+        #Revisa si el que se le asignara es un numero int, float, un temp, o una variable
+        if re.match(regexFloat, str(p[3])):
+            var_assign_type="float"
+        elif re.match(regexInt, str(p[3])):
+            var_assign_type="int"
+        #revisa q si exista la variable a la que se le esta asignando
+        if (var_assign_type=="var"):
+             varExist(var_assign)
+
+        quadGen.gen_quad("MATRIXASSIGN",var_name,[var_pos1,var_pos2],var_assign)
+        qCounter+=1
 
         
         
@@ -1108,19 +1127,29 @@ def p_read(p):
 
 def p_print(p):
     '''print : PRINT LPAREN printp SEMICOLON
-             | PRINT LPAREN var LBRACKET CTI RBRACKET RPAREN SEMICOLON'''
+             | PRINT LPAREN var LBRACKET CTI RBRACKET RPAREN SEMICOLON
+             | PRINT LPAREN var LBRACKET CTI RBRACKET LBRACKET CTI RBRACKET RPAREN SEMICOLON'''
     global sPrints, qCounter
-    if len(p)<7:
+    if len(p)==5:
         while (len(sPrints)!=0):
             quadGen.gen_quad('print',None, None, sPrints.pop())
             qCounter+=1
-    else:
+    elif len(p)==9:
         var=p[3]
         pos=p[5]
         varExist(var)
         fullVar=str(var)+"[" + str(pos) + "]"
         quadGen.gen_quad('ARRAYPRINT', None, None, fullVar)
         qCounter+=1
+    else:
+        var=p[3]
+        pos1=p[5]
+        pos2=p[8]
+        varExist(var)
+        fullVar=str(var)+"[" + str(pos1) + "]"+"[" + str(pos2) + "]"
+        quadGen.gen_quad('MATRIXPRINT', None, None, fullVar)
+        qCounter+=1
+        
 
 #Genera cuadruplos de print, separado por comas recibe muchos parametros
 def p_printp(p):
@@ -1570,7 +1599,7 @@ parser = yacc.yacc()
 # Procesar cada línea con el parser
 
 
-fileName = "testcases/prueba3.bixo"   
+fileName = "testcases/prueba4.bixo"   
 inputFile = open(fileName, 'r')
 inputCode = inputFile.read()
 inputFile.close()
