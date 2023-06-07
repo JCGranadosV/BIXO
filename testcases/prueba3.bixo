@@ -10,6 +10,7 @@ main(){
     array m[15]=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
     m[2]=5;
     print(m);
+    print(m[2]);
     while (ma<10){
     ma=ma+2;
     print(ma);
