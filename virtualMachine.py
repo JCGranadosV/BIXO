@@ -206,7 +206,7 @@ while (i< qCounter):
     arg1=quad[1]
     arg2=quad[2]
     res=quad[3]
-    print("Quad",i,quad)
+    #print("Quad",i,quad)
     if(op=="+" or op=="-" or op=="*" or op=="/"):
         if isinstance(arg1, (int, float)):
             val1=arg1
@@ -456,15 +456,32 @@ while (i< qCounter):
     elif(op=="ARRAYEND"):
         arrays[res]=np.array(lArray)
     elif(op=="ARRAYASSIGN"):
+        #print(valueMap)
         assign=res
         pos=arg2
         var=arg1
+        if isinstance(pos, (int)):
+            #print("POS ES INT", pos)
+            pass
+        else:
+            pos=valueMap["main"][pos][1]
+            #print("POS QUEDA COMO ",pos)
+        
+        if isinstance(assign, (int, float)):
+            #print("ASSIGN ES NUMERO ", assign)
+            pass
+        else:
+            assign=valueMap["main"][assign][1]
+            #print("ASSIGN QUEDA COMO ",assign)
         strVal= str(var)+"[" + str(pos) + "]"
         mem=valueMap["main"][strVal][0]
         valueMap["main"][strVal]=(mem, assign)
         #print("VALUEMAP",valueMap)
         arrays[var][pos]=assign
         #print("ARRAYS",arrays)
+    elif(op=="ARRAYPRINT"):
+        if res in valueMap["main"]:
+            print(valueMap["main"][res][1])
     elif(op=="MATRIX"):
         mRows=arg2
         mColumns=res

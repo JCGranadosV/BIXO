@@ -1002,7 +1002,7 @@ def p_statements(p):
     
 def p_assign(p):
     '''assign : var EQUAL exp SEMICOLON
-              | var LBRACKET CTI RBRACKET EQUAL exp SEMICOLON'''
+              | var LBRACKET exp RBRACKET EQUAL exp SEMICOLON'''
     global qCounter, local_var_table, regexFloat, regexInt, regexTemp
     if len(p)==5:
         var_name=p[1]
@@ -1063,7 +1063,8 @@ def p_assign(p):
             else:
                 print("ERROR NO EXISTE", var_name)
                 sys.exit()
-    else:
+    elif (len(p)==8):
+        print("ENTRO AQUI")
         var_name=p[1]
         var_pos=p[3]
         var_assign=p[6]
@@ -1079,6 +1080,7 @@ def p_assign(p):
 
         quadGen.gen_quad("ARRAYASSIGN",var_name,var_pos,var_assign)
         qCounter+=1
+        #print (quadGen.quads)
 
         
         
@@ -1105,10 +1107,19 @@ def p_read(p):
     
 
 def p_print(p):
-    '''print : PRINT LPAREN printp SEMICOLON'''
+    '''print : PRINT LPAREN printp SEMICOLON
+             | PRINT LPAREN var LBRACKET CTI RBRACKET RPAREN SEMICOLON'''
     global sPrints, qCounter
-    while (len(sPrints)!=0):
-        quadGen.gen_quad('print',None, None, sPrints.pop())
+    if len(p)<7:
+        while (len(sPrints)!=0):
+            quadGen.gen_quad('print',None, None, sPrints.pop())
+            qCounter+=1
+    else:
+        var=p[3]
+        pos=p[5]
+        varExist(var)
+        fullVar=str(var)+"[" + str(pos) + "]"
+        quadGen.gen_quad('ARRAYPRINT', None, None, fullVar)
         qCounter+=1
 
 #Genera cuadruplos de print, separado por comas recibe muchos parametros
@@ -1559,7 +1570,7 @@ parser = yacc.yacc()
 # Procesar cada línea con el parser
 
 
-fileName = "testcases/pruebafuncesp.bixo"   
+fileName = "testcases/prueba3.bixo"   
 inputFile = open(fileName, 'r')
 inputCode = inputFile.read()
 inputFile.close()
