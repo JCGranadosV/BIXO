@@ -535,6 +535,9 @@ while (i< qCounter):
         print("Hagamos una predicción!")
         resultado = modelo.predict([arg1])
         print("El resultado es: "+ str(resultado))
+    elif(op=="GETWEIGHTS"):
+        print("Variables internas del modelo")
+        print(capa.get_weights())
     elif(op=="FIBONACCI"):
         n=arg1
         if n<=0:
