@@ -260,8 +260,7 @@ while (i< qCounter):
 
             mem=valueMap[currFunc][res][0]
             valueMap[currFunc][res]=(mem,val)
-            #print("aqui a ", res, "le asigno el valor de",mem, val)
-            
+            #print("aqui a ", res, "le asigno el valor de",mem, val  
     elif(op=="=="):
         if(re.match(regexInt,str(arg1))):
             val1=arg1

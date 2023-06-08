@@ -172,6 +172,7 @@ sMatrixValues=[]
 mValues=0
 #funcesp
 layers=0
+sPara=[]
 
 functions_table = {}
 
@@ -495,6 +496,7 @@ def p_param(p):
         sTypes.append(p[1])
         #sVars.append(p[2])
         sParams.append(p[2])
+        sPara.append(p[2])
         add_var_local(p[2],p[1],currFunc) 
         #print("LOCAL VAR TABLE",local_var_table)
 
@@ -695,132 +697,153 @@ def p_mexp(p):
     if len(p) == 2:
         p[0]=p[1]
     elif len(p)==4:
-        global qCounter, tempCounterFloat, tempCounterInt, sTipos, tempIntMemory, tempFloatMemory
+        global qCounter, tempCounterFloat, tempCounterInt, sTipos, tempIntMemory, tempFloatMemory, sPara
         temp = getTemp()
+        print(sPara)
         tipo2=sTipos.pop()
         tipo1=sTipos.pop()
         resambos=None
         res1=None
         res2=None
 
-        tipo_resultado = semantic_cube[tipo1][p[2]][tipo2]
-        sTipos.append(tipo_resultado)
-        #print("tipo resultado:",tipo_resultado)
-        if (tipo_resultado=="int"):
-            local_var_table["variables"]["tempInt"][temp]=tempIntMemory
-            tempIntMemory+=1
-            tempCounterInt+=1
-        elif (tipo_resultado=="float"):
-            local_var_table["variables"]["tempFloat"][temp]=tempFloatMemory
-            tempFloatMemory+=1
-            tempCounterFloat+=1
-
-        
-###############Revisan si el parametro que se recibe ya es un numero
-        if re.match(regexInt, str(p[1])):
-            res1=p[1]
-
-        elif re.match(regexFloat, str(p[1])):
-            res1=p[1]
-
-        if re.match(regexInt, str(p[3])):
-            res2=p[3]
-
-        elif re.match(regexFloat, str(p[3])):
-            res2=p[3]
-
-#################################################
-#si es una var
-
-        while ((res1==None) and (not re.match(regexTemp,p[1]))):
-            if tipo1=="int":
-                memoria=local_var_table["variables"]["varInt"][p[1]]
-                res1=local_var_table["values"]["varInt"][memoria[0]]
-            elif tipo1=="float":
-                memoria=local_var_table["variables"]["varFloat"][p[1]]
-                res1=local_var_table["values"]["varFloat"][memoria[0]]
-
-        while res2==None and (not re.match(regexTemp,p[3])):
-            if tipo2=="int":
-                memoria=local_var_table["variables"]["varInt"][p[3]]
-                res2=local_var_table["values"]["varInt"][memoria[0]]
-            elif tipo2=="float":
-                memoria=local_var_table["variables"]["varFloat"][p[3]]
-                res2=local_var_table["values"]["varFloat"][memoria[0]]
-        #print(local_var_table)
-        #print("RES1", res1, "RES2", res2)
-
-#########################################
-##############Si no es un numero entonces buscan el valor del temp
-        #si es un temp
-
-        if (res1==None):
-            if tipo1=="int":
-                memoria=local_var_table["variables"]["tempInt"][p[1]]
-                res1=local_var_table["values"]["tempInt"][memoria]
-            elif tipo1=="float":
-                memoria=local_var_table["variables"]["tempFloat"][p[1]]
-                res1=local_var_table["values"]["tempFloat"][memoria]
-        elif(re.match(regexTemp,str(res1))):
-            if tipo1=="int":
-                memoria=local_var_table["variables"]["tempInt"][res1]
-                res1=local_var_table["values"]["tempInt"][memoria]
-            elif tipo1=="float":
-                memoria=local_var_table["variables"]["tempFloat"][res1]
-                res1=local_var_table["values"]["tempFloat"][memoria]
-
-        if (res2==None):
-            if tipo2=="int":
-                memoria=local_var_table["variables"]["tempInt"][p[3]]
-                res2=local_var_table["values"]["tempInt"][memoria]
-            elif tipo2=="float":
-                memoria=local_var_table["variables"]["tempFloat"][p[3]]
-                res2=local_var_table["values"]["tempFloat"][memoria]
-        elif(re.match(regexTemp,str(res2))):
-            if tipo2=="int":
-                memoria=local_var_table["variables"]["tempInt"][res2]
-                res2=local_var_table["values"]["tempInt"][memoria]
-            elif tipo2=="float":
-                memoria=local_var_table["variables"]["tempFloat"][res2]
-                res2=local_var_table["values"]["tempFloat"][memoria]
-
-        
-############################################
-        
-        #print("VOY A HACER ",res1,p[2],res2)
-        #Aqui hago la suma como tal y genero cuadruplos
-        if tipo_resultado=="int":
-            memoria=local_var_table["variables"]["tempInt"][temp]
-            
-            if p[2]=="+":
-                resambos=res1+res2
-                local_var_table["values"]["tempInt"][memoria]=resambos
+        #si es un param
+        if ((p[1] in sPara)and(p[3] in sPara)):
+            if(p[2]=="+"):
+                local_var_table["variables"]["tempFloat"][temp]=tempFloatMemory
+                memoria=local_var_table["variables"]["tempFloat"][temp]
+                local_var_table["values"]["tempFloat"][tempFloatMemory]=0
+                tempFloatMemory+=1
                 quadGen.gen_quad("+", p[1], p[3], temp)
                 qCounter+=1
                 p[0]=temp
-            elif p[2]=="-":
-                resambos=res1-res2
-                local_var_table["values"]["tempInt"][memoria]=resambos
+            elif(p[2]=="-"):
+                local_var_table["variables"]["tempFloat"][temp]=tempFloatMemory
+                memoria=local_var_table["variables"]["tempFloat"][temp]
+                local_var_table["values"]["tempFloat"][tempFloatMemory]=0
+                tempFloatMemory+=1
                 quadGen.gen_quad("-", p[1], p[3], temp)
                 qCounter+=1
                 p[0]=temp
-        elif tipo_resultado=="float":
-            memoria=local_var_table["variables"]["tempFloat"][temp]
-            
-            if p[2]=="+":
-                resambos=res1+res2
-                local_var_table["values"]["tempFloat"][memoria]=resambos
-                quadGen.gen_quad("+", p[1], p[3], temp)
-                qCounter+=1
-                p[0]=temp
-            elif p[2]=="-":
-                resambos=res1-res2
-                local_var_table["values"]["tempFloat"][memoria]=resambos
-                quadGen.gen_quad("-", p[1], p[3], temp)
-                qCounter+=1
-                p[0]=temp
-        #print("p[0]:",temp)        
-        #print(local_var_table)
+
+        else:
+            tipo_resultado = semantic_cube[tipo1][p[2]][tipo2]
+            sTipos.append(tipo_resultado)
+            #print("tipo resultado:",tipo_resultado)
+            if (tipo_resultado=="int"):
+                local_var_table["variables"]["tempInt"][temp]=tempIntMemory
+                tempIntMemory+=1
+                tempCounterInt+=1
+            elif (tipo_resultado=="float"):
+                local_var_table["variables"]["tempFloat"][temp]=tempFloatMemory
+                tempFloatMemory+=1
+                tempCounterFloat+=1
+
+
+########    #######Revisan si el parametro que se recibe ya es un numero
+            if re.match(regexInt, str(p[1])):
+                res1=p[1]
+
+            elif re.match(regexFloat, str(p[1])):
+                res1=p[1]
+
+            if re.match(regexInt, str(p[3])):
+                res2=p[3]
+
+            elif re.match(regexFloat, str(p[3])):
+                res2=p[3]
+
+########    #########################################
+#si es u    na var
+
+            while ((res1==None) and (not re.match(regexTemp,p[1]))):
+                if tipo1=="int":
+                    memoria=local_var_table["variables"]["varInt"][p[1]]
+                    res1=local_var_table["values"]["varInt"][memoria[0]]
+                elif tipo1=="float":
+                    memoria=local_var_table["variables"]["varFloat"][p[1]]
+                    res1=local_var_table["values"]["varFloat"][memoria[0]]
+
+            while res2==None and (not re.match(regexTemp,p[3])):
+                if tipo2=="int":
+                    memoria=local_var_table["variables"]["varInt"][p[3]]
+                    res2=local_var_table["values"]["varInt"][memoria[0]]
+                elif tipo2=="float":
+                    memoria=local_var_table["variables"]["varFloat"][p[3]]
+                    res2=local_var_table["values"]["varFloat"][memoria[0]]
+            #print(local_var_table)
+            #print("RES1", res1, "RES2", res2)
+
+########    #################################
+########    ######Si no es un numero entonces buscan el valor del temp
+            #si es un temp
+
+            if (res1==None):
+                if tipo1=="int":
+                    memoria=local_var_table["variables"]["tempInt"][p[1]]
+                    res1=local_var_table["values"]["tempInt"][memoria]
+                elif tipo1=="float":
+                    memoria=local_var_table["variables"]["tempFloat"][p[1]]
+                    res1=local_var_table["values"]["tempFloat"][memoria]
+            elif(re.match(regexTemp,str(res1))):
+                if tipo1=="int":
+                    memoria=local_var_table["variables"]["tempInt"][res1]
+                    res1=local_var_table["values"]["tempInt"][memoria]
+                elif tipo1=="float":
+                    memoria=local_var_table["variables"]["tempFloat"][res1]
+                    res1=local_var_table["values"]["tempFloat"][memoria]
+
+            if (res2==None):
+                if tipo2=="int":
+                    memoria=local_var_table["variables"]["tempInt"][p[3]]
+                    res2=local_var_table["values"]["tempInt"][memoria]
+                elif tipo2=="float":
+                    memoria=local_var_table["variables"]["tempFloat"][p[3]]
+                    res2=local_var_table["values"]["tempFloat"][memoria]
+            elif(re.match(regexTemp,str(res2))):
+                if tipo2=="int":
+                    memoria=local_var_table["variables"]["tempInt"][res2]
+                    res2=local_var_table["values"]["tempInt"][memoria]
+                elif tipo2=="float":
+                    memoria=local_var_table["variables"]["tempFloat"][res2]
+                    res2=local_var_table["values"]["tempFloat"][memoria]
+
+
+########    ####################################
+
+            #print("VOY A HACER ",res1,p[2],res2)
+            #Aqui hago la suma como tal y genero cuadruplos
+            if tipo_resultado=="int":
+                memoria=local_var_table["variables"]["tempInt"][temp]
+
+                if p[2]=="+":
+                    resambos=res1+res2
+                    local_var_table["values"]["tempInt"][memoria]=resambos
+                    quadGen.gen_quad("+", p[1], p[3], temp)
+                    qCounter+=1
+                    p[0]=temp
+                elif p[2]=="-":
+                    resambos=res1-res2
+                    local_var_table["values"]["tempInt"][memoria]=resambos
+                    quadGen.gen_quad("-", p[1], p[3], temp)
+                    qCounter+=1
+                    p[0]=temp
+            elif tipo_resultado=="float":
+                memoria=local_var_table["variables"]["tempFloat"][temp]
+
+                if p[2]=="+":
+                    resambos=res1+res2
+                    local_var_table["values"]["tempFloat"][memoria]=resambos
+                    quadGen.gen_quad("+", p[1], p[3], temp)
+                    qCounter+=1
+                    p[0]=temp
+                elif p[2]=="-":
+                    resambos=res1-res2
+                    local_var_table["values"]["tempFloat"][memoria]=resambos
+                    quadGen.gen_quad("-", p[1], p[3], temp)
+                    qCounter+=1
+                    p[0]=temp
+            #print("p[0]:",temp)        
+            #print(local_var_table)
 
 
 
@@ -840,125 +863,144 @@ def p_t(p):
         res1=None
         res2=None
 
-        tipo_resultado = semantic_cube[tipo1][p[2]][tipo2]
-        sTipos.append(tipo_resultado)
-        #print("tipo resultado:",tipo_resultado)
-        if (tipo_resultado=="int"):
-            local_var_table["variables"]["tempInt"][temp]=tempIntMemory
-            tempIntMemory+=1
-            tempCounterInt+=1
-        elif (tipo_resultado=="float"):
-            local_var_table["variables"]["tempFloat"][temp]=tempFloatMemory
-            tempFloatMemory+=1
-            tempCounterFloat+=1
-
-        
-###############Revisan si el parametro que se recibe ya es un numero
-        if re.match(regexInt, str(p[1])):
-            res1=p[1]
-
-        elif re.match(regexFloat, str(p[1])):
-            res1=p[1]
-
-        if re.match(regexInt, str(p[3])):
-            res2=p[3]
-
-        elif re.match(regexFloat, str(p[3])):
-            res2=p[3]
-
-#################################################
-#si es una var
-
-        while ((res1==None) and (not re.match(regexTemp,p[1]))):
-            if tipo1=="int":
-                memoria=local_var_table["variables"]["varInt"][p[1]]
-                res1=local_var_table["values"]["varInt"][memoria[0]]
-            elif tipo1=="float":
-                memoria=local_var_table["variables"]["varFloat"][p[1]]
-                res1=local_var_table["values"]["varFloat"][memoria[0]]
-
-        while res2==None and (not re.match(regexTemp,p[3])):
-            if tipo2=="int":
-                memoria=local_var_table["variables"]["varInt"][p[3]]
-                res2=local_var_table["values"]["varInt"][memoria[0]]
-            elif tipo2=="float":
-                memoria=local_var_table["variables"]["varFloat"][p[3]]
-                res2=local_var_table["values"]["varFloat"][memoria[0]]
-        #print(local_var_table)
-        #print("RES1", res1, "RES2", res2)
-
-#########################################
-##############Si no es un numero entonces buscan el valor del temp
-        #si es un temp
-
-        if (res1==None):
-            if tipo1=="int":
-                memoria=local_var_table["variables"]["tempInt"][p[1]]
-                res1=local_var_table["values"]["tempInt"][memoria]
-            elif tipo1=="float":
-                memoria=local_var_table["variables"]["tempFloat"][p[1]]
-                res1=local_var_table["values"]["tempFloat"][memoria]
-        elif(re.match(regexTemp,str(res1))):
-            if tipo1=="int":
-                memoria=local_var_table["variables"]["tempInt"][res1]
-                res1=local_var_table["values"]["tempInt"][memoria]
-            elif tipo1=="float":
-                memoria=local_var_table["variables"]["tempFloat"][res1]
-                res1=local_var_table["values"]["tempFloat"][memoria]
-
-        if (res2==None):
-            if tipo2=="int":
-                memoria=local_var_table["variables"]["tempInt"][p[3]]
-                res2=local_var_table["values"]["tempInt"][memoria]
-            elif tipo2=="float":
-                memoria=local_var_table["variables"]["tempFloat"][p[3]]
-                res2=local_var_table["values"]["tempFloat"][memoria]
-        elif(re.match(regexTemp,str(res2))):
-            if tipo2=="int":
-                memoria=local_var_table["variables"]["tempInt"][res2]
-                res1=local_var_table["values"]["tempInt"][memoria]
-            elif tipo2=="float":
-                memoria=local_var_table["variables"]["tempFloat"][res2]
-                res2=local_var_table["values"]["tempFloat"][memoria]
-
-        
-############################################
-        
-        #print("VOY A HACER ",res1,p[2],res2)
-        #Aqui hago la suma como tal y genero cuadruplos
-        if tipo_resultado=="int":
-            memoria=local_var_table["variables"]["tempInt"][temp]
-            
-            if p[2]=="*":
-                resambos=res1*res2
-                local_var_table["values"]["tempInt"][memoria]=resambos
+         #si es un param
+        if ((p[1] in sPara)and(p[3] in sPara)):
+            if(p[2]=="*"):
+                local_var_table["variables"]["tempFloat"][temp]=tempFloatMemory
+                memoria=local_var_table["variables"]["tempFloat"][temp]
+                local_var_table["values"]["tempFloat"][tempFloatMemory]=0
+                tempFloatMemory+=1
                 quadGen.gen_quad("*", p[1], p[3], temp)
                 qCounter+=1
                 p[0]=temp
-            elif p[2]=="/":
-                resambos=res1/res2
-                local_var_table["values"]["tempInt"][memoria]=resambos
+            elif(p[2]=="/"):
+                local_var_table["variables"]["tempFloat"][temp]=tempFloatMemory
+                memoria=local_var_table["variables"]["tempFloat"][temp]
+                local_var_table["values"]["tempFloat"][tempFloatMemory]=0
+                tempFloatMemory+=1
                 quadGen.gen_quad("/", p[1], p[3], temp)
                 qCounter+=1
                 p[0]=temp
-        elif tipo_resultado=="float":
-            memoria=local_var_table["variables"]["tempFloat"][temp]
-            
-            if p[2]=="*":
-                resambos=res1*res2
-                local_var_table["values"]["tempFloat"][memoria]=resambos
-                quadGen.gen_quad("*", p[1], p[3], temp)
-                qCounter+=1
-                p[0]=temp
-            elif p[2]=="/":
-                resambos=res1/res2
-                local_var_table["values"]["tempFloat"][memoria]=resambos
-                quadGen.gen_quad("/", p[1], p[3], temp)
-                qCounter+=1
-                p[0]=temp
-        #print("p[0]:",temp)        
-        #print(local_var_table)
-   
+        else:
+            tipo_resultado = semantic_cube[tipo1][p[2]][tipo2]
+            sTipos.append(tipo_resultado)
+            #print("tipo resultado:",tipo_resultado)
+            if (tipo_resultado=="int"):
+                local_var_table["variables"]["tempInt"][temp]=tempIntMemory
+                tempIntMemory+=1
+                tempCounterInt+=1
+            elif (tipo_resultado=="float"):
+                local_var_table["variables"]["tempFloat"][temp]=tempFloatMemory
+                tempFloatMemory+=1
+                tempCounterFloat+=1
+
+
+########    #######Revisan si el parametro que se recibe ya es un numero
+            if re.match(regexInt, str(p[1])):
+                res1=p[1]
+
+            elif re.match(regexFloat, str(p[1])):
+                res1=p[1]
+
+            if re.match(regexInt, str(p[3])):
+                res2=p[3]
+
+            elif re.match(regexFloat, str(p[3])):
+                res2=p[3]
+
+########    #########################################
+#si es u    na var
+
+            while ((res1==None) and (not re.match(regexTemp,p[1]))):
+                if tipo1=="int":
+                    memoria=local_var_table["variables"]["varInt"][p[1]]
+                    res1=local_var_table["values"]["varInt"][memoria[0]]
+                elif tipo1=="float":
+                    memoria=local_var_table["variables"]["varFloat"][p[1]]
+                    res1=local_var_table["values"]["varFloat"][memoria[0]]
+
+            while res2==None and (not re.match(regexTemp,p[3])):
+                if tipo2=="int":
+                    memoria=local_var_table["variables"]["varInt"][p[3]]
+                    res2=local_var_table["values"]["varInt"][memoria[0]]
+                elif tipo2=="float":
+                    memoria=local_var_table["variables"]["varFloat"][p[3]]
+                    res2=local_var_table["values"]["varFloat"][memoria[0]]
+            #print(local_var_table)
+            #print("RES1", res1, "RES2", res2)
+
+########    #################################
+########    ######Si no es un numero entonces buscan el valor del temp
+            #si es un temp
+
+            if (res1==None):
+                if tipo1=="int":
+                    memoria=local_var_table["variables"]["tempInt"][p[1]]
+                    res1=local_var_table["values"]["tempInt"][memoria]
+                elif tipo1=="float":
+                    memoria=local_var_table["variables"]["tempFloat"][p[1]]
+                    res1=local_var_table["values"]["tempFloat"][memoria]
+            elif(re.match(regexTemp,str(res1))):
+                if tipo1=="int":
+                    memoria=local_var_table["variables"]["tempInt"][res1]
+                    res1=local_var_table["values"]["tempInt"][memoria]
+                elif tipo1=="float":
+                    memoria=local_var_table["variables"]["tempFloat"][res1]
+                    res1=local_var_table["values"]["tempFloat"][memoria]
+
+            if (res2==None):
+                if tipo2=="int":
+                    memoria=local_var_table["variables"]["tempInt"][p[3]]
+                    res2=local_var_table["values"]["tempInt"][memoria]
+                elif tipo2=="float":
+                    memoria=local_var_table["variables"]["tempFloat"][p[3]]
+                    res2=local_var_table["values"]["tempFloat"][memoria]
+            elif(re.match(regexTemp,str(res2))):
+                if tipo2=="int":
+                    memoria=local_var_table["variables"]["tempInt"][res2]
+                    res1=local_var_table["values"]["tempInt"][memoria]
+                elif tipo2=="float":
+                    memoria=local_var_table["variables"]["tempFloat"][res2]
+                    res2=local_var_table["values"]["tempFloat"][memoria]
+
+
+########    ####################################
+
+            #print("VOY A HACER ",res1,p[2],res2)
+            #Aqui hago la suma como tal y genero cuadruplos
+            if tipo_resultado=="int":
+                memoria=local_var_table["variables"]["tempInt"][temp]
+
+                if p[2]=="*":
+                    resambos=res1*res2
+                    local_var_table["values"]["tempInt"][memoria]=resambos
+                    quadGen.gen_quad("*", p[1], p[3], temp)
+                    qCounter+=1
+                    p[0]=temp
+                elif p[2]=="/":
+                    resambos=res1/res2
+                    local_var_table["values"]["tempInt"][memoria]=resambos
+                    quadGen.gen_quad("/", p[1], p[3], temp)
+                    qCounter+=1
+                    p[0]=temp
+            elif tipo_resultado=="float":
+                memoria=local_var_table["variables"]["tempFloat"][temp]
+
+                if p[2]=="*":
+                    resambos=res1*res2
+                    local_var_table["values"]["tempFloat"][memoria]=resambos
+                    quadGen.gen_quad("*", p[1], p[3], temp)
+                    qCounter+=1
+                    p[0]=temp
+                elif p[2]=="/":
+                    resambos=res1/res2
+                    local_var_table["values"]["tempFloat"][memoria]=resambos
+                    quadGen.gen_quad("/", p[1], p[3], temp)
+                    qCounter+=1
+                    p[0]=temp
+            #print("p[0]:",temp)        
+            #print(local_var_table)
+    
 def p_f(p):
     '''f : LPAREN exp RPAREN
          | CTI
@@ -1605,7 +1647,7 @@ parser = yacc.yacc()
 # Procesar cada línea con el parser
 
 
-fileName = "testcases/pruebafuncesp.bixo"   
+fileName = "testcases/prueba2.bixo"   
 inputFile = open(fileName, 'r')
 inputCode = inputFile.read()
 inputFile.close()
