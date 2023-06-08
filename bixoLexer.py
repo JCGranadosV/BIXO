@@ -55,6 +55,7 @@ tokens = [
     'SEQUENTIAL',
     'COMPILE',
     'FIT',
+    'PLOT',
     'EPOCHS',
     'VERBOSE',
     'PREDICT',
@@ -102,6 +103,7 @@ reserved = {
     'sequential' : 'SEQUENTIAL',
     'compile' : 'COMPILE',
     'fit' : 'FIT',
+    'plot' : 'PLOT',
     'predict' : 'PREDICT',
     'getweights' : 'GETWEIGHTS',
     'fibonacci' : 'FIBONACCI',
@@ -261,6 +263,10 @@ def t_COMPILE(t):
 
 def t_FIT(t):
     r'fit'
+    return t
+
+def t_PLOT(t):
+    r'plot'
     return t
 
 def t_EPOCHS(t):

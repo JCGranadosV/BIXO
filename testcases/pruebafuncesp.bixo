@@ -16,6 +16,7 @@ main(){
     sequential();
     compile(0.1);
     fit(a,m, epochs = 1000);
+    plot();
     predict(220.0);
     getweights();
     factorial(5);

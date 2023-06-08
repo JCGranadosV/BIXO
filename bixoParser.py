@@ -991,6 +991,7 @@ def p_statements(p):
                  |  sequential
                  |  compile
                  |  fit
+                 |  plot
                  |  predict
                  |  getweights
                  |  fibonacci
@@ -1522,6 +1523,11 @@ def p_fit(p):
     qCounter+=1
     layers+=1
     
+def p_plot(p):
+    '''plot : PLOT LPAREN RPAREN SEMICOLON'''
+    global qCounter
+    quadGen.gen_quad("PLOT", None, None, None)
+    qCounter+=1  
 
 def p_predict(p):
     ''' predict : PREDICT LPAREN CTF RPAREN SEMICOLON'''
@@ -1599,7 +1605,7 @@ parser = yacc.yacc()
 # Procesar cada línea con el parser
 
 
-fileName = "testcases/prueba4.bixo"   
+fileName = "testcases/pruebafuncesp.bixo"   
 inputFile = open(fileName, 'r')
 inputCode = inputFile.read()
 inputFile.close()

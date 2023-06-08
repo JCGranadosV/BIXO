@@ -7,7 +7,7 @@ import ply.lex as lexer
 import bixoParser as bixo
 import numpy as np
 import tensorflow as tf
-
+import matplotlib.pyplot as plt
 
 #importa data de parser
 functions_table=bixo.functions_table
@@ -584,6 +584,11 @@ while (i< qCounter):
         arr2=arrays[arg2]
         historial = modelo.fit(arr1, arr2, epochs=res, verbose=False)
         print("Modelo entrenado!")
+    elif(op=="PLOT"):
+        plt.xlabel("# Epoca")
+        plt.ylabel("Magnitud de Perdida")
+        plt.plot(historial.history["loss"])
+        plt.show() 
     elif(op=="PREDICT"):
         print("Hagamos una predicción!")
         resultado = modelo.predict([arg1])
