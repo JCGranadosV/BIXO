@@ -7,6 +7,7 @@ Se instalaron librerías para el uso de Machine Learning y PLY, se deberá escri
 pip install ply
 pip install numpy
 pip install tensorflow
+pip install matplotlib
 
 Se debera clonar el siguiente repositorio:
 git clone https://github.com/JCGranadosV/BIXO
